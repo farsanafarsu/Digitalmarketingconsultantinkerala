@@ -953,7 +953,7 @@ html.pl-intro .scrolly .hint,html.pl-intro.scrolly .hint{animation:inhint .8s .9
 .sv-you strong{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#e8f7ef;color:#0e9f6e;font-size:15px}
 .sv.in .sv-you{animation:sv-climb 7s var(--ease) .6s infinite}
 @keyframes sv-climb{0%,8%{transform:translate3d(0,calc((var(--h) + var(--g)) * 3),0)}22%,30%{transform:translate3d(0,calc((var(--h) + var(--g)) * 2),0)}44%,52%{transform:translate3d(0,calc(var(--h) + var(--g)),0)}66%,92%{transform:translate3d(0,0,0)}100%{transform:translate3d(0,calc((var(--h) + var(--g)) * 3),0)}}
-@media (max-width:900px){.sv-card{grid-template-columns:1fr}}
+@media (max-width:900px){.sv-card{grid-template-columns:minmax(0,1fr)}}
 @media (prefers-reduced-motion:reduce){.sv.in .sv-you{animation:none;transform:none}}
 /* ---------- Google ads: a short intro that hands over to the Google ads page. A search types itself, the ad lands on top and a call comes in ---------- */
 .ga{max-width:1280px;margin:clamp(90px,14vh,160px) auto 0}
@@ -1040,7 +1040,7 @@ html.pl-intro .scrolly .hint,html.pl-intro.scrolly .hint{animation:inhint .8s .9
 .ig-js .ig-copy>*,.ig-js .ig-dash{opacity:0;transform:translate3d(0,22px,0)}
 .ig.in .ig-copy>*,.ig.in .ig-dash{opacity:1;transform:none;transition:opacity .8s var(--ease),transform .9s var(--ease)}
 .ig.in .ig-copy>:nth-child(2){transition-delay:.06s}.ig.in .ig-copy>:nth-child(3){transition-delay:.12s}.ig.in .ig-copy>:nth-child(4){transition-delay:.18s}.ig.in .ig-copy>:nth-child(5){transition-delay:.24s}.ig.in .ig-dash{transition-delay:.2s}
-@media (max-width:900px){.sv-card,.ig-card{grid-template-columns:1fr}}
+@media (max-width:900px){.sv-card,.ig-card{grid-template-columns:minmax(0,1fr)}}
 @media (prefers-reduced-motion:reduce){
   .ga-ad,.ig-list li,.ig-copy>*,.ig-dash{transition:none!important}
   .ga.in .ga-call,.ga.in .ga-call i{animation:none;opacity:1}
@@ -1101,7 +1101,7 @@ html.pl-intro .scrolly .hint,html.pl-intro.scrolly .hint{animation:inhint .8s .9
 .ai-js .ai-copy>*{opacity:0;transform:translate3d(0,22px,0)}
 .ai.in .ai-copy>*{opacity:1;transform:none;transition:opacity .8s var(--ease),transform .9s var(--ease)}
 .ai.in .ai-copy>:nth-child(2){transition-delay:.06s}.ai.in .ai-copy>:nth-child(3){transition-delay:.12s}.ai.in .ai-copy>:nth-child(4){transition-delay:.18s}.ai.in .ai-copy>:nth-child(5){transition-delay:.24s}.ai.in .ai-copy>:nth-child(6){transition-delay:.3s}
-@media (max-width:900px){.ai-card{grid-template-columns:1fr}.ai-vis{min-height:400px}}
+@media (max-width:900px){.ai-card{grid-template-columns:minmax(0,1fr)}.ai-vis{min-height:400px}}
 @media (max-width:480px){.ai-code pre{font-size:11px}.ai-chat{width:88%}.ai-vis{min-height:440px}}
 @media (prefers-reduced-motion:reduce){.ai-card::before{animation:none}.ai-ln,.ai-m,.ai-chat,.ai-copy>*{clip-path:none!important;opacity:1!important;transform:none!important;transition:none!important}}
 .mw-seo{margin-top:clamp(80px,12vh,140px)}
@@ -1295,6 +1295,57 @@ mark.tbd{background:rgba(255,214,10,.28);color:inherit;padding:0 .2em;border-rad
 .ap-js .ap-r{opacity:0;transform:translateY(30px);transition:opacity .9s cubic-bezier(.2,.8,.2,1) var(--d,0s),transform 1s cubic-bezier(.2,.8,.2,1) var(--d,0s)}
 .ap-js .ap-r.in{opacity:1;transform:none}
 @media (max-width:300px){.ap-stick{padding:44px 12px 16px}.ap-holder{--cw:66vw}.ap-chip{font-size:10px;padding:5px 9px}.ap-say{font-size:1.15rem}.nb{padding:48px 12px calc(40px + var(--R))}.nb-k{font-size:10px;letter-spacing:.14em}.nb-fig{font-size:3.4rem}.ap-hl-head{padding:0 12px}.ap-hl-head h3{font-size:1.55rem}.ap-rail{--pad:12px;gap:10px}.ap-card{width:80vw;height:300px;padding:18px;border-radius:20px}.ap-card h4{font-size:1.05rem}.ap-end{padding:0 8px 60px}.ae-card{padding:20px 14px 0;border-radius:20px}.ap-end h3{font-size:2rem}.ap-end p{font-size:.88rem}.ap-btn{height:42px;font-size:13px}.ae-go{padding:0 5px 0 16px}.ae-go b{width:32px;height:32px}.ap-link{font-size:13px}.ae-loc{display:none}}
+/* about, stacked layout (phones and portrait tablets): the column is always exactly the screen width minus the margins,
+   so the photo deck can never stretch it and push the statement past the right edge */
+@media not all and (min-width:900px) and (min-height:620px){
+  .ap-stick{grid-template-columns:minmax(0,1fr)}
+  .ap-holder{width:min(calc(var(--cw) * 1.3),100%)}
+  .ap-copy,.ap-say{min-width:0;max-width:100%;overflow-wrap:break-word}
+  .ap-chip.c1{left:0}.ap-chip.c2{right:0}
+  .ap-chip{max-width:calc(100% - 8px)}
+}
+/* about: tablets in portrait keep the copy a readable width under the photo */
+@media (min-width:600px) and (max-width:899px){.ap-copy{width:100%;max-width:600px;justify-self:center}}
+/* about: phones in landscape put the photo and the copy side by side instead of a full-screen photo */
+@media (orientation:landscape) and (max-height:619px) and (min-width:560px){
+  .ap-stick{grid-template-columns:minmax(0,4fr) minmax(0,6fr);gap:clamp(20px,4vw,48px);padding-top:64px;padding-bottom:32px}
+  .ap-holder{--cw:min(58vh,30vw,300px)}
+  .ap-say{margin-top:12px;font-size:clamp(1.05rem,2.3vw,1.45rem);line-height:1.22}
+  .ap-name{font-size:.95rem}
+  .ap-cv{height:46px;margin-top:16px;font-size:14px}.ap-cv i{width:34px;height:34px}
+}
+/* about: small phones get a smaller statement so it does not run over several screens */
+@media (max-width:420px){
+  .ap-holder{--cw:min(68vw,320px)}
+  .ap-say{margin-top:16px;font-size:clamp(1.2rem,5.6vw,1.45rem);line-height:1.22}
+  .ap-name{font-size:.98rem}
+}
+/* about: watches */
+@media (max-width:300px){
+  .ap-say{margin-top:10px;font-size:1rem;line-height:1.3;letter-spacing:-.015em}
+  .ap-name{font-size:.82rem}
+  .ap-cv{height:auto;min-height:42px;gap:8px;padding:4px 4px 4px 14px;font-size:12.5px;line-height:1.2}
+  .ap-cv i{flex:none;width:32px;height:32px}.ap-cv i svg{width:15px;height:15px}
+  .ap-chip{display:none}
+}
+/* mobile safety net: never scroll sideways (clip keeps sticky/scrolly sections working) */
+html,body{overflow-x:clip}
+img,video{max-width:100%}
+@media (max-width:860px){.rs-totals{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:28px}.rs-totals li:nth-child(3){border-left:0;padding-left:0}}
+@media (min-width:861px) and (max-width:1200px){.rs-totals b{font-size:clamp(1.8rem,3.4vw,3rem)}}
+@media (max-width:420px){.rs-totals b{font-size:clamp(1.5rem,8vw,2rem)}.ai-code pre{font-size:9.5px;padding:12px 12px 16px}.ct-l b{white-space:normal;overflow-wrap:anywhere}}
+@media (max-width:300px){
+  .sv-card,.ig-card,.ai-card{padding:14px;gap:16px;border-radius:20px}
+  .sv-vis{padding:10px;border-radius:16px}
+  .sv-copy h3,.ig-card h3,.ai-card h3{font-size:1.35rem;overflow-wrap:anywhere}
+  .sv-you{font-size:11px}.sv-you strong{display:none}.sv-you b,.sv-you em{overflow-wrap:anywhere;min-width:0}
+  .ai-vis{min-height:300px}.ai-code{width:100%}.ai-chat{width:100%}
+  .mw-word,.mw-live .mw-copy h3,.ft-line{overflow-wrap:anywhere}
+  .rs-totals{grid-template-columns:minmax(0,1fr);row-gap:18px}.rs-totals li,.rs-totals li:nth-child(3){border-left:0;padding-left:0}
+  .rs-totals b{font-size:1.4rem}
+  .sv-pts li,.sx-h,.ct-steps li{overflow-wrap:anywhere;min-width:0}
+  .mw-t span{overflow-wrap:anywhere}
+}
 </style>
 </head>
 <body>
