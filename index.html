@@ -308,7 +308,7 @@ html.pl-intro .scrolly .hint,html.pl-intro.scrolly .hint{animation:inhint .8s .9
 .dk-wave svg{display:block;width:100%;height:100%;overflow:visible}
 .dk-wave path{fill:#fff}
 .dk-black{background:#121214;box-shadow:0 40px 80px -30px rgba(0,0,0,.9),inset 0 0 0 1px rgba(255,255,255,.07);overflow:hidden}
-.dk-black .dk-mark{position:absolute;right:8%;top:7%;color:#fff}
+.dk-black .dk-mark{display:none} /* show the name once: only the logo on the photo card */
 .dk-black .dk-q2{position:absolute;left:50%;bottom:7%;width:22%;transform:translateX(-50%) rotate(180deg);color:#fff}
 .dk-front{background:#fff;color:#1d1d1f;overflow:hidden;box-shadow:0 50px 90px -30px rgba(0,0,0,.85)}
 .dk-q{position:absolute;left:9%;top:10%;width:11%;color:#1d1d1f}
@@ -318,7 +318,7 @@ html.pl-intro .scrolly .hint,html.pl-intro.scrolly .hint{animation:inhint .8s .9
 .dk-quote mark{position:relative;background:none;color:rgb(calc(29 + 226 * var(--bar,1)),calc(29 + 226 * var(--bar,1)),calc(31 + 224 * var(--bar,1)));padding:0 .14em;white-space:nowrap}
 .dk-quote mark::before{content:"";position:absolute;inset:.06em 0 0;z-index:-1;border-radius:.12em;background:linear-gradient(90deg,#2997ff,#a259ff 55%,#ff5f8f);transform-origin:left;transform:scaleX(var(--bar,1))}
 .dk-quote mark{z-index:0;isolation:isolate}
-.dk-by{position:absolute;left:9%;top:calc(24% + var(--cw) * .17);margin:0;font-family:var(--display);font-weight:700;font-style:italic;font-size:calc(var(--cw) * .032);color:#1d1d1f}
+.dk-by{display:none;position:absolute;left:9%;top:calc(24% + var(--cw) * .17);margin:0;font-family:var(--display);font-weight:700;font-style:italic;font-size:calc(var(--cw) * .032);color:#1d1d1f}
 .dk-mark{position:absolute;left:9%;bottom:7%;z-index:2;font-family:var(--display);font-weight:700;font-size:calc(var(--cw) * .042);letter-spacing:-.03em}
 .dk-front .dk-mark b{font-weight:700;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .dk-front img{position:absolute;right:-10%;bottom:0;width:auto;height:76%;max-width:none;transform-origin:50% 100%;will-change:transform}
