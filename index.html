@@ -1555,17 +1555,36 @@ mark.tbd{background:rgba(255,214,10,.28);color:inherit;padding:0 .2em;border-rad
 .lc h2,.fq h2,.ct h2{margin:0;font-family:var(--display);font-weight:600;font-size:clamp(2.1rem,4.4vw,4.2rem);line-height:1.03;letter-spacing:-.045em}
 .lc h2 span,.fq h2 span,.ct h2 span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .lc-p{margin:22px 0 0;max-width:58ch;font-size:clamp(1.05rem,1.35vw,1.25rem);line-height:1.55;color:#6e6e73}
-.lc-towns{list-style:none;margin:clamp(40px,6vh,64px) 0 0;padding:0;display:flex;flex-wrap:wrap;gap:12px}
-.lc-towns li{display:inline-flex;align-items:center;gap:10px;padding:14px 22px 14px 16px;border-radius:999px;background:#f5f5f7;font-family:var(--display);font-weight:600;font-size:clamp(1.05rem,1.6vw,1.5rem);letter-spacing:-.025em;transition:background .3s,color .3s,transform .3s}
-.lc-lb{margin:clamp(36px,5vh,56px) 0 0;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#86868b}
-.lc-lb+.lc-towns{margin-top:14px}
-.lc-intl li{background:#0b0b0c;color:#fff}
-.lc-intl li:hover{background:linear-gradient(90deg,#2997ff,#a259ff 55%,#ff5f8f)!important}
-.lc-towns li:hover{background:#0b0b0c;color:#fff;transform:translateY(-3px)}
-.lc-towns svg{width:20px;height:20px;fill:none;stroke:url(#pcg);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
-.lc-js .lc-towns li{opacity:0;transform:translateY(18px);transition:opacity .7s ease var(--d),transform .8s cubic-bezier(.2,.8,.2,1) var(--d),background .3s,color .3s}
-.lc-js .lc-towns.on li{opacity:1;transform:none}
-.lc-js .lc-towns.on li:hover{transform:translateY(-3px)}
+/* locations: the towns drop into a physics pile (Matter.js) when the section comes into view; Kerala in soft grey,
+   abroad in black, landing last and a touch bigger. Chips can be grabbed and thrown. Without JS, with reduced motion,
+   on watches or if the library fails to load they sit in a plain wrapped row */
+.lc-pile{position:relative;margin-top:clamp(40px,6vh,64px)}
+.lc-chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:12px}
+.lc-chip{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:999px;background:#f4f4f6;color:#1d1d1f;font:600 18px/1.1 Inter,system-ui,sans-serif;letter-spacing:-.01em;white-space:nowrap}
+.lc-chip svg{flex:none;width:18px;height:18px;fill:none;stroke:url(#pcg);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.lc-chip.lc-ab{background:#0d0d0f;color:#fff}
+.lc-floor{display:none}
+.lc-legend{display:none;align-items:center;gap:20px;margin:14px 0 0;font-size:12.5px;color:#86868b}
+.lc-legend span{display:inline-flex;align-items:center;gap:8px}
+.lc-legend i{width:9px;height:9px;border-radius:50%;background:#e4e4e8;box-shadow:inset 0 0 0 1px #d4d4d8}
+.lc-legend i.lc-dk{background:#0d0d0f;box-shadow:none}
+/* physics mode */
+.lc-wait .lc-pile,.lc-phys .lc-pile{height:340px;touch-action:pan-y}
+.lc-wait .lc-chip{visibility:hidden}
+.lc-phys .lc-chips{display:block}
+.lc-phys .lc-chip{position:absolute;left:0;top:0;visibility:hidden;transform-origin:50% 50%;will-change:transform;cursor:grab;touch-action:none;-webkit-user-select:none;user-select:none;box-shadow:0 1px 0 rgba(0,0,0,.04),0 10px 24px -16px rgba(20,20,40,.45)}
+.lc-phys .lc-chip.lc-ab{padding:16px 24px;font-size:20px;box-shadow:0 14px 30px -14px rgba(0,0,0,.55)}
+.lc-phys .lc-chip.lc-ab svg{width:20px;height:20px}
+.lc-phys .lc-chip.lc-on{visibility:visible}
+.lc-phys .lc-chip.lc-grab{cursor:grabbing;z-index:5}
+.lc-wait .lc-floor,.lc-phys .lc-floor{display:block;position:absolute;left:0;right:0;bottom:0;height:1px;background:#d4d4d8}
+.lc-wait .lc-legend,.lc-phys .lc-legend{display:flex}
+@media (max-width:600px){
+  .lc-wait .lc-pile,.lc-phys .lc-pile{height:300px}
+  .lc-chip{gap:8px;padding:11px 16px;font-size:15px}.lc-chip svg{width:15px;height:15px}
+  .lc-phys .lc-chip.lc-ab{padding:12px 18px;font-size:16.5px}.lc-phys .lc-chip.lc-ab svg{width:16px;height:16px}
+}
+@media (max-width:300px){.lc-chip{font-size:.8rem;padding:9px 12px;gap:6px}.lc-chip svg{width:14px;height:14px}.lc-chips{gap:8px}}
 /* ---------- faq ---------- */
 .fq{background:#f5f5f7;color:#1d1d1f;padding:clamp(88px,13vh,150px) var(--gut,6vw)}
 .fq-in{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);column-gap:clamp(32px,6vw,100px);align-items:start}
@@ -1657,8 +1676,8 @@ mark.tbd{background:rgba(255,214,10,.28);color:inherit;padding:0 .2em;border-rad
 .ft a:hover{text-decoration:underline}
 .ft-c{margin:14px 0 0;font-size:13px;color:#6e6e73}
 @media (max-width:900px){.fq-in,.ct-in{grid-template-columns:minmax(0,1fr)}.fq-side{position:static;margin-bottom:28px}}
-@media (max-width:300px){.lc,.fq,.ct{padding:56px 12px}.ft{padding:0 12px 24px}.lc h2,.fq h2,.ct h2{font-size:1.6rem}.lc-towns li{font-size:.8rem;padding:9px 12px 9px 10px;gap:6px}.lc-towns svg{width:15px;height:15px}.fq-a p{padding-right:4px}.ct-l b{font-size:13px}.ct-form{padding:16px;border-radius:18px}}
-@media (prefers-reduced-motion:reduce){.lc-js .lc-towns li{opacity:1;transform:none;transition:none}.fq-js .fq-a{transition:none}}
+@media (max-width:300px){.lc,.fq,.ct{padding:56px 12px}.ft{padding:0 12px 24px}.lc h2,.fq h2,.ct h2{font-size:1.6rem}.fq-a p{padding-right:4px}.ct-l b{font-size:13px}.ct-form{padding:16px;border-radius:18px}}
+@media (prefers-reduced-motion:reduce){.fq-js .fq-a{transition:none}}
 /* reveal */
 .ap-js .ap-r{opacity:0;transform:translateY(30px);transition:opacity .9s cubic-bezier(.2,.8,.2,1) var(--d,0s),transform 1s cubic-bezier(.2,.8,.2,1) var(--d,0s)}
 .ap-js .ap-r.in{opacity:1;transform:none}
@@ -2110,8 +2129,8 @@ img,video{max-width:100%}
   <div class="lc-in">
     <p class="kk"><i>&#8212;</i>Locations</p><h2 id="lc-h">Where I work <span>in Kerala and abroad</span></h2>
     <p class="lc-p">I work with businesses across Kerala, including Kochi, Kozhikode, Thrissur, Thiruvananthapuram, Malappuram, Kannur, Kollam, Kottayam and Wayanad. I also work with brands in Dubai, Sharjah, Qatar and Canada that want to reach Malayali customers. Meetings happen on a call or over WhatsApp, so your town is never a limit.</p>
-    <p class="lc-lb">In Kerala</p><ul class="lc-towns" aria-label="Towns I work in, in Kerala"><li style="--d:0.00s"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Kochi</li><li style="--d:0.05s"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Kozhikode</li><li style="--d:0.10s"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Thrissur</li><li style="--d:0.15s"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Thiruvananthapuram</li><li style="--d:0.20s"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Malappuram</li><li style="--d:0.25s"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Kannur</li><li style="--d:0.30s"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Kollam</li><li style="--d:0.35s"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Kottayam</li><li style="--d:0.40s"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Wayanad</li></ul>
-    <p class="lc-lb">Outside India</p><ul class="lc-towns lc-intl" aria-label="Places I work in outside India"><li class="lc-ab" style="--d:0.00s"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3Z"/></svg>Dubai</li><li class="lc-ab" style="--d:0.05s"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3Z"/></svg>Sharjah</li><li class="lc-ab" style="--d:0.10s"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3Z"/></svg>Qatar</li><li class="lc-ab" style="--d:0.15s"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3Z"/></svg>Canada</li></ul>
+    <div class="lc-pile" id="lcpile"><ul class="lc-chips" aria-label="Places I work: nine towns in Kerala and four places outside India"><li class="lc-chip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Kochi</li><li class="lc-chip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Kozhikode</li><li class="lc-chip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Thrissur</li><li class="lc-chip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Thiruvananthapuram</li><li class="lc-chip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Malappuram</li><li class="lc-chip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Kannur</li><li class="lc-chip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Kollam</li><li class="lc-chip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Kottayam</li><li class="lc-chip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Wayanad</li><li class="lc-chip lc-ab"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3Z"/></svg>Dubai<span class="sr"> (outside India)</span></li><li class="lc-chip lc-ab"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3Z"/></svg>Sharjah<span class="sr"> (outside India)</span></li><li class="lc-chip lc-ab"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3Z"/></svg>Qatar<span class="sr"> (outside India)</span></li><li class="lc-chip lc-ab"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3Z"/></svg>Canada<span class="sr"> (outside India)</span></li></ul><div class="lc-floor" aria-hidden="true"></div></div>
+    <p class="lc-legend" aria-hidden="true"><span><i></i>In Kerala</span><span><i class="lc-dk"></i>Outside India</span></p>
   </div>
 </section>
 
@@ -2695,14 +2714,129 @@ img,video{max-width:100%}
 </script>
 <script>
 (function(){
-  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // locations: the towns rise in one after another the first time they are seen
-  var lc=document.getElementById('locations');
-  if(lc&&!reduce&&'IntersectionObserver' in window){
-    var towns=lc.querySelectorAll('.lc-towns'); lc.classList.add('lc-js');
-    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on'); io.unobserve(e.target)}})},{threshold:.2});
-    Array.prototype.forEach.call(towns,function(t){io.observe(t)});
+  // locations pile: Matter.js loads as the section approaches; at 30% visibility the chips drop in one by one from
+  // above, tumble and settle on the floor line. Chips can be grabbed and thrown. The engine only runs while on screen
+  var sec=document.getElementById('locations'), pile=document.getElementById('lcpile'); if(!sec||!pile) return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver' in window)||window.innerWidth<=300) return;
+  var chips=Array.prototype.slice.call(pile.querySelectorAll('.lc-chip'));
+  sec.classList.add('lc-wait');
+  var M=null, eng=null, walls=[], items=[], W=0, H=0, onScreen=false, raf=0, last=0, acc=0, drag=null, dropped=false, loading=false, landed=0, still=0, frames=0;
+  function fail(){sec.classList.remove('lc-wait','lc-phys')}
+  function load(cb){
+    if(window.Matter) return cb();
+    if(loading) return; loading=true;
+    var sc=document.createElement('script'); sc.src='https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js'; sc.async=true;
+    sc.onload=cb; sc.onerror=fail; document.head.appendChild(sc);
   }
+  function opts(h){return {chamfer:{radius:h/2-.5},restitution:.35,friction:.5,frictionAir:.01,frictionStatic:.8,density:.0016}}
+  function buildWalls(){
+    if(walls.length) M.Composite.remove(eng.world,walls);
+    W=pile.clientWidth; H=pile.clientHeight;
+    var t=60, tall=H+2400, st={isStatic:true,friction:.6,restitution:.2};
+    walls=[M.Bodies.rectangle(W/2,H+t/2,W+t*4,t,st),
+           M.Bodies.rectangle(-t/2,H-tall/2,t,tall,st),
+           M.Bodies.rectangle(W+t/2,H-tall/2,t,tall,st)];
+    M.Composite.add(eng.world,walls);
+  }
+  function measure(it){it.w=it.el.offsetWidth; it.h=it.el.offsetHeight}
+  function makeBody(it,x,y,a){
+    var b=M.Bodies.rectangle(x,y,it.w,it.h,opts(it.h)); M.Body.setAngle(b,a); b.plugin.el=it.el; return b;
+  }
+  function keepInside(){
+    items.forEach(function(it){
+      if(!it.b) return;
+      var b=it.b, half=it.w/2, x=Math.min(W-half,Math.max(half,b.position.x));
+      if(b.position.y>H+200||b.position.y<-1600||x!==b.position.x){M.Body.setPosition(b,{x:x,y:Math.min(b.position.y,H-it.h)}); M.Body.setVelocity(b,{x:0,y:0})}
+    });
+  }
+  function resize(){
+    if(!eng) return;
+    buildWalls();
+    items.forEach(function(it){
+      var w=it.w, h=it.h; measure(it);
+      if(it.b&&(Math.abs(w-it.w)>1||Math.abs(h-it.h)>1)){
+        var o=it.b; M.Composite.remove(eng.world,o);
+        it.b=makeBody(it,o.position.x,o.position.y,o.angle); M.Composite.add(eng.world,it.b);
+      }
+    });
+    keepInside(); still=0; kick();
+  }
+  function sync(){
+    for(var i=0;i<items.length;i++){
+      var it=items[i], b=it.b; if(!b) continue;
+      it.el.style.transform='translate('+(b.position.x-it.w/2).toFixed(2)+'px,'+(b.position.y-it.h/2).toFixed(2)+'px) rotate('+b.angle.toFixed(4)+'rad)';
+    }
+  }
+  function tick(now){
+    raf=0; if(!onScreen) return;
+    var dt=Math.min(64,now-(last||now)); last=now; acc+=dt;
+    var n=0; while(acc>=16.667&&n<4){M.Engine.update(eng,16.667); acc-=16.667; n++}
+    if(++frames%30===0&&!drag) keepInside();
+    if(n===4) acc=0;
+    sync();
+    // once every chip has landed and the pile has been still for about 2 seconds, stop until something moves it again
+    var calm=!drag&&landed===items.length&&items.every(function(it){return it.b.speed<.06&&Math.abs(it.b.angularSpeed)<.003});
+    still=calm?still+1:0; if(still>120) return;
+    raf=requestAnimationFrame(tick);
+  }
+  function kick(){if(!raf&&onScreen&&eng){last=0; acc=0; raf=requestAnimationFrame(tick)}}
+  function drop(){
+    if(dropped) return; dropped=true;
+    // Kerala first in a shuffled order, the black abroad pills last so they land on top
+    var ker=items.filter(function(it){return !it.ab}), ab=items.filter(function(it){return it.ab});
+    ker.sort(function(){return Math.random()-.5}); ab.sort(function(){return Math.random()-.5});
+    ker.concat(ab).forEach(function(it,k){
+      setTimeout(function(){
+        var half=it.w/2, x=half+Math.random()*Math.max(1,W-it.w), y=-it.h-40-Math.random()*160-(it.ab?60:0);
+        it.b=makeBody(it,x,y,(Math.random()-.5)*1.2);
+        M.Body.setAngularVelocity(it.b,(Math.random()-.5)*.12);
+        M.Body.setVelocity(it.b,{x:(Math.random()-.5)*3,y:2});
+        M.Composite.add(eng.world,it.b); it.el.classList.add('lc-on'); sync(); landed++; still=0; kick();
+      },k*100+(it.ab?220:0));
+    });
+  }
+  function point(e){var r=pile.getBoundingClientRect(); return {x:e.clientX-r.left,y:e.clientY-r.top}}
+  function grab(e){
+    var it=items.filter(function(x){return x.el===e.currentTarget})[0]; if(!it||!it.b||drag) return;
+    e.preventDefault(); it.el.setPointerCapture(e.pointerId);
+    var p=point(e); still=0;
+    drag={id:e.pointerId,it:it,c:M.Constraint.create({pointA:p,bodyB:it.b,pointB:{x:p.x-it.b.position.x,y:p.y-it.b.position.y},stiffness:.18,damping:.08,length:0})};
+    M.Composite.add(eng.world,drag.c); it.el.classList.add('lc-grab'); kick();
+  }
+  function move(e){if(drag&&e.pointerId===drag.id){drag.c.pointA=point(e)}}
+  function release(e){
+    if(!drag||e.pointerId!==drag.id) return; still=0;
+    M.Composite.remove(eng.world,drag.c); drag.it.el.classList.remove('lc-grab');
+    // a hard flick still flies, but not over the walls and out of the section
+    var b=drag.it.b, v=b.velocity, sp=Math.hypot(v.x,v.y), max=22; if(sp>max) M.Body.setVelocity(b,{x:v.x/sp*max,y:v.y/sp*max});
+    drag=null;
+  }
+  function start(){
+    M=window.Matter; if(!M){fail(); return}
+    sec.classList.remove('lc-wait'); sec.classList.add('lc-phys');
+    eng=M.Engine.create(); eng.gravity.y=1.1;
+    eng.positionIterations=8; eng.velocityIterations=6;
+    items=chips.map(function(el){var it={el:el,ab:el.classList.contains('lc-ab'),b:null}; measure(it); return it});
+    buildWalls();
+    chips.forEach(function(el){
+      el.addEventListener('pointerdown',grab); el.addEventListener('pointermove',move);
+      el.addEventListener('pointerup',release); el.addEventListener('pointercancel',release); el.addEventListener('lostpointercapture',release);
+    });
+    var rt=0; window.addEventListener('resize',function(){clearTimeout(rt); rt=setTimeout(resize,150)});
+    // drop once the chip area is about 30% visible
+    new IntersectionObserver(function(es){if(es[0].isIntersecting){drop(); this.disconnect()}},{threshold:.3}).observe(pile);
+    kick();
+  }
+  // load the library a little before the section arrives, and pause the engine whenever it is off screen
+  new IntersectionObserver(function(es){
+    onScreen=es[0].isIntersecting;
+    if(onScreen){ if(!eng) load(start); else kick() }
+  },{rootMargin:'400px 0px'}).observe(sec);
+})();
+</script>
+<script>
+(function(){
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   // faq: answers slide open and closed instead of jumping; only one is open at a time
   var fq=document.getElementById('faq');
   if(fq){
