@@ -1414,7 +1414,8 @@ img,video{max-width:100%}
     var col=state>=1?ease(Math.min(1,(now-c0)/900)):0;
     var r=orb.getBoundingClientRect(); cc.x=r.left+r.width/2; cc.y=r.top+r.height/2;
     apps.forEach(function(a,k){
-      var inner=k%2===0, rad=(inner?.3:.46)*S*(1-col), sp=reduce?0:(inner?.00024:.00013);
+      // both rings turn at the same speed so the six apps stay 60° apart however long a slow phone takes to load
+      var inner=k%2===0, rad=(inner?.3:.46)*S*(1-col), sp=reduce?0:.0002;
       var ang=k*Math.PI/3+(now-t0)*sp+col*(inner?1.8:1.2);
       var x=S/2+Math.cos(ang)*rad, y=S/2+Math.sin(ang)*rad;
       a.style.transform='translate('+(x-A/2)+'px,'+(y-A/2)+'px) scale('+(1-col*.9)+')'; a.style.opacity=1-Math.max(0,col-.7)/.3;
