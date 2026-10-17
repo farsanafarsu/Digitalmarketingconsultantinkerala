@@ -123,6 +123,30 @@ figcaption{margin-top:10px;font-size:.74rem;color:var(--mut)}
   .kpi-row{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media (max-width:520px){.top-r{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{min-height:230px}}
+/* mobile safety net + small phones */
+html,body{overflow-x:clip}
+.kpi b,.top-r b{overflow-wrap:anywhere}
+@media (max-width:400px){.kpi{padding:12px}.kpi b{font-size:1.15rem}.top-r div{padding:12px}.top-r b{font-size:1.1rem}.board{border-radius:20px}}
+@media (max-width:300px){
+  .page{padding-inline:8px;padding-block:16px;gap:14px}
+  .board{padding:8px;gap:8px;border-radius:16px}
+  .board>*{grid-column:1/-1!important}
+  .kpi-row,.top-r{grid-template-columns:minmax(0,1fr)!important}
+  .hero{min-height:0;padding:16px;gap:16px}
+  .hero.themed .hero-line{max-width:none;font-size:.9rem}
+  .hero .art,.hero .wm{display:none}
+  .hero-top{flex-wrap:wrap;letter-spacing:.1em}
+  .big b{font-size:2.2rem}
+  .jump a{padding:6px 10px;font-size:.74rem}
+  .sws{flex-direction:column}
+  .logo-img.chip{width:110px}
+  table{font-size:.72rem}
+  .brief dl div{grid-template-columns:minmax(0,1fr);gap:2px}
+  .board li,.board .lb{overflow-wrap:anywhere;min-width:0}
+  .board li{grid-template-columns:minmax(0,1fr)!important}
+}
+@media (max-width:200px){.big b{font-size:1.8rem}
+}
 
 </style>
 <div class="page">

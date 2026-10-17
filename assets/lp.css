@@ -105,7 +105,7 @@ a{color:inherit}
 .lp-faq details p{margin:0;padding:0 22px 22px;font-size:15.5px;line-height:1.6;color:var(--mute);max-width:70ch}
 .lp-faq summary:focus-visible{outline:2px solid #a259ff;outline-offset:2px;border-radius:18px}
 /* other services */
-.lp-others{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.lp-others{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:14px}
 /* AI solutions hero scene: a website chatbot answering, qualifying and saving a lead */
 .av-chat{display:grid;gap:10px;padding:6px 4px 4px;font-size:13.5px;line-height:1.4}
 .av-q{justify-self:end;max-width:82%;padding:10px 13px;border-radius:16px 16px 4px 16px;background:#1d1d1f;color:#fff}
@@ -192,7 +192,7 @@ a{color:inherit}
   .sv-body{grid-template-columns:1fr}
 }
 @media (max-width:600px){
-  .lp-feats,.lp-res,.lp-others,.lp-steps{grid-template-columns:1fr}
+  .lp-feats,.lp-res,.lp-others,.lp-steps{grid-template-columns:minmax(0,1fr)}
   .sv-left{grid-template-columns:1fr;justify-items:center}.sv-split{width:100%}
   .sv-meters{grid-template-columns:1fr}.sv-url em{display:none}
   .lp-cta{display:none}
@@ -395,3 +395,64 @@ a{color:inherit}
 #audits .sv{margin-top:0}
 .lp-vis .sv-vis,.lp-vis .ga-vis{box-shadow:0 50px 90px -40px rgba(0,0,0,.9)}
 .lp-vis .ig-dash{background:rgba(255,255,255,.05)}
+/* mobile safety net: never let the page scroll sideways (clip keeps position:sticky working) */
+html,body{overflow-x:clip}
+img,svg,video{max-width:100%}
+.lp-btn,.lp-btn2{max-width:100%}
+.lp-btn2{overflow-wrap:anywhere;text-align:center;line-height:1.25}
+/* large phones in landscape / small tablets */
+@media (max-width:760px){.sv-left{grid-template-columns:minmax(0,1fr);justify-items:center}.sv-split{width:100%}.sv-lb{overflow-wrap:anywhere}}
+/* small phones (iPhone SE, compact Android) */
+@media (max-width:420px){
+  .lp-stats b{font-size:clamp(1.45rem,7.4vw,1.8rem)}
+  .lp-stats div{padding-right:10px}
+  .lp-stats div+div{padding-left:12px}
+  .lp-band{padding:36px 20px;border-radius:24px}
+  .lp-btn,.lp-btn2{height:auto;min-height:50px;padding-top:6px;padding-bottom:6px}
+  .lp-acts{flex-direction:column;align-items:stretch}
+  .lp-btn{justify-content:space-between}
+  .lp-btn2{justify-content:center}
+}
+/* phones in landscape: keep the hero compact */
+@media (max-height:500px) and (orientation:landscape){
+  .lp-hero{padding-top:28px;padding-bottom:44px}
+  .lp-hero h1{font-size:clamp(2rem,5vw,3rem)}
+  .lp-sec{padding-top:56px;padding-bottom:56px}
+}
+/* smartwatches (Apple Watch, Galaxy Watch, Wear OS) */
+@media (max-width:300px){
+  :root{--gut:10px}
+  body{font-size:14px}
+  .lp-nav-in{height:52px;gap:10px}
+  .lp-hero h1{font-size:1.75rem;letter-spacing:-.03em;overflow-wrap:anywhere}
+  .lp-lede{font-size:.92rem}
+  .lp-crumbs{display:none}
+  .lp-tags li{padding:6px 10px;font-size:11px}
+  .lp-vis{display:none}
+  .lp-stats{grid-template-columns:minmax(0,1fr);row-gap:14px}
+  .lp-stats div,.lp-stats div+div{padding:0;border-left:0}
+  .lp-stats b{font-size:1.5rem}
+  .lp-stats span{font-size:12px}
+  .lp-sec{padding:44px var(--gut)}
+  .lp-head h2,.lp-band h2{font-size:1.5rem;letter-spacing:-.03em;overflow-wrap:anywhere}
+  .lp-head p{font-size:14px}
+  .lp-feats,.lp-res,.lp-others,.lp-steps,.sv-body,.sv-card,.ig-card{grid-template-columns:minmax(0,1fr)!important}
+  .lp-f,.lp-r{padding:16px;border-radius:18px}
+  .lp-f p,.lp-r p{font-size:13.5px}
+  .lp-r b{font-size:1.7rem}
+  .lp-o{padding:14px;gap:10px}.lp-o i{width:36px;height:36px;border-radius:11px}.lp-o em{display:none}
+  .lp-o b{font-size:.98rem}.lp-o small{font-size:12px}
+  .lp-faq summary{padding:14px;font-size:.95rem;gap:10px}
+  .lp-faq summary::after{width:24px;height:24px}
+  .lp-faq details p{padding:0 14px 14px;font-size:14px}
+  .lp-niches li{padding:8px 12px;font-size:.88rem}
+  .lp-band{padding:28px 12px;border-radius:20px}
+  .lp-band p{font-size:.92rem}
+  .lp-btn,.lp-btn2{font-size:13px;padding-left:14px}
+  .lp-btn2{padding-right:14px}
+  .lp-ft{padding:22px var(--gut) 28px}
+  .lp-ft nav{gap:10px}
+  .sv-card,.ig-card,.sv-body{padding:14px;gap:18px;border-radius:20px}
+  .sv-left{grid-template-columns:minmax(0,1fr);justify-items:center}
+  .sv-you{font-size:12px}
+}
