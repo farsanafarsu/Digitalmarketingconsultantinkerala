@@ -726,6 +726,19 @@ html.pl-intro .scrolly .hint,html.pl-intro.scrolly .hint{animation:inhint .8s .9
   .sx-b{grid-column:1/-1;margin-top:14px}
   .sx.sx-live .sx-row{opacity:1}
 }
+/* desktop: the pinned column always fits the screen. It sits a little lower than the top, and the preview card
+   takes only the height that is left (up to 420px), so its caption is never cut off at the bottom of the window */
+@media (min-width:901px){
+  .sx-side{--st:clamp(28px,7vh,80px);top:var(--st);display:flex;flex-direction:column;height:calc(100vh - var(--st) * 2);height:calc(100svh - var(--st) * 2);max-height:860px}
+  .sx-tile{flex:1 1 auto;height:auto;min-height:230px;max-height:420px}
+}
+@media (min-width:901px) and (max-height:820px){
+  .sx h2{font-size:clamp(1.9rem,3.2vw,3rem)}
+  .sx-intro{margin-top:12px;font-size:.95rem;line-height:1.5}
+  .sx-tile{margin-top:20px}
+}
+@media (min-width:901px) and (max-height:720px){.sx-vis{transform:scale(.88);transform-origin:50% 55%}.sx-tile .mk-toast{display:none}}
+@media (min-width:901px) and (max-height:640px){.sx-intro{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}}
 @media (prefers-reduced-motion: reduce){.sx-face,.sx-bar,.sx-row,.sx-row::before,.sx-wm,.sx-fb>*,.sx-chip{transition:none}}
 /* watches: smaller type and icon, and long words may break so nothing runs off the side */
 @media (max-width:300px){.sx{padding:56px 12px 64px}.sx h2{font-size:1.6rem}.sx-h{font-size:1.1rem;overflow-wrap:break-word;hyphens:auto}.sx-ic{width:36px;height:36px;border-radius:11px}.sx-ic svg{width:19px;height:19px}.sx-row{column-gap:10px}.sx-end p{font-size:1.05rem}}
