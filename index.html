@@ -3060,7 +3060,7 @@ img,video{max-width:100%}
 </script>
 <script>
 (function(){
-  // header: glass tone from whatever is underneath, hide on the way down / return on the way up, sliding highlight on
+  // header: glass tone from whatever is underneath, shown only at the top of the page, sliding highlight on
   // the section in view (and on hover), reading progress, and the phone menu. One rAF per scroll burst
   var hd=document.getElementById('hd'); if(!hd) return;
   var bar=hd.querySelector('.hd-bar'), linksBox=hd.querySelector('.hd-links'), ind=hd.querySelector('.hd-ind'), prog=hd.querySelector('.hd-prog i');
@@ -3085,11 +3085,9 @@ img,video{max-width:100%}
   function frame(){
     queued=false;
     var y=window.scrollY, dy=y-lastY, max=document.documentElement.scrollHeight-window.innerHeight;
-    if(!open){
-      if(y<80) hd.classList.remove('hd-hide');
-      else if(dy>6&&!hd.contains(document.activeElement)) hd.classList.add('hd-hide');
-      else if(dy<-6) hd.classList.remove('hd-hide');
-    }
+    // the header belongs to the start of the page: once you scroll past the top it stays away (scrolling back up
+    // in later sections does not bring it back); it returns at the top, or when a keyboard user tabs into it
+    if(!open) hd.classList.toggle('hd-hide',y>=120&&!hd.contains(document.activeElement));
     if(Math.abs(dy)>6||y<80) lastY=y;
     hd.classList.toggle('is-scrolled',y>40);
     prog.style.transform='scaleX('+(max>0?Math.min(1,y/max):0).toFixed(4)+')';
