@@ -3036,14 +3036,14 @@ img,video{max-width:100%}
 </script>
 <script>
 (function(){
-  // contact composer: live subject, friendly validation, then FormSubmit delivers it to my inbox (visitor as reply-to).
+  // contact composer: live subject, friendly validation, then my Google Apps Script (google-sheet/Code.gs) saves it as a
+  // row in my Google Sheet and emails it to me (visitor as reply-to). Until SHEET_URL is set, FormSubmit emails it instead.
   // While it sends, the card folds into an envelope and flies off; a receipt confirms where the reply will go.
   // If sending fails, the visitor gets a one-tap email fallback with everything already filled in
   var root=document.getElementById('cm'), f=document.getElementById('ctform'); if(!root||!f) return;
   var TO='sanafarsana001@gmail.com', ENDPOINT='https://formsubmit.co/ajax/9456423b6c4426523a887e472dc7c883'; // FormSubmit alias for TO, so the address isn't the endpoint
-  // every enquiry is also saved as a row in my Google Sheet through an Apps Script web app (google-sheet/Code.gs).
-  // Paste the deployment's /exec URL here; while it is empty, nothing is sent to the sheet
-  var SHEET_URL='';
+  // paste the Apps Script web app's /exec URL here
+  var SHEET_URL='https://script.google.com/macros/s/AKfycbwwhu2LkWAox4--ZuXOO8tcSxjrWW11NcOzePo9XuECvL_GefI0uNL-bm6-muZl5_E/exec';
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var subj=document.getElementById('cm-subj'), biz=document.getElementById('cm-biz'), status=document.getElementById('cm-status');
   var btn=f.querySelector('.cm-send'), btnT=f.querySelector('.cm-send-t'), done=document.getElementById('cm-done');
@@ -3080,13 +3080,18 @@ img,video{max-width:100%}
     if(f.elements._honey.value) return;
     var d=data();
     btn.classList.add('is-busy'); btn.disabled=true; btnT.textContent='Sending…';
-    // fire-and-forget: plain-text body avoids a CORS preflight; the email send below decides success or failure
-    if(SHEET_URL) fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body:JSON.stringify({name:d.name,email:d.email,business:d.business,phone:d.phone,services:d.services,message:d.message,page:location.href})}).catch(function(){});
-    var payload={name:d.name,email:d.email,business:d.business,phone:d.phone||'Not given',services:d.services,message:d.message,
-      _subject:'Free audit request: '+d.business+' ('+d.name+')',_template:'table',_captcha:'false',_honey:''};
-    var req=fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)})
-      .then(function(r){return r.json().catch(function(){return {}}).then(function(j){if(!r.ok||String(j.success)!=='true') throw new Error(j.message||'send failed'); return j})});
+    var req;
+    if(SHEET_URL){
+      // plain-text body keeps it a simple request (no CORS preflight); the script answers {ok:true} once the row is saved
+      req=fetch(SHEET_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body:JSON.stringify({name:d.name,email:d.email,business:d.business,phone:d.phone,services:d.services,message:d.message,page:location.href})})
+        .then(function(r){return r.json()}).then(function(j){if(!j||j.ok!==true) throw new Error((j&&j.error)||'send failed'); return j});
+    } else {
+      var payload={name:d.name,email:d.email,business:d.business,phone:d.phone||'Not given',services:d.services,message:d.message,
+        _subject:'Free audit request: '+d.business+' ('+d.name+')',_template:'table',_captcha:'false',_honey:''};
+      req=fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)})
+        .then(function(r){return r.json().catch(function(){return {}}).then(function(j){if(!r.ok||String(j.success)!=='true') throw new Error(j.message||'send failed'); return j})});
+    }
     root.classList.add('is-sending');
     Promise.all([req,wait(900)]).then(function(){
       root.classList.add('is-sealed'); return wait(550);

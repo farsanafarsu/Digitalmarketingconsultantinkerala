@@ -1,5 +1,6 @@
 /**
- * Saves every contact-form enquiry from the website into the "Leads" tab of my Google Sheet.
+ * The website's contact form posts here. Each enquiry is saved as a row in the "Leads" tab of my Google Sheet and
+ * emailed to me straight away (hitting Reply answers the visitor).
  *
  * Setup (once):
  *  1. Open the sheet > Extensions > Apps Script, delete what is there and paste this whole file. Save.
@@ -9,6 +10,7 @@
  */
 var SHEET_ID = '1XIcVY4RH-u2Vmu24wRZux-dK4x5oO4Q0o6V31Oxvlr0';
 var TAB = 'Leads';
+var NOTIFY = 'sanafarsana001@gmail.com';
 var HEAD = ['Date', 'Name', 'Email', 'Business', 'Phone', 'Services', 'Message', 'Page'];
 
 function doPost(e) {
@@ -28,6 +30,7 @@ function doPost(e) {
     }
     sh.appendRow([new Date(), clean(d.name), clean(d.email), clean(d.business), clean(d.phone),
                   clean(d.services), clean(d.message), clean(d.page)]);
+    notify(d, ss.getUrl());
     return reply({ ok: true });
   } catch (err) {
     return reply({ ok: false, error: String(err) });
@@ -39,6 +42,26 @@ function doPost(e) {
 // open the /exec URL in a browser to check the deployment is live
 function doGet() {
   return reply({ ok: true, msg: 'Lead logger is running' });
+}
+
+// emails me the enquiry; Reply goes to the visitor. A mail failure (e.g. daily quota) never loses the saved row
+function notify(d, sheetUrl) {
+  try {
+    var rows = [['Name', d.name], ['Email', d.email], ['Business', d.business], ['Phone', d.phone || 'Not given'],
+                ['Interested in', d.services], ['Message', d.message], ['Page', d.page]];
+    var html = '<table cellpadding="8" style="border-collapse:collapse;font:14px Arial,sans-serif">' +
+      rows.map(function (r) {
+        return '<tr><td style="color:#6e6e73;vertical-align:top"><b>' + r[0] + '</b></td><td>' +
+               esc(r[1]).replace(/\n/g, '<br>') + '</td></tr>';
+      }).join('') + '</table><p style="font:13px Arial,sans-serif"><a href="' + sheetUrl + '">Open all leads in the sheet</a></p>';
+    var mail = { to: NOTIFY, subject: 'New enquiry: ' + (d.business || d.name) + ' (' + d.name + ')', htmlBody: html, name: 'Website enquiry' };
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(d.email || ''))) mail.replyTo = d.email;
+    MailApp.sendEmail(mail);
+  } catch (err) {}
+}
+
+function esc(v) {
+  return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
 // trims long input and stops text starting with = + - @ from being treated as a formula (also keeps +91 numbers as text)
