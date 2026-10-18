@@ -457,3 +457,6 @@ img,svg,video{max-width:100%}
   .sv-left{grid-template-columns:minmax(0,1fr);justify-items:center}
   .sv-you{font-size:12px}
 }
+
+/* cards without an icon start flush with the top */
+.lp-f>h3:first-child{margin-top:0}

@@ -1,0 +1,8 @@
+# GitHub Pages build settings. Keeps working files in the repo but off the public site.
+exclude:
+  - "Farsana Meta Ads Case Studies.zip"
+  - assets/colourpallet
+  - assets/content
+  - google-sheet
+  - .vscode
+  - README.md

@@ -1,0 +1,46 @@
+keyword,group,intent,classification,location,business_relevance,search_volume,volume_source,difficulty,target_url,priority,rationale
+digital marketing consultant in kerala,Main,Commercial,Primary,Kerala,High,Not verified,None (Keyword Planner not accessed),Not verified,/,P1,Core positioning; already in title and H1; every competitor homepage targets it
+best digital marketing consultant in kerala,Main,Commercial,Secondary,Kerala,High,Not verified,None,Not verified,/,P1,Covered by the 'How to choose' section and FAQ instead of a self-awarded 'best' claim
+digital marketing consultant in trivandrum,Main,Commercial,Primary,Trivandrum,High,Not verified,None,Not verified,/ and /about-farsana/,P1,Real base location (resume); now in homepage title; few individual consultants target it (sinupsabu.in does)
+digital marketing expert in trivandrum,Main,Commercial,Secondary,Trivandrum,High,Not verified,None,Not verified,/about-farsana/,P2,Supports the Trivandrum cluster
+digital marketing expert in kerala,Main,Commercial,Secondary,Kerala,High,Not verified,None,Not verified,/,P2,Close variant of the primary keyword
+freelance digital marketer in kerala,Main,Commercial,Secondary,Kerala,High,Not verified,None,Not verified,/,P2,Matches the independent consultant model
+digital marketing consultant near me,Main,Commercial/local,Secondary,Implicit,Medium,Not verified,None,Not verified,/ (plus Google Business Profile if eligible),P3,Driven mostly by map results; needs a GBP
+meta ads expert in kerala,Meta Ads,Commercial,Primary,Kerala,High,Not verified,None,Not verified,/meta-ads-specialist-kerala/,P1,Strongest proof on the site (13 case studies); title now says Expert
+meta ads expert in trivandrum,Meta Ads,Commercial,Secondary,Trivandrum,High,Not verified,None,Not verified,/meta-ads-specialist-kerala/,P2,Trivandrum FAQ added to the page
+facebook ads expert in kerala,Meta Ads,Commercial,Secondary,Kerala,High,Not verified,None,Not verified,/meta-ads-specialist-kerala/,P2,Facebook named in title and copy
+instagram ads expert in kerala,Meta Ads,Commercial,Secondary,Kerala,High,Not verified,None,Not verified,/meta-ads-specialist-kerala/,P2,Instagram named in title and copy
+facebook ads consultant in trivandrum,Meta Ads,Commercial,Secondary,Trivandrum,Medium,Not verified,None,Not verified,/meta-ads-specialist-kerala/,P3,Long-tail variant
+meta ads management services kerala,Meta Ads,Commercial,Secondary,Kerala,High,Not verified,None,Not verified,/meta-ads-specialist-kerala/,P2,Service-intent variant
+lead generation expert kerala,Meta Ads,Commercial,Secondary,Kerala,High,Not verified,None,Not verified,/meta-ads-specialist-kerala/,P2,Lead forms and click-to-WhatsApp covered
+click to whatsapp ads kerala,Meta Ads,Commercial,Long-tail,Kerala,High,Not verified,None,Not verified,/meta-ads-specialist-kerala/,P3,Most case studies are messaging campaigns; strong unique proof
+how much does facebook ads cost in kerala,Meta Ads,Informational,Question,Kerala,Medium,Not verified,None,Not verified,Future blog post,P3,Answer with real cost-per-result ranges from the case studies
+google ads expert in kerala,Google Ads,Commercial,Primary,Kerala,High,Not verified,None,Not verified,/google-ads-specialist-kerala/,P1,sheronkumar.com has a dedicated page; title now says Expert
+google ads expert in trivandrum,Google Ads,Commercial,Secondary,Trivandrum,High,Not verified,None,Not verified,/google-ads-specialist-kerala/,P2,US search found no strong individual Trivandrum page; Trivandrum FAQ added
+google ads consultant in kerala,Google Ads,Commercial,Secondary,Kerala,High,Not verified,None,Not verified,/google-ads-specialist-kerala/,P2,Variant
+google ads specialist in trivandrum,Google Ads,Commercial,Secondary,Trivandrum,High,Not verified,None,Not verified,/google-ads-specialist-kerala/,P3,Variant; H1 already says specialist
+ppc expert in kerala,Google Ads,Commercial,Secondary,Kerala,Medium,Not verified,None,Not verified,/google-ads-specialist-kerala/,P3,Add 'PPC' once in copy when the page is next edited
+google search ads management kerala,Google Ads,Commercial,Long-tail,Kerala,Medium,Not verified,None,Not verified,/google-ads-specialist-kerala/,P3,Covered by Search campaigns section
+seo expert in kerala,SEO,Commercial,Primary,Kerala,High,Not verified,None,Not verified,/seo-specialist-kerala/,P1,Most crowded keyword (rahoof.in and salmanseoexpert.in); title now says Expert
+seo consultant in kerala,SEO,Commercial,Secondary,Kerala,High,Not verified,None,Not verified,/seo-specialist-kerala/,P2,Variant
+seo expert in trivandrum,SEO,Commercial,Primary,Trivandrum,High,Not verified,None,Not verified,/seo-specialist-kerala/,P1,Trivandrum results in the US search were mostly agencies (IRPR); an individual consultant has a gap to fill
+seo consultant in trivandrum,SEO,Commercial,Secondary,Trivandrum,High,Not verified,None,Not verified,/seo-specialist-kerala/,P2,Variant
+technical seo consultant kerala,SEO,Commercial,Secondary,Kerala,Medium,Not verified,None,Not verified,/seo-specialist-kerala/,P2,66-point audit section supports it
+website seo audit kerala,SEO,Commercial,Secondary,Kerala,High,Not verified,None,Not verified,/seo-specialist-kerala/#audits,P2,Free audit offer matches this intent exactly
+local seo consultant kerala,SEO,Commercial,Secondary,Kerala,High,Not verified,None,Not verified,/seo-specialist-kerala/,P2,Google Business Profile work covered
+on-page seo expert kerala,SEO,Commercial,Long-tail,Kerala,Medium,Not verified,None,Not verified,/seo-specialist-kerala/,P3,Variant
+influencer marketing in kerala,Influencer,Commercial,Primary,Kerala,High,Not verified,None,Not verified,/influencer-marketing-kerala/,P1,Unusual proof: 500+ collaborations and the Onam campaign; few individual consultants compete
+influencer marketing consultant kerala,Influencer,Commercial,Secondary,Kerala,High,Not verified,None,Not verified,/influencer-marketing-kerala/,P2,Variant
+influencer marketing services trivandrum,Influencer,Commercial,Secondary,Trivandrum,High,Not verified,None,Not verified,/influencer-marketing-kerala/,P2,Trivandrum FAQ added
+influencer campaign management kerala,Influencer,Commercial,Long-tail,Kerala,Medium,Not verified,None,Not verified,/influencer-marketing-kerala/,P3,Process section covers it
+malayalam influencers for brands,Influencer,Commercial,Long-tail,Kerala,High,Not verified,None,Not verified,/influencer-marketing-kerala/,P2,Matches the 10,000+ creator dashboard claim
+how to find influencers in kerala,Influencer,Informational,Question,Kerala,Medium,Not verified,None,Not verified,Future blog post,P3,Top-of-funnel article linking to the service page
+social media marketing expert kerala,Social media,Commercial,Primary,Kerala,High,Not verified,None,Not verified,/social-media-marketing-kerala/,P1,New page; service listed on the resume with BlackBox growth as proof
+social media manager trivandrum,Social media,Commercial,Secondary,Trivandrum,Medium,Not verified,None,Not verified,/social-media-marketing-kerala/,P2,Trivandrum FAQ on the new page
+social media marketing agency kerala,Social media,Commercial,Secondary,Kerala,Medium,Not verified,None,Not verified,/social-media-marketing-kerala/,P3,Agency intent; salmanseoexpert.in targets it
+answer engine optimization consultant kerala,AEO/GEO,Commercial,Secondary,Kerala,Medium,Not verified,None,Not verified,/seo-specialist-kerala/,P3,Emerging term; keep inside the SEO page until demand is confirmed in Search Console
+generative engine optimization consultant kerala,AEO/GEO,Commercial,Secondary,Kerala,Medium,Not verified,None,Not verified,/seo-specialist-kerala/,P3,Same as above
+ai seo consultant kerala,AEO/GEO,Commercial,Secondary,Kerala,Medium,Not verified,None,Not verified,/seo-specialist-kerala/,P3,Same as above
+ai-driven digital marketing consultant kerala,Other,Commercial,Secondary,Kerala,Medium,Not verified,None,Not verified,/ai-solutions-developer-kerala/,P3,AI solutions page covers it
+landing page optimisation kerala,Other,Commercial,Secondary,Kerala,Medium,Not verified,None,Not verified,/ (website service row),P3,No dedicated page yet; build one only with real examples
+website optimisation consultant kerala,Other,Commercial,Secondary,Kerala,Medium,Not verified,None,Not verified,/seo-specialist-kerala/,P3,Covered by technical SEO
