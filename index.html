@@ -111,6 +111,24 @@ html.hd-lock,html.hd-lock body{overflow:hidden}
 @media (min-width:861px){.hd-menu{display:none}}
 @media (max-width:300px){.hd{padding:6px 8px 0}.hd-bar{height:46px;padding:0 4px 0 14px}.hd-logo{font-size:1.05rem}.hd-burger{width:38px;height:38px}.hd-burger i{left:11px;right:11px}.hd-burger i:nth-child(1){top:15px}.hd-burger i:nth-child(2){top:21px}.hd.menu-open .hd-burger i:nth-child(1),.hd.menu-open .hd-burger i:nth-child(2){top:18px}.hd-menu-in{padding-top:80px}}
 @media (prefers-reduced-motion:reduce){.hd,.hd-bar,.hd-ind,.hd-menu,.hd-big a,.hd-menu-foot,.hd-burger i{transition:none}}
+/* back to top: a round button that appears once you are a screen down, with a ring showing how far down the page you are */
+.tt{--p:0;position:fixed;right:clamp(16px,2.4vw,32px);bottom:clamp(16px,2.4vw,32px);z-index:90;display:grid;place-items:center;width:54px;height:54px;padding:0;border:0;border-radius:50%;background:#1d1d1f;color:#fff;cursor:pointer;box-shadow:0 14px 34px -12px rgba(0,0,0,.55),inset 0 0 0 1px rgba(255,255,255,.12);opacity:0;visibility:hidden;transform:translateY(16px) scale(.9);transition:opacity .35s,visibility .35s,transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .3s}
+.tt.on{opacity:1;visibility:visible;transform:none}
+.tt:hover{box-shadow:0 14px 36px -10px rgba(162,89,255,.85),inset 0 0 0 1px rgba(255,255,255,.18)}
+.tt svg.tt-ring{position:absolute;inset:3px;width:calc(100% - 6px);height:calc(100% - 6px);transform:rotate(-90deg)}
+.tt-ring circle{fill:none;stroke-width:2.5}
+.tt-ring .tt-bg{stroke:rgba(255,255,255,.14)}
+.tt-ring .tt-fg{stroke:url(#ttg);stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:calc(100 - var(--p))}
+.tt svg.tt-ar{width:20px;height:20px;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.tt:hover svg.tt-ar{transform:translateY(-3px)}
+.tt:focus-visible{outline:2px solid #a259ff;outline-offset:3px}
+html.hd-lock .tt,html.pl-lock .tt{opacity:0;visibility:hidden}
+.ct-top{display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding:0;border:0;background:none;font:600 14px/1 Inter,system-ui,sans-serif;color:#a1a1a6;cursor:pointer;transition:color .2s}
+.ct-top svg{width:16px;height:16px;transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.ct-top:hover{color:#fff}.ct-top:hover svg{transform:translateY(-2px)}
+.ct-top:focus-visible{outline:2px solid #a259ff;outline-offset:3px;border-radius:4px}
+@media (max-width:600px){.tt{width:48px;height:48px}}
+@media (prefers-reduced-motion:reduce){.tt,.tt svg.tt-ar,.ct-top svg{transition:none}}
 /* ---------- shared pieces ---------- */
 .logo{font-family:var(--display);font-weight:800;font-size:clamp(1.25rem,1.5vw + .6rem,1.75rem);letter-spacing:-.04em}
 .links{display:flex;align-items:center;gap:clamp(14px,2vw,32px);font-size:clamp(.8rem,.5vw + .6rem,1rem);letter-spacing:.04em}
@@ -927,116 +945,75 @@ html.pl-intro .scrolly .hint,html.pl-intro.scrolly .hint{animation:inhint .8s .9
 
 
 
-/* results counter: a bento board where each total tells its own story. Ad spend leads (money in, conversations out),
-   calls tick through a call log, messages stream in like a chat, campaigns light up a 10x10 dot grid (1 dot = 100).
-   Every digit is an odometer wheel that rolls into place. Without JS or with reduced motion it all shows at rest */
-.rs-stats{list-style:none;margin:clamp(40px,6vh,64px) 0 0;padding:0;display:grid;gap:clamp(10px,1.2vw,16px);grid-template-columns:minmax(0,1.35fr) minmax(0,1fr) minmax(0,1fr);grid-template-areas:"hero calls msgs" "hero camp msgs"}
-.st{--ink2:#1d1d1f;--sub:#6e6e73;--pd:clamp(18px,2vw,28px);position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;min-width:0;padding:var(--pd);border-radius:26px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.05),0 18px 40px -30px rgba(20,30,90,.35);transition:transform .6s cubic-bezier(.2,.8,.2,1),box-shadow .4s}
-.st:hover{box-shadow:0 0 0 1px rgba(0,0,0,.04),0 34px 70px -34px rgba(90,60,200,.45)}
-.st-hero{grid-area:hero}.st-calls{grid-area:calls}.st-msgs{grid-area:msgs}.st-camp{grid-area:camp}
-.st-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.st-ic{position:relative;display:grid;place-items:center;flex:none;width:42px;height:42px;border-radius:13px;background:#0b0b0c;color:#fff}
-.st-ic svg{width:19px;height:19px}
-.st-calls .st-ic{color:#2997ff}.st-msgs .st-ic{background:#25d366;color:#fff}.st-camp .st-ic{color:#ff5f8f}
-.st-top em{font-style:normal;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#86868b}
-.st-n{display:block;margin-top:clamp(18px,2.6vh,28px);font-family:var(--display);font-weight:700;font-size:clamp(2rem,3vw,3rem);line-height:1.08;letter-spacing:-.045em;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink2)}
-.st-l{display:block;margin-top:6px;font-size:14px;line-height:1.4;color:var(--sub)}
-/* hero: dark stage, drifting light, giant number, money in -> conversations out */
-.st-hero{--ink2:#fff;--sub:#a1a1a6;background:#09090b;box-shadow:0 40px 90px -40px rgba(90,60,200,.75);justify-content:space-between;min-height:clamp(380px,46vh,470px)}
-.st-mesh{position:absolute;inset:-30%;z-index:-1;pointer-events:none}
-.st-mesh i{position:absolute;border-radius:50%;filter:blur(70px)}
-.st-mesh i:nth-child(1){width:55%;height:60%;right:2%;top:4%;background:radial-gradient(closest-side,rgba(162,89,255,.55),transparent);animation:st-drift 16s ease-in-out infinite alternate}
-.st-mesh i:nth-child(2){width:50%;height:55%;left:6%;bottom:2%;background:radial-gradient(closest-side,rgba(41,151,255,.45),transparent);animation:st-drift 21s ease-in-out -5s infinite alternate-reverse}
-.st-mesh i:nth-child(3){width:38%;height:42%;right:18%;bottom:10%;background:radial-gradient(closest-side,rgba(255,95,143,.35),transparent);animation:st-drift 25s ease-in-out -9s infinite alternate}
-@keyframes st-drift{to{transform:translate3d(-14%,10%,0) scale(1.25)}}
-.st-hero::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:48px 48px;-webkit-mask:radial-gradient(80% 70% at 85% 0%,#000,transparent 75%);mask:radial-gradient(80% 70% at 85% 0%,#000,transparent 75%)}
-.st-hero .st-ic{background:var(--grad)}
-.st-hero .st-top em{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:99px;background:rgba(255,255,255,.07);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);font-size:10.5px;letter-spacing:.12em;color:#d2d2d7}
-.st-hero .st-top em i{width:7px;height:7px;border-radius:50%;background:var(--grad)}
-@keyframes st-ping{0%{box-shadow:0 0 0 0 rgba(48,209,88,.6)}70%,100%{box-shadow:0 0 0 8px rgba(48,209,88,0)}}
-.st-hero .st-n{margin-top:auto;font-size:clamp(3.6rem,7.4vw,7rem);line-height:1.02;letter-spacing:-.06em}
-.st-hero .st-l{max-width:26ch;font-size:clamp(.95rem,1.1vw,1.08rem)}
-.st-flow{display:flex;align-items:center;gap:10px;margin-top:clamp(22px,3.4vh,34px);padding-top:clamp(16px,2.4vh,22px);border-top:1px solid rgba(255,255,255,.09)}
-.st-chip{flex:none;padding:8px 12px;border-radius:99px;background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);font-size:12.5px;font-weight:600;color:#f5f5f7;white-space:nowrap}
-.st-out{background:var(--grad);box-shadow:none}
-.st-pipe{position:relative;flex:1;min-width:28px;height:2px;border-radius:2px;background:rgba(255,255,255,.12);overflow:hidden}
-.st-pipe i{position:absolute;top:0;left:-20%;width:20%;height:100%;border-radius:2px;background:linear-gradient(90deg,transparent,#fff,transparent);animation:st-flow 2.4s linear infinite}
-.st-pipe i:nth-child(2){animation-delay:.8s}.st-pipe i:nth-child(3){animation-delay:1.6s}
-@keyframes st-flow{to{left:110%}}
-/* calls: ringing icon and a call log that ticks one row at a time */
-.st-ring::before,.st-ring::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:0 0 0 2px rgba(41,151,255,.5);animation:st-rip 2.4s ease-out infinite;opacity:0}
-.st-ring::after{animation-delay:1.2s}
-@keyframes st-rip{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(1.7)}}
-.st-ring svg{animation:st-buzz 2.4s ease-in-out infinite;transform-origin:50% 60%}
-@keyframes st-buzz{0%,14%,100%{transform:none}2%,6%,10%{transform:rotate(-14deg)}4%,8%,12%{transform:rotate(14deg)}}
-.st-log{--rh:40px;height:var(--rh);margin-top:auto;overflow:hidden;border-radius:12px}
-.st-calls .st-l,.st-camp .st-l{margin-bottom:16px}
-.st-log ul{list-style:none;margin:0;padding:0;animation:st-tick 10s cubic-bezier(.7,0,.3,1) infinite}
-.st-log li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:4px 10px;height:var(--rh);padding:0 12px;border-radius:12px;background:#f5f5f7;font-size:12.5px;margin-bottom:0}
-.st-log li i{width:8px;height:8px;border-radius:50%;background:#30d158;box-shadow:0 0 0 3px rgba(48,209,88,.18)}
-.st-log li b{font-weight:600;color:#1d1d1f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.st-log li b span{font-weight:500;color:#86868b}
-.st-log li em{font-style:normal;color:#86868b;font-variant-numeric:tabular-nums}
-@keyframes st-tick{0%,20%{transform:none}25%,45%{transform:translateY(calc(var(--rh) * -1))}50%,70%{transform:translateY(calc(var(--rh) * -2))}75%,95%{transform:translateY(calc(var(--rh) * -3))}100%{transform:translateY(calc(var(--rh) * -4))}}
-/* messages: a chat that keeps arriving */
-.st-msgs{background:linear-gradient(180deg,#fff,#f3fbf6)}
-.st-feed{position:relative;flex:1 1 0;min-height:160px;margin:18px calc(var(--pd) * -1) calc(var(--pd) * -1);padding:0 var(--pd);overflow:hidden;-webkit-mask:linear-gradient(transparent,#000 22%,#000 82%,transparent);mask:linear-gradient(transparent,#000 22%,#000 82%,transparent)}
-.st-feed ul{position:absolute;left:var(--pd);right:var(--pd);top:0;list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px;animation:st-chat 22s linear infinite}
-.st-feed li{align-self:flex-start;max-width:88%;padding:9px 12px 7px;border-radius:4px 16px 16px 16px;background:#fff;box-shadow:0 1px 0 rgba(0,0,0,.06),0 6px 18px -12px rgba(0,60,30,.4);font-size:13px;line-height:1.35;color:#1d1d1f}
-.st-feed li:nth-child(even){border-radius:16px 4px 16px 16px;align-self:flex-end;background:#dcf8c6}
-.st-feed li small{display:block;margin-top:2px;text-align:right;font-size:10px;color:#86868b}
-@keyframes st-chat{to{transform:translateY(-50%)}}
-/* campaigns: 100 dots, each one 100 campaigns */
-.st-waf{display:grid;grid-template-columns:repeat(20,minmax(0,1fr));gap:4px;margin-top:auto}
-.st-waf i{aspect-ratio:1;border-radius:50%;background:#e8e8ed}
-.st-js .st-waf i{transform:scale(.4);transition:background .4s,transform .5s cubic-bezier(.3,1.6,.5,1);transition-delay:var(--dl,0s)}
-.st-waf i,.st-js.rs-on .st-waf i{background:var(--c,#a259ff);transform:none}
-.st-key{display:flex;align-items:center;gap:6px;margin-top:10px;font-size:11px;color:#86868b}
-.st-key i{width:7px;height:7px;border-radius:50%;background:#a259ff}
-.st-src{margin:clamp(22px,3.4vh,34px) 0 0;padding-top:clamp(14px,2vh,20px);border-top:1px solid rgba(255,255,255,.09);font-size:12.5px;line-height:1.5;color:#86868b}
-.st-eg{margin:auto 0 8px;font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#a1a1a6}
-.st-msgs .st-eg{margin:16px 0 0}
-.st-calls .st-eg+.st-log{margin-top:0}
-/* odometer wheels */
-.od{display:inline-flex;align-items:flex-end}
-.od-c{display:inline-block}
-.od-d{display:inline-block;height:1.08em;overflow:hidden;vertical-align:bottom;-webkit-mask:linear-gradient(transparent,#000 14%,#000 86%,transparent);mask:linear-gradient(transparent,#000 14%,#000 86%,transparent)}
-.st-hero .od-d{height:1.02em}.st-hero .od-s>span{height:1.02em;line-height:1.02}
-.od-s{display:flex;flex-direction:column;transform:translate3d(0,0,0);transition:transform var(--t,1.8s) cubic-bezier(.16,1,.3,1) var(--dl,0s)}
-.od-s>span{display:block;height:1.08em;line-height:1.08}
-.rs-on .od-s{transform:translate3d(0,calc(var(--n) * -1.08em),0)}
-.rs-on .st-hero .od-s{transform:translate3d(0,calc(var(--n) * -1.02em),0)}
-/* arrival and the loops only run once the board is on screen */
-.rs-js .rs-stats .st{opacity:0;transform:translateY(30px) scale(.98)}
-.rs-js .rs-stats.rs-on .st{opacity:1;transform:none;transition:opacity .9s cubic-bezier(.2,.8,.2,1) var(--d,0s),transform 1s cubic-bezier(.2,.8,.2,1) var(--d,0s),box-shadow .4s}
-.rs-js .rs-stats.rs-on .st:hover{transform:translateY(-4px);transition-delay:0s}
-.st-js:not(.rs-on) .st-log ul,.st-js:not(.rs-on) .st-feed ul,.st-js:not(.rs-on) .st-pipe i{animation-play-state:paused}
+/* results: one pinned dark screen. A cloud of particles gathers into a rupee sign as it arrives, then re-forms into a
+   phone, a chat bubble and a 10x10 grid (1 dot = 100 campaigns) as you scroll, while each lifetime total rolls in beside it.
+   The cloud parts around the pointer. Without JS, with reduced motion, on watches or short screens it is a plain row of four totals */
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-@media (max-width:1100px){
-  .rs-stats{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"hero hero" "calls msgs" "camp msgs"}
-  .st-hero{min-height:0}.st-hero .st-n{margin-top:clamp(28px,5vh,48px)}
-}
-@media (max-width:640px){
-  .rs-stats{gap:10px;grid-template-columns:minmax(0,1fr);grid-template-areas:"hero" "calls" "msgs" "camp"}
-  .st{--pd:16px;border-radius:22px}
-  .st-ic{width:34px;height:34px;border-radius:10px}.st-ic svg{width:16px;height:16px}
-  .st-top em{font-size:9.5px;letter-spacing:.1em}
-  .st-n{margin-top:16px;font-size:clamp(1.9rem,9vw,2.4rem)}
-  .st-l{font-size:12.5px}
-  .st-hero .st-n{font-size:clamp(3rem,17vw,4.6rem)}
-  .st-hero .st-top em{padding:6px 10px;font-size:9px}
-  .st-flow{gap:8px}.st-chip{padding:7px 10px;font-size:11px}
-  .st-log{--rh:38px}.st-log li{padding:0 11px;font-size:12px;gap:8px}
-  .st-waf{gap:3px}
-  .st-key{font-size:10px}
-  .st-feed{flex:none;height:180px;min-height:0}
-}
-@media (max-width:360px){.st-flow .st-pipe{display:none}.st-flow{flex-wrap:wrap}}
-@media (max-width:300px){.rs-stats{grid-template-columns:minmax(0,1fr);grid-template-areas:"hero" "calls" "msgs" "camp"}.st-hero .st-n{font-size:2.6rem}.st-n{font-size:1.6rem}}
-@media (prefers-reduced-motion:reduce){
-  .od-s,.st-js .st-waf i{transition:none}
-  .st-mesh i,.st-hero .st-top em i,.st-pipe i,.st-ring::before,.st-ring::after,.st-ring svg,.st-log ul,.st-feed ul{animation:none}
-  .rs-js .rs-stats .st{opacity:1;transform:none;transition:none}
+.rx{margin:clamp(40px,6vh,64px) 0 0}
+.rx-screen{position:relative;isolation:isolate;overflow:hidden;border-radius:clamp(22px,3vw,40px);background:radial-gradient(70% 60% at 80% 40%,rgba(162,89,255,.16),transparent 70%),#060609;color:#f5f5f7;padding:clamp(26px,4vw,56px)}
+.rx-cv,.rx-glow,.rx-nav,.rx-hint{display:none}
+.rx-k{display:flex;align-items:center;gap:10px;margin:0;font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#a1a1a6}
+.rx-k i{flex:none;width:7px;height:7px;border-radius:50%;background:#30d158;animation:ct-ping 2.2s ease-out infinite}
+.rx-list{list-style:none;margin:clamp(28px,4vh,44px) 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(20px,3vw,40px)}
+.rx-act{min-width:0;border-top:1px solid rgba(255,255,255,.12);padding-top:18px}
+.rx-m{display:block;overflow:hidden;padding-bottom:.08em;margin-bottom:-.08em}
+.rx-m>span{display:block}
+.rx-no{font-size:12px;font-weight:600;letter-spacing:.14em;color:#6e6e73;font-variant-numeric:tabular-nums}
+.rx-l{margin-top:10px;font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#a1a1a6}
+.rx-n{margin-top:12px;font-family:var(--display);font-weight:700;font-size:clamp(2.2rem,3.6vw,3.4rem);line-height:1;letter-spacing:-.05em;white-space:nowrap;font-variant-numeric:tabular-nums}
+.rx-n em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.rx-d{margin-top:12px;font-size:14px;line-height:1.5;color:#86868b}
+@media (max-width:900px){.rx-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:300px){.rx-list{grid-template-columns:minmax(0,1fr)}.rx-screen{padding:20px;border-radius:20px}.rx-n{font-size:2rem}}
+/* live: full-bleed pinned stage */
+.rx-live{width:100vw;margin-left:calc(50% - 50vw)}
+.rx-live .rx-track{height:380vh;height:380svh}
+.rx-live .rx-stage{position:sticky;top:0;height:100vh;height:100svh;padding:clamp(8px,1vw,14px)}
+.rx-live .rx-screen{height:100%;padding:0;background:#060609}
+.rx-live .rx-cv{display:block;position:absolute;inset:0;z-index:1;width:100%;height:100%;touch-action:pan-y}
+.rx-live .rx-glow{display:block;position:absolute;inset:0;z-index:0;pointer-events:none}
+.rx-glow i{position:absolute;left:var(--gx,70%);top:var(--gy,50%);width:min(95vw,1000px);aspect-ratio:1;translate:-50% -50%;border-radius:50%;opacity:0;transition:opacity 1.2s ease}
+.rx-glow i:nth-child(1){background:radial-gradient(closest-side,rgba(162,89,255,.32),transparent)}
+.rx-glow i:nth-child(2){background:radial-gradient(closest-side,rgba(41,151,255,.3),transparent)}
+.rx-glow i:nth-child(3){background:radial-gradient(closest-side,rgba(48,209,120,.24),transparent)}
+.rx-glow i:nth-child(4){background:radial-gradient(closest-side,rgba(255,95,143,.28),transparent)}
+.rx-glow i.on{opacity:1}
+.rx-live .rx-ui{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;padding:clamp(26px,4vw,64px);pointer-events:none}
+.rx-live .rx-ui button{pointer-events:auto}
+.rx-live .rx-list{position:relative;display:block;flex:1;margin:0;width:min(54%,720px)}
+.rx-live .rx-act{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);border:0;padding:0}
+.rx-live .rx-m>span{transform:translate3d(0,110%,0);transition:transform .9s cubic-bezier(.16,1,.3,1)}
+.rx-live .rx-act.past .rx-m>span{transform:translate3d(0,-130%,0);opacity:0;transition:transform .55s cubic-bezier(.16,1,.3,1),opacity .3s}
+.rx-live .rx-act.on .rx-m>span{transform:none}
+.rx-live .rx-act.on .rx-m:nth-child(2)>span{transition-delay:.05s}
+.rx-live .rx-act.on .rx-m:nth-child(3)>span{transition-delay:.1s}
+.rx-live .rx-act.on .rx-m:nth-child(4)>span{transition-delay:.17s}
+.rx-live .rx-no{font-size:13px}
+.rx-live .rx-l{margin-top:18px;font-size:14px}
+.rx-live .rx-n{margin-top:14px;font-size:clamp(4rem,7.6vw,9rem);line-height:.92;letter-spacing:-.065em}
+.rx-live .rx-d{margin-top:22px;max-width:30ch;font-size:clamp(1rem,1.2vw,1.18rem);color:#a1a1a6}
+.rx-live .rx-nav{display:flex;gap:clamp(10px,1.6vw,22px);width:min(46%,600px)}
+.rx-nav button{flex:1;min-width:0;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:10px 6px;padding:8px 0 0;border:0;background:none;color:#6e6e73;font:600 12px/1.2 Inter,system-ui,sans-serif;text-align:left;cursor:pointer;transition:color .3s}
+.rx-nav button i{grid-column:1/-1;display:block;height:2px;border-radius:2px;background:rgba(255,255,255,.12);overflow:hidden}
+.rx-nav button i::after{content:"";display:block;height:100%;background:var(--grad);transform-origin:left;transform:scaleX(var(--f,0))}
+.rx-nav button b{font-weight:600;color:#48484a;transition:color .3s}
+.rx-nav button span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rx-nav button.on{color:#f5f5f7}.rx-nav button.on b{color:#a259ff}
+.rx-nav button:hover{color:#d2d2d7}
+.rx-nav button:focus-visible{outline:2px solid #a259ff;outline-offset:4px;border-radius:4px}
+.rx-live .rx-hint{display:flex;position:absolute;right:clamp(26px,4vw,64px);bottom:clamp(26px,4vw,64px);z-index:2;margin:0;align-items:center;gap:12px;font-size:11.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#6e6e73;transition:opacity .5s;pointer-events:none}
+.rx-hint i{width:1px;height:34px;background:linear-gradient(#a1a1a6,transparent);transform-origin:top;animation:rx-drop 1.8s ease-in-out infinite}
+@keyframes rx-drop{0%{transform:scaleY(0);opacity:1}55%{transform:scaleY(1);opacity:1}100%{transform:scaleY(1);opacity:0}}
+@media (max-width:900px){
+  .rx-live .rx-ui{padding:22px 20px 20px}
+  .rx-live .rx-list{flex:none;width:100%;height:clamp(220px,34svh,290px);margin-top:auto}
+  .rx-live .rx-act{top:auto;bottom:0;transform:none}
+  .rx-live .rx-l{margin-top:12px;font-size:12px}
+  .rx-live .rx-n{margin-top:10px;font-size:clamp(3.2rem,15.5vw,5.6rem)}
+  .rx-live .rx-d{margin-top:12px;font-size:.95rem}
+  .rx-live .rx-nav{width:calc(100% - 64px);margin-top:18px}
+  .rx-nav button span{display:none}
+  .rx-live .rx-hint{display:none}
 }
 .rs-note{margin:18px 0 0;font-size:13px;color:#86868b}
 .rs-grid{margin-top:clamp(40px,6vh,64px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,1.6vw,22px)}
@@ -1905,6 +1882,17 @@ img,video{max-width:100%}
   .mw-t span{overflow-wrap:anywhere}
 }
 </style>
+<script>
+  // a refresh always starts from the top: don't let the browser drop you back mid-page (e.g. inside a sideways-scrolling section)
+  if('scrollRestoration' in history) history.scrollRestoration='manual';
+  (function(){
+    var nav=performance.getEntriesByType&&performance.getEntriesByType('navigation')[0];
+    if(nav&&nav.type==='reload'){
+      if(location.hash) history.replaceState(null,'',location.pathname+location.search);
+      window.scrollTo(0,0); window.addEventListener('load',function(){window.scrollTo(0,0)});
+    }
+  })();
+</script>
 </head>
 <body>
 <script>
@@ -2270,8 +2258,8 @@ img,video{max-width:100%}
 <section class="rs" id="results" aria-labelledby="rs-h">
   <div class="rs-in">
     <div class="rs-head"><p class="rs-k"><i>&#8212;</i>Results</p><h2 id="rs-h">Results from real Meta ads campaigns <span>in Kerala</span></h2><p class="rs-intro">These are campaigns I planned and managed. The numbers come straight from Ads Manager.</p></div>
-    <ul class="rs-stats" aria-label="Lifetime totals across the Meta ads accounts I have managed"><li class="st st-hero"><div class="st-mesh" aria-hidden="true"><i></i><i></i><i></i></div><div class="st-top"><i class="st-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12M6 9h12M14 20 7 13h2.5a4.5 4.5 0 0 0 0-9"/></svg></i><em><i></i>Lifetime total</em></div><b class="st-n">&#8377;60&#8202;L+</b><span class="st-l">spent on Meta ads, across the accounts I&#8217;ve managed</span><p class="st-src">Lifetime totals from Ads Manager across the Meta ads accounts I&#8217;ve managed.</p></li><li class="st st-calls"><div class="st-top"><i class="st-ic st-ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></i><em>Calls</em></div><b class="st-n">1,00,000+</b><span class="st-l">phone calls</span><p class="st-eg" aria-hidden="true">Example call log</p><div class="st-log" aria-hidden="true"><ul><li><i></i><b>Incoming call <span>&#183; Kochi</span></b><em>0:42</em></li><li><i></i><b>Incoming call <span>&#183; Thrissur</span></b><em>1:15</em></li><li><i></i><b>Call back booked <span>&#183; Kozhikode</span></b><em>Today</em></li><li><i></i><b>Incoming call <span>&#183; Trivandrum</span></b><em>0:58</em></li><li><i></i><b>Incoming call <span>&#183; Kochi</span></b><em>0:42</em></li><li><i></i><b>Incoming call <span>&#183; Thrissur</span></b><em>1:15</em></li><li><i></i><b>Call back booked <span>&#183; Kozhikode</span></b><em>Today</em></li></ul></div></li><li class="st st-msgs"><div class="st-top"><i class="st-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.4L3 21l2.1-5.7A8.4 8.4 0 1 1 21 11.5z"/></svg></i><em>Messages</em></div><b class="st-n">1,00,000+</b><span class="st-l">messaging conversations</span><p class="st-eg" aria-hidden="true">Example messages</p><div class="st-feed" aria-hidden="true"><ul><li><span>Hi! Is this still available?</span><small>10:02 am</small></li><li><span>Price ethra aanu?</span><small>10:09 am</small></li><li><span>Can I visit the showroom today?</span><small>10:16 am</small></li><li><span>Do you deliver to Kollam?</span><small>10:23 am</small></li><li><span>Is there a weekend batch?</span><small>10:30 am</small></li><li><span>Send me the details please</span><small>10:37 am</small></li><li><span>Hi! Is this still available?</span><small>10:44 am</small></li><li><span>Price ethra aanu?</span><small>10:51 am</small></li><li><span>Can I visit the showroom today?</span><small>10:58 am</small></li><li><span>Do you deliver to Kollam?</span><small>11:05 am</small></li><li><span>Is there a weekend batch?</span><small>11:12 am</small></li><li><span>Send me the details please</span><small>11:19 am</small></li></ul></div></li><li class="st st-camp"><div class="st-top"><i class="st-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 11 15-6v14L3 13z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/><path d="M21 9v6"/></svg></i><em>Campaigns</em></div><b class="st-n">10,000+</b><span class="st-l">campaigns run</span><div class="st-waf" aria-hidden="true"></div><small class="st-key" aria-hidden="true"><i></i>1 dot = 100 campaigns</small></li></ul>
-    <p class="rs-note">Lifetime totals as reported in Ads Manager, across the Meta ads accounts I&#8217;ve managed. Call and message counts are Meta&#8217;s own conversion counts. The call log and chats are illustrations, not real customers.</p>
+    <div class="rx" id="rx"><div class="rx-track"><div class="rx-stage"><div class="rx-screen"><div class="rx-glow" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></div><canvas class="rx-cv" aria-hidden="true"></canvas><div class="rx-ui"><p class="rx-k"><i aria-hidden="true"></i>Lifetime totals &#183; from Ads Manager</p><ol class="rx-list" aria-label="Lifetime totals across the Meta ads accounts I have managed"><li class="rx-act"><span class="rx-m rx-no"><span>01 / 04</span></span><span class="rx-m rx-l"><span>Spent on Meta ads</span></span><span class="rx-m rx-n"><span><span class="sr">&#8377;60 lakh or more</span><span aria-hidden="true">&#8377;<span class="rx-c" data-to="60">60</span><em>L+</em></span></span></span><span class="rx-m rx-d"><span>Across the Meta ads accounts I&#8217;ve managed.</span></span></li><li class="rx-act"><span class="rx-m rx-no"><span>02 / 04</span></span><span class="rx-m rx-l"><span>Phone calls</span></span><span class="rx-m rx-n"><span><span class="sr">1,00,000 or more</span><span aria-hidden="true"><span class="rx-c" data-to="100000">1,00,000</span><em>+</em></span></span></span><span class="rx-m rx-d"><span>Calls placed straight from ads, as counted by Meta.</span></span></li><li class="rx-act"><span class="rx-m rx-no"><span>03 / 04</span></span><span class="rx-m rx-l"><span>Messaging conversations</span></span><span class="rx-m rx-n"><span><span class="sr">1,00,000 or more</span><span aria-hidden="true"><span class="rx-c" data-to="100000">1,00,000</span><em>+</em></span></span></span><span class="rx-m rx-d"><span>Chats started from ads, as counted by Meta.</span></span></li><li class="rx-act"><span class="rx-m rx-no"><span>04 / 04</span></span><span class="rx-m rx-l"><span>Campaigns run</span></span><span class="rx-m rx-n"><span><span class="sr">10,000 or more</span><span aria-hidden="true"><span class="rx-c" data-to="10000">10,000</span><em>+</em></span></span></span><span class="rx-m rx-d"><span>Planned and run across those same accounts.</span></span></li></ol></div><p class="rx-hint" aria-hidden="true"><i></i>Scroll</p></div></div></div></div>
+    <p class="rs-note">Lifetime totals as reported in Ads Manager, across the Meta ads accounts I&#8217;ve managed. Call and message counts are Meta&#8217;s own conversion counts.</p>
     </div>
 <div class="mw" id="mw"><div class="mw-intro"><h3 class="mw-word" aria-label="Meta ads"><span>META ADS</span></h3><p class="mw-sub">Campaigns I ran. Scroll into each one.</p></div><div class="mw-track" id="mwtrack"><div class="mw-stage"><div class="mw-dot" aria-hidden="true"></div><div class="mw-rail" id="mwrail"><article class="mw-p" style="--acc:#1f8a3b" aria-label="Case 01: EcoCleanser"><span class="mw-wm" aria-hidden="true">ECOCLEANSER</span><div class="mw-copy"><p class="mw-n">01 <i>/ 11</i></p><img class="mw-logo" src="assets/brands/mono/eco-cleanser.png" alt="EcoCleanser logo" width="298" height="135" loading="lazy" decoding="async"><h3>EcoCleanser</h3><p class="mw-tag">Meta ads &#183; Pet care products</p><p class="mw-line">13 lakh+ impressions and 91,823 clicks for EcoCleanser, at &#8377;0.48 a click.</p><p class="mw-per">Three ads &#183; plus 1 Oct &#8211; 15 Nov 2025</p><a class="mw-go" href="case-studies/#case-1">Read the case <span aria-hidden="true">&#8594;</span></a></div><div class="mw-board"><div class="mw-tiles"><div class="mw-t mw-t1"><span>Headline result</span><b>13,06,886</b><i>impressions &#183; 899,273 people reached</i></div><div class="mw-t"><span>Clicks (all)</span><b>91,823</b><i>&#8377;0.48 per click &#183; 3 ads in the screenshot</i></div><div class="mw-t"><span>Cost per link click</span><b>&#8377;0.39</b><i>average, 1 Oct &#8211; 15 Nov 2025</i></div><div class="mw-t"><span>Amount spent</span><b>&#8377;44,150.61</b><i>3 ads in the screenshot</i></div></div><figure class="mw-shot mw-shots"><div class="mw-stabs" role="tablist" aria-label="Ads Manager screenshots"><button type="button" role="tab" aria-selected="true">Ads &#183; &#8377;44,150 spent</button><button type="button" role="tab" aria-selected="false">1 Oct &#8211; 15 Nov 2025</button></div><img class="on mw-tall" src="assets/cases/shot-1b.webp" alt="Meta Ads Manager table for EcoCleanser ads: 91,823 clicks at &#8377;0.48 each, 1,306,886 impressions, 899,273 reach, &#8377;44,150.61 total spent" width="1161" height="286" loading="lazy" decoding="async"><img src="assets/cases/shot-1.webp" alt="Meta Ads Manager campaign table for EcoCleanser, 1 Oct &#8211; 15 Nov 2025" width="1508" height="230" loading="lazy" decoding="async"><figcaption>From Ads Manager. Account details cropped out.</figcaption></figure></div></article><article class="mw-p" style="--acc:#6b7280" aria-label="Case 02: Moster Electronics"><span class="mw-wm" aria-hidden="true">MOSTER</span><div class="mw-copy"><p class="mw-n">02 <i>/ 11</i></p><img class="mw-logo" src="assets/brands/mono/moster.png" alt="Moster Electronics logo" width="317" height="124" loading="lazy" decoding="async"><h3>Moster Electronics</h3><p class="mw-tag">Meta ads &#183; Electronics brand</p><p class="mw-line">&#8377;7.2 lakh of Meta ads managed, with phone calls coming in for as little as &#8377;11.99 each.</p><p class="mw-per">All campaigns, Nov 2023 &#8211; Oct 2026</p><a class="mw-go" href="case-studies/#case-2">Read the case <span aria-hidden="true">&#8594;</span></a></div><div class="mw-board"><div class="mw-tiles"><div class="mw-t mw-t1"><span>Total amount spent</span><b>&#8377;7,22,003.63</b><i>all Moster campaigns &#183; Nov 2023 &#8211; Oct 2026</i></div><div class="mw-t"><span>Best cost per call</span><b>&#8377;11.99</b><i>Iris-Moster TV December campaign</i></div><div class="mw-t"><span>Spent on that campaign</span><b>&#8377;24,305.85</b><i>calls objective</i></div><div class="mw-t"><span>Phone calls</span><b>3,023</b><i>22 Sep &#8211; 15 Nov 2025 alone</i></div></div><figure class="mw-shot mw-shots"><div class="mw-stabs" role="tablist" aria-label="Ads Manager screenshots"><button type="button" role="tab" aria-selected="true">All campaigns &#183; &#8377;7.2&#8202;L</button><button type="button" role="tab" aria-selected="false">22 Sep &#8211; 15 Nov 2025</button></div><img class="on mw-tall" src="assets/cases/shot-2b.webp" alt="Meta Ads Manager pivot table for Moster Electronics: Iris-Moster TV campaigns at &#8377;17.12, &#8377;12.78 and &#8377;14.03 per call, &#8377;722,003.63 total spent" width="1162" height="307" loading="lazy" decoding="async"><img src="assets/cases/shot-2.webp" alt="Meta Ads Manager campaign table for Moster Electronics, 22 Sep &#8211; 15 Nov 2025" width="1253" height="200" loading="lazy" decoding="async"><figcaption>From Ads Manager. Account details cropped out.</figcaption></figure></div></article><article class="mw-p" style="--acc:#eb6820" aria-label="Case 03: ZICA Calicut"><span class="mw-wm" aria-hidden="true">ZICA</span><div class="mw-copy"><p class="mw-n">03 <i>/ 11</i></p><img class="mw-logo" src="assets/brands/mono/zica.png" alt="ZICA Calicut logo" width="321" height="96" loading="lazy" decoding="async"><h3>ZICA Calicut</h3><p class="mw-tag">Meta ads &#183; Animation academy</p><p class="mw-line">1,000 student conversations for ZICA, from &#8377;34 each.</p><p class="mw-per">All campaigns &#183; 203 in 1 Sep &#8211; 15 Nov 2025 alone</p><a class="mw-go" href="case-studies/#case-3">Read the case <span aria-hidden="true">&#8594;</span></a></div><div class="mw-board"><div class="mw-tiles"><div class="mw-t mw-t1"><span>Headline result</span><b>1,000</b><i>student conversations &#183; ZICA</i></div><div class="mw-t"><span>Lowest cost per conversation</span><b>&#8377;34.41</b></div><div class="mw-t"><span>1 Sep &#8211; 15 Nov 2025 alone</span><b>203</b><i>conversations on &#8377;12,231.73</i></div><div class="mw-t"><span>Impressions</span><b>502,684</b><i>1 Sep &#8211; 15 Nov 2025</i></div></div><figure class="mw-shot"><img src="assets/cases/shot-3.webp" alt="Meta Ads Manager campaign table for ZICA Calicut, 1 Sep &#8211; 15 Nov 2025" width="1449" height="240" loading="lazy" decoding="async"><figcaption>From Ads Manager. Account details cropped out.</figcaption></figure></div></article><article class="mw-p" style="--acc:#c8102e" aria-label="Case 04: Arena Animation Trivandrum"><span class="mw-wm" aria-hidden="true">ARENA</span><div class="mw-copy"><p class="mw-n">04 <i>/ 11</i></p><img class="mw-logo" src="assets/brands/mono/arena-trivandrum.png" alt="Arena Animation Trivandrum logo" width="417" height="203" loading="lazy" decoding="async"><h3>Arena Animation Trivandrum</h3><p class="mw-tag">Meta ads &#183; Animation academy</p><p class="mw-line">&#8377;5.5 lakh of Meta ads managed on the Arena account, with student enquiries from &#8377;139 each.</p><p class="mw-per">Whole ad account, all campaigns</p><a class="mw-go" href="case-studies/#case-4">Read the case <span aria-hidden="true">&#8594;</span></a></div><div class="mw-board"><div class="mw-tiles"><div class="mw-t mw-t1"><span>Total amount spent</span><b>&#8377;5,54,133.66</b><i>whole ad account &#183; Arena Trivandrum, Thrissur, Marthandam and ZICA campaigns</i></div><div class="mw-t"><span>Best cost per conversation</span><b>&#8377;139.31</b><i>Arena TVM Degree, Kollam</i></div><div class="mw-t"><span>Conversations from it</span><b>62</b><i>on &#8377;8,637.16 spent</i></div><div class="mw-t"><span>Student enquiries</span><b>116</b><i>1 Jun &#8211; 31 Jul 2025 alone</i></div></div><figure class="mw-shot mw-shots"><div class="mw-stabs" role="tablist" aria-label="Ads Manager screenshots"><button type="button" role="tab" aria-selected="true">Whole account &#183; &#8377;5.5&#8202;L</button><button type="button" role="tab" aria-selected="false">1 Jun &#8211; 31 Jul 2025</button></div><img class="on mw-tall" src="assets/cases/shot-4b.webp" alt="Meta Ads Manager pivot table for the Arena account: messaging campaigns at &#8377;142.76, &#8377;141.22, &#8377;213.40 and &#8377;139.31 per conversation, &#8377;554,133.66 total spent" width="1394" height="317" loading="lazy" decoding="async"><img src="assets/cases/shot-4.webp" alt="Meta Ads Manager campaign table for Arena Animation Trivandrum, 1 Jun &#8211; 31 Jul 2025" width="1481" height="262" loading="lazy" decoding="async"><figcaption>From Ads Manager. Account details cropped out.</figcaption></figure></div></article><article class="mw-p" style="--acc:#c8102e" aria-label="Case 05: Arena Animation Thrissur"><span class="mw-wm" aria-hidden="true">ARENA</span><div class="mw-copy"><p class="mw-n">05 <i>/ 11</i></p><img class="mw-logo" src="assets/brands/mono/arena-trivandrum.png" alt="Arena Animation Thrissur logo" width="417" height="203" loading="lazy" decoding="async"><h3>Arena Animation Thrissur</h3><p class="mw-tag">Meta ads &#183; Animation academy</p><p class="mw-line">500 student conversations for Arena Thrissur, with the best campaign at &#8377;115.53 each.</p><p class="mw-per">13/02 aams global thrissur, plus 1 Aug &#8211; 30 Sep 2025</p><a class="mw-go" href="case-studies/#case-5">Read the case <span aria-hidden="true">&#8594;</span></a></div><div class="mw-board"><div class="mw-tiles"><div class="mw-t mw-t1"><span>Headline result</span><b>500</b><i>student conversations &#183; Arena Thrissur</i></div><div class="mw-t"><span>Best cost per conversation</span><b>&#8377;115.53</b><i>13/02 aams global thrissur</i></div><div class="mw-t"><span>Conversations from it</span><b>99</b><i>on &#8377;11,437.31 spent</i></div><div class="mw-t"><span>Workshop link clicks</span><b>1,320</b><i>1 Aug &#8211; 30 Sep 2025</i></div></div><figure class="mw-shot mw-shots"><div class="mw-stabs" role="tablist" aria-label="Ads Manager screenshots"><button type="button" role="tab" aria-selected="true">More campaigns</button><button type="button" role="tab" aria-selected="false">1 Aug &#8211; 30 Sep 2025</button></div><img class="on mw-tall" src="assets/cases/shot-5b.webp" alt="Meta Ads Manager pivot table: 13/02 aams global thrissur at &#8377;115.53 per conversation (99 conversations, &#8377;11,437.31), Arena TRSR Degree at &#8377;226.51, with 7/8 mobilegd tvm and Zica Degree campaigns" width="1395" height="279" loading="lazy" decoding="async"><img src="assets/cases/shot-5.webp" alt="Meta Ads Manager campaign table for Arena Animation Thrissur, 1 Aug &#8211; 30 Sep 2025" width="1815" height="339" loading="lazy" decoding="async"><figcaption>From Ads Manager. Account details cropped out.</figcaption></figure></div></article><article class="mw-p" style="--acc:#c8102e" aria-label="Case 06: Arena Animation Marthandam"><span class="mw-wm" aria-hidden="true">ARENA</span><div class="mw-copy"><p class="mw-n">06 <i>/ 11</i></p><img class="mw-logo" src="assets/brands/mono/arena-trivandrum.png" alt="Arena Animation Marthandam logo" width="417" height="203" loading="lazy" decoding="async"><h3>Arena Animation Marthandam</h3><p class="mw-tag">Meta ads &#183; Animation academy</p><p class="mw-line">600 student conversations for Arena Marthandam, from &#8377;58 each.</p><p class="mw-per">All campaigns &#183; 91 in June 2025 alone</p><a class="mw-go" href="case-studies/#case-6">Read the case <span aria-hidden="true">&#8594;</span></a></div><div class="mw-board"><div class="mw-tiles"><div class="mw-t mw-t1"><span>Headline result</span><b>600</b><i>student conversations &#183; Arena Marthandam</i></div><div class="mw-t"><span>Lowest cost per conversation</span><b>&#8377;58.26</b></div><div class="mw-t"><span>June 2025 alone</span><b>91</b><i>conversations on &#8377;11,971.64</i></div><div class="mw-t"><span>Impressions</span><b>278,326</b><i>June 2025</i></div></div><figure class="mw-shot"><img src="assets/cases/shot-6.webp" alt="Meta Ads Manager campaign table for Arena Animation Marthandam, 1 Jun &#8211; 30 Jun 2025" width="1295" height="194" loading="lazy" decoding="async"><figcaption>From Ads Manager. Account details cropped out.</figcaption></figure></div></article><article class="mw-p" style="--acc:#2f5fd0" aria-label="Case 07: Elan TVS Kallachi"><span class="mw-wm" aria-hidden="true">ELAN TVS</span><div class="mw-copy"><p class="mw-n">07 <i>/ 11</i></p><img class="mw-logo" src="assets/brands/mono/elan-tvs.png" alt="Elan TVS Kallachi logo" width="225" height="51" loading="lazy" decoding="async"><h3>Elan TVS Kallachi</h3><p class="mw-tag">Meta ads &#183; Automobile showroom</p><p class="mw-line">10,000+ leads for Elan TVS on &#8377;2.5 lakh of Meta ads.</p><p class="mw-per">Whole ad account, all campaigns</p><a class="mw-go" href="case-studies/#case-7">Read the case <span aria-hidden="true">&#8594;</span></a></div><div class="mw-board"><div class="mw-tiles"><div class="mw-t mw-t1"><span>Headline result</span><b>10,000+</b><i>leads &#183; Elan TVS</i></div><div class="mw-t"><span>Total amount spent</span><b>&#8377;2,49,922.97</b><i>whole ad account</i></div><div class="mw-t"><span>Link clicks</span><b>26,431</b><i>&#8377;0.87 each &#183; one campaign</i></div><div class="mw-t"><span>Lowest cost per conversation</span><b>&#8377;64.66</b><i>GST slab offer ad, Oct &#8211; Nov 2025</i></div></div><figure class="mw-shot mw-shots"><div class="mw-stabs" role="tablist" aria-label="Ads Manager screenshots"><button type="button" role="tab" aria-selected="true">Whole account &#183; &#8377;2.5&#8202;L</button><button type="button" role="tab" aria-selected="false">6 Oct &#8211; 14 Nov 2025</button></div><img class="on mw-narrow" src="assets/cases/shot-7b.webp" alt="Meta Ads Manager table for Elan TVS: 26,431 link clicks at &#8377;0.87, 89 form leads at &#8377;152.16, messaging campaigns at &#8377;163.17 and &#8377;148.62, &#8377;249,922.97 total spent" width="458" height="352" loading="lazy" decoding="async"><img src="assets/cases/shot-7.webp" alt="Meta Ads Manager campaign table for Elan TVS Kallachi, 6 Oct &#8211; 14 Nov 2025" width="1800" height="240" loading="lazy" decoding="async"><figcaption>From Ads Manager. Account details cropped out.</figcaption></figure></div></article><article class="mw-p" style="--acc:#a87650" aria-label="Case 08: Humanspace"><span class="mw-wm" aria-hidden="true">HUMANSPACE</span><div class="mw-copy"><p class="mw-n">08 <i>/ 11</i></p><img class="mw-logo" src="assets/brands/mono/humanspace.png" alt="Humanspace logo" width="337" height="381" loading="lazy" decoding="async"><h3>Humanspace</h3><p class="mw-tag">Meta ads &#183; Architecture and interior design</p><p class="mw-line">81 design enquiries for under &#8377;70 each.</p><p class="mw-per">24 Nov &#8211; 30 Dec 2025</p><a class="mw-go" href="case-studies/#case-8">Read the case <span aria-hidden="true">&#8594;</span></a></div><div class="mw-board"><div class="mw-tiles"><div class="mw-t mw-t1"><span>Headline result</span><b>81</b><i>conversations &#183; &#8377;56.63 each on average</i></div><div class="mw-t"><span>Lowest cost per conversation</span><b>&#8377;54.13</b></div><div class="mw-t"><span>Amount spent</span><b>&#8377;4,587.28</b><i>2 campaigns</i></div><div class="mw-t"><span>Impressions</span><b>54,610</b><i>all campaigns</i></div></div><figure class="mw-shot"><img src="assets/cases/shot-8.webp" alt="Meta Ads Manager campaign table for Humanspace, 24 Nov &#8211; 30 Dec 2025" width="1253" height="167" loading="lazy" decoding="async"><figcaption>From Ads Manager. Account details cropped out.</figcaption></figure></div></article><article class="mw-p" style="--acc:#3b82f6" aria-label="Case 09: Lynklead"><span class="mw-wm" aria-hidden="true">LYNKLEAD</span><div class="mw-copy"><p class="mw-n">09 <i>/ 11</i></p><img class="mw-logo" src="assets/brands/mono/lynklead.png" alt="Lynklead logo" width="283" height="67" loading="lazy" decoding="async"><h3>Lynklead</h3><p class="mw-tag">Meta ads &#183; CRM software</p><p class="mw-line">49 conversations, with two campaigns at about &#8377;11 each.</p><p class="mw-per">Around December 2025</p><a class="mw-go" href="case-studies/#case-9">Read the case <span aria-hidden="true">&#8594;</span></a></div><div class="mw-board"><div class="mw-tiles"><div class="mw-t mw-t1"><span>Headline result</span><b>49</b><i>conversations &#183; about &#8377;58.63 each on average</i></div><div class="mw-t"><span>Lowest cost per conversation</span><b>&#8377;11.13</b></div><div class="mw-t"><span>Amount spent</span><b>&#8776; &#8377;3,057</b><i>5 campaigns, estimated</i></div></div><figure class="mw-shot"><img src="assets/cases/shot-9.webp" alt="Meta Ads Manager campaign table for Lynklead, Around December 2025" width="1782" height="262" loading="lazy" decoding="async"><figcaption>From Ads Manager. Account details cropped out.</figcaption></figure></div></article><article class="mw-p" style="--acc:#018f87" aria-label="Case 10: PRception"><img class="mw-bgimg" src="assets/cases/prception-bg.webp" alt="" aria-hidden="true" width="1400" height="781" loading="lazy" decoding="async"><span class="mw-wm" aria-hidden="true">PRCEPTION</span><div class="mw-copy"><p class="mw-n">10 <i>/ 11</i></p><img class="mw-logo" src="assets/brands/prception-color.png" alt="PRception logo" width="420" height="133" loading="lazy" decoding="async"><h3>PRception</h3><p class="mw-tag">Meta ads &#183; Branding agency</p><p class="mw-line">9.7 lakh people reached and 12.9 lakh impressions on &#8377;79,841 of Meta ads.</p><p class="mw-per">Whole ad account</p></div><div class="mw-board"><div class="mw-tiles"><div class="mw-t mw-t1"><span>Headline result</span><b>9,73,139</b><i>people reached &#183; 12,89,119 impressions</i></div><div class="mw-t"><span>Cost per result</span><b>&#8377;0.08</b><i>per person reached &#183; &#8377;79,841.22 &#247; 9,73,139</i></div><div class="mw-t"><span>Amount spent</span><b>&#8377;79,841.22</b><i>whole ad account</i></div><div class="mw-t"><span>Cost per 1,000 impressions</span><b>&#8377;61.94</b><i>worked out from the totals</i></div></div><figure class="mw-shot"><img src="assets/cases/shot-10.webp" alt="Meta Ads Manager account table for PRception: 973,139 reach, 1,289,119 impressions, 1.32 frequency, &#8377;79,841.22 total spent" width="822" height="123" loading="lazy" decoding="async"><figcaption>From Ads Manager. Account details cropped out.</figcaption></figure></div></article><article class="mw-p" style="--acc:#1d3fe0" aria-label="Case 11: Way Valley"><span class="mw-wm" aria-hidden="true">WAY VALLEY</span><div class="mw-copy"><p class="mw-n">11 <i>/ 11</i></p><img class="mw-logo" src="assets/brands/mono/way-valley.png" alt="Way Valley logo" width="366" height="304" loading="lazy" decoding="async"><h3>Way Valley</h3><p class="mw-tag">Meta ads &#183; Travel, resorts and tour packages</p><p class="mw-line">1,932 WhatsApp enquiries for Wayanad and Kolukkumalai trips across 18 campaigns, at about &#8377;9.28 each.</p><p class="mw-per">18 campaigns &#183; Jun &#8211; Aug 2026</p></div><div class="mw-board"><div class="mw-tiles"><div class="mw-t mw-t1"><span>Headline result</span><b>1,932</b><i>messaging conversations &#183; 18 campaigns</i></div><div class="mw-t"><span>Average cost per conversation</span><b>&#8377;9.28</b><i>lowest &#8377;6.38 on a sales campaign</i></div><div class="mw-t"><span>Amount spent</span><b>&#8776; &#8377;17,936</b><i>all 18 campaigns, two totals rounded by Meta</i></div><div class="mw-t"><span>Standout campaign</span><b>252</b><i>Wayanad July &#183; &#8377;7.88 each in 10 days</i></div></div><figure class="mw-shot mw-shots"><div class="mw-stabs" role="tablist" aria-label="Ads Manager screenshots"><button type="button" role="tab" aria-selected="true">18 campaigns &#183; 1,932 chats</button><button type="button" role="tab" aria-selected="false">Wayanad July &#183; &#8377;7.88</button></div><img class="on mw-tall" src="assets/cases/shot-11b.webp" alt="Meta Ads Manager app screenshots of 18 Way Valley campaigns, including ANAS campaign with 714 conversations at &#8377;9.39, wayanad july campaign-2 with 252 at &#8377;7.88 and wayanad august campaign-4 with 157 at &#8377;11.80" width="1907" height="610" loading="lazy" decoding="async"><img src="assets/cases/shot-11.webp" alt="Meta Ads Manager campaign table for Way Valley, wayanad july campaign-2: 252 messaging conversations at &#8377;7.88 each, &#8377;300 daily budget, &#8377;1,984.84 spent, 44,362 impressions, 26,468 reach" width="1362" height="89" loading="lazy" decoding="async"><figcaption>From Ads Manager. Account details cropped out.</figcaption></figure></div></article></div><div class="mw-bar" aria-hidden="true"><i id="mwbar"></i></div></div></div></div>
   <div class="ch" id="channels" aria-label="More ways I bring you customers"><div class="ch-track"><div class="ch-stage" data-a="0"><div class="ch-aura" aria-hidden="true"><i></i><i></i></div><div class="ch-head"><div><p class="ch-eyebrow"><i aria-hidden="true"></i>Beyond Meta ads</p><h2 class="ch-title">Four more ways <span>I bring you customers</span></h2></div><div class="ch-rail" role="group" aria-label="Channels"><button type="button" data-go="0"><span>01</span>SEO</button><button type="button" data-go="1"><span>02</span>Google ads</button><button type="button" data-go="2"><span>03</span>Influencer</button><button type="button" data-go="3"><span>04</span>AI</button><span class="ch-line" aria-hidden="true"><i class="ch-fill"></i></span></div></div><div class="ch-body"><div class="ch-frame" aria-hidden="true"><div class="ch-devw"><div class="ch-dev"><div class="ch-bar"><i></i><i></i><i></i><span class="ch-url" id="churl"></span></div></div></div></div><article class="ch-ch" id="seo-work" data-i="0" aria-label="SEO"><div class="ch-copy"><span class="ch-num" aria-hidden="true">01</span><p class="ch-k"><i aria-hidden="true"></i>SEO</p><h3>Get found on Google <em>without paying for every click.</em></h3><p class="ch-intro">Ads stop when the budget stops. SEO keeps bringing people in. I check your site point by point, fix what holds it back, and build the local pages and Google Business Profile that help you rank in your town.</p><ul class="ch-pts"><li>Technical and on-page audits</li><li>Local SEO and Google Business Profile</li><li>Monthly report on rankings, visits and calls</li></ul><a class="ch-go" href="seo-specialist-kerala/">See my SEO work<span aria-hidden="true">&#8594;</span></a></div><div class="ch-devw" aria-hidden="true"><div class="ch-dev"><div class="ch-bar"><i></i><i></i><i></i><span class="ch-url">google.com/search?q=best+interior+designer+in+kochi</span></div><div class="ch-scr sc-seo"><div class="sc-q"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>best interior designer in kochi</span></div><div class="sc-tabs"><span class="on">All</span><span>Maps</span><span>Images</span><span>News</span></div><ol class="sc-res"><li><i></i><span><b></b><em></em></span></li><li><i></i><span><b></b><em></em></span></li><li><i></i><span><b></b><em></em></span></li><li class="sc-you"><i></i><span><b>Your website</b><em>yourbusiness.in &#8250; services</em></span><strong>&#8593; #1</strong></li></ol></div></div><span class="ch-tag ch-tag1">Example &#183; local search</span><span class="ch-tag ch-tag2">Local SEO</span></div></article><article class="ch-ch" id="gads-work" data-i="1" aria-label="Google ads"><div class="ch-copy"><span class="ch-num" aria-hidden="true">02</span><p class="ch-k"><i aria-hidden="true"></i>Google ads</p><h3>Be the first result <em>when they search for you.</em></h3><p class="ch-intro">Someone in your town is searching for what you sell right now. I put your business at the top with Search, Performance Max and call campaigns, and set up conversion tracking before a rupee is spent.</p><ul class="ch-pts"><li>Search and call ads</li><li>Performance Max campaigns</li><li>Conversion tracking from day one</li></ul><a class="ch-go" href="google-ads-specialist-kerala/">See my Google ads work<span aria-hidden="true">&#8594;</span></a></div><div class="ch-devw" aria-hidden="true"><div class="ch-dev"><div class="ch-bar"><i></i><i></i><i></i><span class="ch-url">google.com/search?q=dentist+near+me</span></div><div class="ch-scr sc-gad"><div class="sc-q"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>dentist near me</span></div><div class="sc-ad"><small>Sponsored</small><div class="sc-adh"><i>Y</i><span><b>Your business</b><em>yourbusiness.in</em></span></div><b class="sc-adt">Book a visit today &#183; Open now</b><p>Trusted by families in your town. Call us or get directions.</p><div class="sc-btns"><span class="sc-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>Call</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Directions</span></div></div><ol class="sc-res sc-res2"><li><i></i><span><b></b><em></em></span></li><li><i></i><span><b></b><em></em></span></li></ol><i class="sc-cur"></i><div class="sc-toast"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></i><span><b>Calling Your business&#8230;</b><small>from the ad, tracked as a lead</small></span></div></div></div><span class="ch-tag ch-tag1">Example &#183; search ad</span><span class="ch-tag ch-tag2">Call and search ads</span></div></article><article class="ch-ch" id="infl-work" data-i="2" aria-label="Influencer marketing"><div class="ch-copy"><span class="ch-num" aria-hidden="true">03</span><p class="ch-k"><i aria-hidden="true"></i>Influencer marketing</p><h3>Creators your customers <em>already follow.</em></h3><p class="ch-intro">I work from my own dashboard of 10,000+ influencers across every niche. That lets me match your brand with the right Malayalam creators for your town and your customer, check their reach before you pay, and track what each collab brings in.</p><ul class="ch-pts"><li>10,000+ creators across every niche</li><li>Reach and audience checked before you pay</li><li>Reels and creator campaigns tracked to enquiries</li></ul><a class="ch-go" href="influencer-marketing-kerala/">See my influencer work<span aria-hidden="true">&#8594;</span></a></div><div class="ch-devw" aria-hidden="true"><div class="ch-dev"><div class="ch-bar"><i></i><i></i><i></i><span class="ch-url">instagram.com/reels</span></div><div class="ch-scr sc-ig"><div class="sc-reels"><div class="sc-rl" style="--g:linear-gradient(160deg,#ff9a3d,#ff3d77)"><i class="sc-play"></i><span><i></i><b>Food creator</b><small>Thrissur &#183; Malayalam</small></span></div><div class="sc-rl" style="--g:linear-gradient(160deg,#a259ff,#ff5f8f)"><i class="sc-play"></i><span><i></i><b>Fashion creator</b><small>Kochi &#183; Malayalam</small></span></div><div class="sc-rl" style="--g:linear-gradient(160deg,#2997ff,#7a5cff)"><i class="sc-play"></i><span><i></i><b>Tech creator</b><small>Kozhikode &#183; Malayalam</small></span></div></div><div class="sc-hearts"><i></i><i></i><i></i><i></i><i></i></div><div class="sc-stat"><b>10,000+</b><span>creators in my dashboard</span><em><i></i>Reach checked before you pay</em></div></div></div><span class="ch-tag ch-tag1">Example &#183; creator reels</span><span class="ch-tag ch-tag2">Malayalam creators</span></div></article><article class="ch-ch" id="ai-work" data-i="3" aria-label="AI solutions"><div class="ch-copy"><span class="ch-num" aria-hidden="true">04</span><p class="ch-k"><i aria-hidden="true"></i>AI solutions</p><h3>AI that answers your leads <em>while you sleep.</em></h3><p class="ch-intro">Your ads bring the enquiries. I build the AI that answers them straight away, asks the right questions and passes ready leads to your team, plus custom machine learning models in Python for your own data.</p><ul class="ch-pts"><li>AI chatbots for your website and WhatsApp</li><li>Lead qualification and follow-up automation</li><li>Custom machine learning models in Python</li></ul><div class="ch-proof"><span><b>98%</b>accuracy on my brain tumour classifier</span><span><b>99%</b>accuracy on my face mask detector</span></div><a class="ch-go" href="ai-solutions-developer-kerala/">See my AI work<span aria-hidden="true">&#8594;</span></a></div><div class="ch-devw" aria-hidden="true"><div class="ch-dev"><div class="ch-bar"><i></i><i></i><i></i><span class="ch-url">yourbusiness.in/chat</span></div><div class="ch-scr sc-ai"><div class="sc-chd"><i></i><span><b>Your business assistant</b><small><i></i>Online now</small></span></div><div class="sc-msgs"><p class="sc-me m1">Is the weekend batch still open?</p><p class="sc-typing"><i></i><i></i><i></i></p><p class="sc-bot m2">Yes, 4 seats left for Saturday. Shall I book a free call?</p><p class="sc-me m3">Yes please</p><p class="sc-saved m4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>Lead saved and sent to your team</p></div></div></div><span class="ch-tag ch-tag1">Example &#183; website chat</span><span class="ch-tag ch-tag2">Lead qualification</span></div></article></div></div></div></div>
@@ -2309,7 +2297,7 @@ img,video{max-width:100%}
 
 <section class="ct" id="contact" aria-labelledby="ct-h">
   <div class="ct-in">
-    <div class="ct-copy"><p class="kk"><i>&#8212;</i>Contact</p><h2 id="ct-h">Book a free audit with a digital marketing consultant <span>in Kerala</span></h2><p class="ct-p">Tell me what you sell and where you want more customers. I&#8217;ll come back with the first three things I&#8217;d fix.</p><ol class="ct-steps"><li><b>01</b><span>You send the form</span></li><li><b>02</b><span>I review your ads, site and search</span></li><li><b>03</b><span>You get the first three fixes</span></li></ol><div class="ct-links"><a class="ct-l ct-ig" href="https://www.instagram.com/farsana.in_" target="_blank" rel="noopener"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></i><span><small>Instagram</small><b>@farsana.in_</b></span><em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></em></a><a class="ct-l" href="mailto:sanafarsana001@gmail.com"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg></i><span><small>Email</small><b>sanafarsana001@gmail.com</b></span><em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></em></a><a class="ct-l ct-li" href="https://www.linkedin.com/in/farsanan" target="_blank" rel="noopener"><i><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45z"/></svg></i><span><small>LinkedIn</small><b>in/farsanan</b></span><em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></em></a></div></div>
+    <div class="ct-copy"><p class="kk"><i>&#8212;</i>Contact</p><h2 id="ct-h">Book a free audit with a digital marketing consultant <span>in Kerala</span></h2><p class="ct-p">Tell me what you sell and where you want more customers. I&#8217;ll come back with the first three things I&#8217;d fix.</p><ol class="ct-steps"><li><b>01</b><span>You send the form</span></li><li><b>02</b><span>I review your ads, site and search</span></li><li><b>03</b><span>You get the first three fixes</span></li></ol><div class="ct-links"><a class="ct-l ct-ig" href="https://www.instagram.com/farsana.in_" target="_blank" rel="noopener"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></i><span><small>Instagram</small><b>@farsana.in_</b></span><em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></em></a><a class="ct-l" href="mailto:sanafarsana001@gmail.com"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg></i><span><small>Email</small><b>sanafarsana001@gmail.com</b></span><em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></em></a><a class="ct-l ct-li" href="https://www.linkedin.com/in/farsanan" target="_blank" rel="noopener"><i><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45z"/></svg></i><span><small>LinkedIn</small><b>in/farsanan</b></span><em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></em></a></div><button type="button" class="ct-top" data-top><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>Back to top</button></div>
     <div class="cm" id="cm"><form class="cm-card" id="ctform" novalidate aria-labelledby="cm-t"><div class="cm-top"><span class="cm-lights" aria-hidden="true"><i></i><i></i><i></i></span><b id="cm-t">New audit request</b><span class="cm-live"><i aria-hidden="true"></i>Free &#183; takes a minute</span></div><div class="cm-hd"><div class="cm-line"><span class="cm-k">To</span><span class="cm-to"><i aria-hidden="true">F</i><b>Farsana N</b><small>Digital marketing consultant</small></span></div><label class="cm-line cm-from"><span class="cm-k">From</span><input type="email" name="email" id="cm-email" autocomplete="email" inputmode="email" placeholder="you@yourbusiness.com" required aria-describedby="cm-email-e"><em class="cm-err" id="cm-email-e" role="alert"></em></label><div class="cm-line"><span class="cm-k">Subject</span><span class="cm-subj" id="cm-subj" aria-live="polite">Free audit for <b>your business</b></span></div></div><div class="cm-body"><div class="cm-row"><label class="cm-f"><span>Your name</span><input name="name" autocomplete="name" placeholder="Anu Thomas" required aria-describedby="cm-name-e"><em class="cm-err" id="cm-name-e" role="alert"></em></label><label class="cm-f"><span>Business name</span><input name="business" id="cm-biz" autocomplete="organization" placeholder="Thomas Interiors, Kochi" required aria-describedby="cm-biz-e"><em class="cm-err" id="cm-biz-e" role="alert"></em></label></div><label class="cm-f"><span>Phone or WhatsApp <small>optional</small></span><input type="tel" name="phone" autocomplete="tel" inputmode="tel" placeholder="+91 98xxx xxxxx"></label><fieldset class="cm-pick"><legend>What do you need help with?</legend><div><label class="cm-chip"><input type="checkbox" name="services" value="Meta ads"><span>Meta ads</span></label><label class="cm-chip"><input type="checkbox" name="services" value="Google ads"><span>Google ads</span></label><label class="cm-chip"><input type="checkbox" name="services" value="SEO"><span>SEO</span></label><label class="cm-chip"><input type="checkbox" name="services" value="Influencer marketing"><span>Influencer marketing</span></label><label class="cm-chip"><input type="checkbox" name="services" value="Website"><span>Website</span></label><label class="cm-chip"><input type="checkbox" name="services" value="AI chatbot"><span>AI chatbot</span></label><label class="cm-chip"><input type="checkbox" name="services" value="Not sure yet"><span>Not sure yet</span></label></div></fieldset><label class="cm-f"><span>Tell me a little more</span><textarea name="message" rows="4" placeholder="What you sell, where your customers are, and what you have tried so far" required aria-describedby="cm-msg-e"></textarea><em class="cm-err" id="cm-msg-e" role="alert"></em></label><input class="cm-hp" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true"></div><div class="cm-foot"><button type="submit" class="cm-send"><span class="cm-send-t">Send my audit request</span><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg></i></button><p class="cm-note">Goes straight to my inbox. I reply to the email you enter above.</p><p class="cm-status" id="cm-status" role="status" aria-live="polite"></p></div></form><div class="cm-env" aria-hidden="true"><div class="cm-env-back"></div><div class="cm-env-letter"><i></i><i></i><i></i></div><div class="cm-env-front"></div><div class="cm-env-flap"></div></div><div class="cm-done" id="cm-done" tabindex="-1" hidden><div class="cm-tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></div><h3>Sent to Farsana&#8217;s inbox</h3><p>Thanks <b id="cm-dn">there</b>. I&#8217;ll read it myself and reply to <b id="cm-de">your email</b> with the first three things I&#8217;d fix.</p><ul class="cm-sum" id="cm-sum"></ul><button type="button" class="cm-again" id="cm-again">Send another request</button></div></div>
   </div>
 </section>
@@ -2728,41 +2716,121 @@ img,video{max-width:100%}
 </script>
 <script>
 (function(){
-  // results: cards and rows rise in as they arrive, and the totals roll into place once
-  var sec=document.getElementById('results'); if(!sec||!('IntersectionObserver' in window)) return;
-  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  sec.classList.add('rs-js');
-  var inner=sec.querySelector('.rs-stats');
-  Array.prototype.forEach.call(sec.querySelectorAll('.rs-stats .st'),function(li,i){li.style.setProperty('--d',(i*.09)+'s')});
-  Array.prototype.forEach.call(sec.querySelectorAll('.rs-more li'),function(li,i){li.style.setProperty('--d',(i*.05)+'s')});
-  // odometer: every digit becomes a wheel (0-9 twice) that rolls to its value; separators and symbols stay put.
-  // Wheels further right spin a little longer, so each number settles from left to right like a meter
-  function odo(b,tile){
-    var txt=b.textContent, di=0, html='';
-    for(var i=0;i<txt.length;i++){
-      var ch=txt.charAt(i);
-      if(/[0-9]/.test(ch)){
-        var strip='';for(var r=0;r<2;r++)for(var d=0;d<10;d++)strip+='<span>'+d+'</span>';
-        var t=(1.5+di*.14+tile*.1).toFixed(2), dl=(.15+tile*.09).toFixed(2);
-        html+='<span class="od-d"><span class="od-s" style="--n:'+(10+ +ch)+';--t:'+t+'s;--dl:'+dl+'s">'+strip+'</span></span>'; di++;
-      } else html+='<span class="od-c">'+ch+'</span>';
+  // results: a pinned dark screen. A cloud of particles gathers into a rupee sign as the screen arrives, then re-forms into a
+  // phone, a chat bubble and a 10x10 grid as you scroll, while the matching total rolls in beside it. The cloud parts around
+  // the pointer. It only runs while on screen; without it (reduced motion, watches, short screens) the totals sit in a plain row
+  var root=document.getElementById('rx'); if(!root) return;
+  var cv=root.querySelector('.rx-cv'), ctx=cv.getContext&&cv.getContext('2d');
+  if(!ctx||window.matchMedia('(prefers-reduced-motion: reduce)').matches||window.innerWidth<=300||window.innerHeight<520||!('IntersectionObserver' in window)) return;
+  var track=root.querySelector('.rx-track'), screen=root.querySelector('.rx-screen'), hint=root.querySelector('.rx-hint');
+  var acts=Array.prototype.slice.call(root.querySelectorAll('.rx-act')), glows=Array.prototype.slice.call(root.querySelectorAll('.rx-glow i'));
+  // the step rail: fills as you go, and each step can be clicked
+  var nav=document.createElement('div'); nav.className='rx-nav';
+  ['Spent','Calls','Messages','Campaigns'].forEach(function(t,j){nav.insertAdjacentHTML('beforeend','<button type="button" aria-label="Show '+t.toLowerCase()+'"><i></i><b>0'+(j+1)+'</b><span>'+t+'</span></button>')});
+  root.querySelector('.rx-ui').appendChild(nav);
+  var btns=Array.prototype.slice.call(nav.children);
+  root.classList.add('rx-live');
+  function clamp(v){return v<0?0:v>1?1:v}
+  function E(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
+  var small=window.innerWidth<700, N=small?1300:2600, fine=window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+  var X=new Float32Array(N),Y=new Float32Array(N),VX=new Float32Array(N),VY=new Float32Array(N),SX=new Float32Array(N),SY=new Float32Array(N);
+  var D=new Float32Array(N),AN=new Float32Array(N),R=new Float32Array(N),PH=new Float32Array(N),BK=new Uint8Array(N);
+  for(var i=0;i<N;i++){SX[i]=Math.random(); SY[i]=Math.random(); D[i]=Math.random()*.35; AN[i]=Math.random()*6.283; R[i]=.4+Math.random()*.6; PH[i]=Math.random()*6.283}
+  var COL=['#2997ff','#4f8dff','#7a75ff','#a259ff','#c35bd6','#e45cae','#ff5f8f'];
+  // each shape is drawn once off screen and N points are picked from its pixels, in a -0.5..0.5 box
+  function sample(draw){
+    var z=320, c=document.createElement('canvas'); c.width=c.height=z;
+    var g=c.getContext('2d'); g.fillStyle='#fff'; draw(g,z);
+    var d=g.getImageData(0,0,z,z).data, pts=[];
+    for(var y=0;y<z;y+=2) for(var x=0;x<z;x+=2) if(d[(y*z+x)*4+3]>128) pts.push(x/z-.5,y/z-.5);
+    var out=new Float32Array(N*2), n=pts.length/2;
+    for(var k=0;k<N;k++){var q=(Math.random()*n|0)*2; out[k*2]=pts[q]+(Math.random()-.5)/z*2; out[k*2+1]=pts[q+1]+(Math.random()-.5)/z*2}
+    return out;
+  }
+  // a filled icon, or an outlined one with dots inside (the chat bubble with its typing dots)
+  function icon(path,dots){return function(g,z){
+    g.save(); g.translate(z*.1,z*.1); g.scale(z*.8/24,z*.8/24);
+    if(dots){g.strokeStyle='#fff'; g.lineWidth=2.2; g.lineJoin='round'; g.stroke(new Path2D(path)); dots.forEach(function(c){g.beginPath(); g.arc(c[0],c[1],1.35,0,6.283); g.fill()})}
+    else g.fill(new Path2D(path));
+    g.restore();
+  }}
+  var T=null, W=0, H=0, dpr=1, S=0, cx=0, cy=0, top=0, TH=0, vis=false, raf=0, cur=0, act=-1, mx=-1e4, my=-1e4, lastF=[];
+  function shapes(){
+    T=[null,
+      sample(function(g,z){g.font='700 '+(z*.95)+'px "Inter Tight",Inter,Arial,sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText('₹',z/2,z*.54)}),
+      sample(icon('M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z')),
+      sample(icon('M21 11.5a8.4 8.4 0 0 1-12.3 7.4L3 21l2.1-5.7A8.4 8.4 0 1 1 21 11.5z',[[8.4,11.5],[12.4,11.5],[16.4,11.5]])),
+      sample(function(g,z){for(var a=0;a<10;a++) for(var b=0;b<10;b++){g.beginPath(); g.arc(z*(.14+a*.08),z*(.14+b*.08),z*.027,0,6.283); g.fill()}})];
+  }
+  function layout(){
+    W=screen.clientWidth; H=screen.clientHeight; dpr=Math.min(2,window.devicePixelRatio||1);
+    cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr);
+    if(W>900){S=Math.min(W*.4,H*.66); cx=W*.7; cy=H*.5} else {S=Math.min(W*.8,H*.42); cx=W/2; cy=H*.32}
+    root.style.setProperty('--gx',(cx/W*100).toFixed(1)+'%'); root.style.setProperty('--gy',(cy/H*100).toFixed(1)+'%');
+    var b=track.getBoundingClientRect(); top=b.top+window.scrollY; TH=b.height;
+  }
+  function count(el){
+    var to=+el.getAttribute('data-to'), t0=null;
+    if(el._r) cancelAnimationFrame(el._r);
+    function st(ts){
+      if(t0===null) t0=ts;
+      var k=Math.min(1,(ts-t0)/1200); el.textContent=Math.round(to*(1-Math.pow(1-k,3))).toLocaleString('en-IN');
+      if(k<1) el._r=requestAnimationFrame(st);
     }
-    b.innerHTML='<span class="sr">'+txt+'</span><span class="od" aria-hidden="true">'+html+'</span>';
+    el._r=requestAnimationFrame(st);
   }
-  // campaigns: 100 dots (1 dot = 100 campaigns) that light up in a scattered order, in the brand gradient from left to right
-  var waf=inner&&inner.querySelector('.st-waf');
-  if(waf){
-    var cols=['#2997ff','#5b8cff','#8a6dff','#a259ff','#c25ccf','#e05aa8','#ff5f8f'], dots='';
-    for(var w=0;w<100;w++){var col=w%20; dots+='<i style="--c:'+cols[Math.min(6,Math.floor(col/20*7))]+';--dl:'+(.3+Math.random()*1.6).toFixed(2)+'s"></i>'}
-    waf.innerHTML=dots;
+  function setAct(k){
+    if(k===act) return; act=k;
+    acts.forEach(function(a,j){a.classList.toggle('on',j===k); a.classList.toggle('past',j<k)});
+    glows.forEach(function(g,j){g.classList.toggle('on',j===k)});
+    btns.forEach(function(b,j){b.classList.toggle('on',j===k)});
+    var c=acts[k].querySelector('.rx-c'); if(c) count(c);
   }
-  if(inner&&!reduce){Array.prototype.forEach.call(inner.querySelectorAll('.st-n'),odo); inner.classList.add('st-js')}
-  var io=new IntersectionObserver(function(es){es.forEach(function(e){
-    if(!e.isIntersecting) return;
-    var t=e.target; t.classList.add('rs-on'); io.unobserve(t);
-  })},{threshold:.15,rootMargin:'0px 0px -8% 0px'});
-  io.observe(inner);
-  Array.prototype.forEach.call(sec.querySelectorAll('.rs-card,.rs-more li'),function(el){io.observe(el)});
+  function frame(now){
+    raf=0; if(!vis||!T) return;
+    // where the scroll is: arriving (the cloud gathers), then four holds with a re-form between each
+    var rel=top-__S.y, tot=TH-__S.h, u=0, m;
+    if(rel>0) m=clamp(1-rel/(__S.h*.9));
+    else {u=clamp(-rel/tot)*4; var a=Math.min(3,Math.floor(u)), f=u-a; m=1+a+(a<3?E(clamp((f-.5)/.5)):0)}
+    cur+=(m-cur)*.08; if(Math.abs(m-cur)<.0005) cur=m;
+    setAct(rel>0?0:Math.max(0,Math.min(3,Math.round(cur-1))));
+    btns.forEach(function(b,j){var f=Math.round(clamp(u-j)*200)/200; if(lastF[j]!==f){lastF[j]=f; b.style.setProperty('--f',f)}});
+    hint.style.opacity=u<.12?1:0;
+    var i0=Math.min(3,Math.floor(cur)), fr=cur>=4?1:cur-i0, A=T[i0], B=T[i0+1], t=now*.001, RAD=small?70:110, RR=RAD*RAD;
+    for(var i=0;i<N;i++){
+      var tt=E(clamp((fr-D[i])/.65)), ax, ay;
+      if(i0===0){ax=SX[i]*W; ay=SY[i]*H} else {ax=cx+A[i*2]*S; ay=cy+A[i*2+1]*S}
+      var bx=cx+B[i*2]*S, by=cy+B[i*2+1]*S, burst=Math.sin(Math.PI*tt)*S*.24*R[i];
+      var tx=ax+(bx-ax)*tt+Math.cos(AN[i])*burst+Math.sin(t*1.3+PH[i])*1.4;
+      var ty=ay+(by-ay)*tt+Math.sin(AN[i])*burst+Math.cos(t*1.1+PH[i])*1.4;
+      var vx=VX[i]*.82+(tx-X[i])*.075, vy=VY[i]*.82+(ty-Y[i])*.075;
+      var dx=X[i]-mx, dy=Y[i]-my, d2=dx*dx+dy*dy;
+      if(d2<RR){var d=Math.sqrt(d2)||1, p=(1-d/RAD)*4.5; vx+=dx/d*p; vy+=dy/d*p}
+      VX[i]=vx; VY[i]=vy; X[i]+=vx; Y[i]+=vy;
+      var bk=((X[i]-cx+S*.55)/(S*1.1)*7)|0; BK[i]=bk<0?0:bk>6?6:bk;
+    }
+    ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H); ctx.globalCompositeOperation='lighter'; ctx.globalAlpha=.85;
+    var sz=small?1.7:2;
+    for(var b=0;b<7;b++){ctx.fillStyle=COL[b]; ctx.beginPath(); for(var j=0;j<N;j++) if(BK[j]===b) ctx.rect(X[j],Y[j],sz,sz); ctx.fill()}
+    raf=requestAnimationFrame(frame);
+  }
+  function kick(){if(!raf&&vis&&T) raf=requestAnimationFrame(frame)}
+  btns.forEach(function(b,j){b.addEventListener('click',function(){
+    window.scrollTo({top:top+(TH-__S.h)*(j+.25)/4,behavior:'smooth'});
+  })});
+  if(fine){
+    screen.addEventListener('pointermove',function(e){var r=screen.getBoundingClientRect(); mx=e.clientX-r.left; my=e.clientY-r.top});
+    screen.addEventListener('pointerleave',function(){mx=my=-1e4});
+  }
+  layout();
+  for(var k=0;k<N;k++){X[k]=SX[k]*W; Y[k]=SY[k]*H}
+  setAct(0);
+  // wait for the display font so the rupee sign is sampled in it
+  (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(function(){shapes(); kick()});
+  new IntersectionObserver(function(es){vis=es[0].isIntersecting; kick()},{rootMargin:'15% 0px'}).observe(track);
+  if(window.ResizeObserver) new ResizeObserver(function(){layout()}).observe(document.body);
+  window.addEventListener('resize',layout);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden) kick()});
 })();
 </script>
 <script>
@@ -3332,6 +3400,39 @@ img,video{max-width:100%}
   rv.addEventListener('click',function(e){if(e.target===rv) shut()});
   rv.addEventListener('cancel',function(e){e.preventDefault(); shut()});
   rv.addEventListener('close',function(){rv.classList.remove('rv-in'); document.documentElement.style.overflow=''; btn.focus({preventScroll:true})});
+})();
+</script>
+<button class="tt" id="tt" type="button" aria-label="Back to top"><svg class="tt-ring" viewBox="0 0 36 36" aria-hidden="true"><defs><linearGradient id="ttg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2997ff"/><stop offset=".55" stop-color="#a259ff"/><stop offset="1" stop-color="#ff5f8f"/></linearGradient></defs><circle class="tt-bg" cx="18" cy="18" r="15.9"/><circle class="tt-fg" cx="18" cy="18" r="15.9" pathLength="100"/></svg><svg class="tt-ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button>
+<script>
+(function(){
+  // back to top: the floating button (shown after one screen) and the link under the contact form glide to the start
+  var tt=document.getElementById('tt'); if(!tt) return;
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches, busy=0;
+  function up(e){
+    if(e) e.preventDefault();
+    var from=window.scrollY; if(!from) return;
+    if(reduce){window.scrollTo(0,0); return}
+    var t0=null, dur=Math.min(1600,500+from/6);
+    cancelAnimationFrame(busy);
+    (function step(ts){
+      if(t0===null) t0=ts;
+      var k=Math.min(1,(ts-t0)/dur), q=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
+      window.scrollTo(0,from*(1-q));
+      if(k<1) busy=requestAnimationFrame(step);
+    })(performance.now());
+    var logo=document.querySelector('.hd-logo'); if(logo) setTimeout(function(){logo.focus({preventScroll:true})},dur);
+  }
+  tt.addEventListener('click',up);
+  Array.prototype.forEach.call(document.querySelectorAll('[data-top]'),function(b){b.addEventListener('click',up)});
+  var ticking=false;
+  function paint(){
+    ticking=false;
+    var y=window.scrollY, max=document.documentElement.scrollHeight-window.innerHeight;
+    tt.classList.toggle('on',y>window.innerHeight);
+    tt.style.setProperty('--p',max>0?Math.min(100,y/max*100).toFixed(1):0);
+  }
+  window.addEventListener('scroll',function(){if(!ticking){ticking=true; requestAnimationFrame(paint)}},{passive:true});
+  window.addEventListener('resize',paint); paint();
 })();
 </script>
 </body>
