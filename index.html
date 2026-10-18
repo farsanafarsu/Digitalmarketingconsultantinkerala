@@ -2851,7 +2851,7 @@ img,video{max-width:100%}
 <script>
 (function(){
   // locations pile: Matter.js loads as the section approaches; at 30% visibility the chips drop in one by one from
-  // above, tumble and settle on the floor line. Chips can be grabbed and thrown. The engine only runs while on screen
+  // above and stack up in level rows on the floor line. Chips can be grabbed and thrown. The engine only runs while on screen
   var sec=document.getElementById('locations'), pile=document.getElementById('lcpile'); if(!sec||!pile) return;
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver' in window)||window.innerWidth<=300) return;
   var chips=Array.prototype.slice.call(pile.querySelectorAll('.lc-chip'));
@@ -2864,7 +2864,8 @@ img,video{max-width:100%}
     var sc=document.createElement('script'); sc.src='https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js'; sc.async=true;
     sc.onload=cb; sc.onerror=fail; document.head.appendChild(sc);
   }
-  function opts(h){return {chamfer:{radius:h/2-.5},restitution:.35,friction:.5,frictionAir:.01,frictionStatic:.8,density:.0016}}
+  // small physics corners (the pill look is pure CSS) so a chip resting on another sits flat instead of sliding off a round end
+  function opts(h){return {chamfer:{radius:Math.min(6,h/2-.5)},restitution:.1,friction:.9,frictionAir:.012,frictionStatic:1,density:.0016}}
   function buildWalls(){
     if(walls.length) M.Composite.remove(eng.world,walls);
     W=pile.clientWidth; H=pile.clientHeight;
@@ -2876,7 +2877,8 @@ img,video{max-width:100%}
   }
   function measure(it){it.w=it.el.offsetWidth; it.h=it.el.offsetHeight}
   function makeBody(it,x,y,a){
-    var b=M.Bodies.rectangle(x,y,it.w,it.h,opts(it.h)); M.Body.setAngle(b,a); b.plugin.el=it.el; return b;
+    // infinite inertia: chips never rotate, so they always fall and land level
+    var b=M.Bodies.rectangle(x,y,it.w,it.h,opts(it.h)); M.Body.setAngle(b,0); M.Body.setInertia(b,Infinity); b.plugin.el=it.el; return b;
   }
   function keepInside(){
     items.forEach(function(it){
@@ -2918,17 +2920,30 @@ img,video{max-width:100%}
   function kick(){if(!raf&&onScreen&&eng){last=0; acc=0; raf=requestAnimationFrame(tick)}}
   function drop(){
     if(dropped) return; dropped=true;
-    // Kerala first in a shuffled order, the black abroad pills last so they land on top
-    var ker=items.filter(function(it){return !it.ab}), ab=items.filter(function(it){return it.ab});
-    ker.sort(function(){return Math.random()-.5}); ab.sort(function(){return Math.random()-.5});
-    ker.concat(ab).forEach(function(it,k){
-      setTimeout(function(){
-        var half=it.w/2, x=half+Math.random()*Math.max(1,W-it.w), y=-it.h-40-Math.random()*160-(it.ab?60:0);
-        it.b=makeBody(it,x,y,(Math.random()-.5)*1.2);
-        M.Body.setAngularVelocity(it.b,(Math.random()-.5)*.12);
-        M.Body.setVelocity(it.b,{x:(Math.random()-.5)*3,y:2});
-        M.Composite.add(eng.world,it.b); it.el.classList.add('lc-on'); sync(); landed++; still=0; kick();
-      },k*100+(it.ab?220:0));
+    // the chips are packed in page order into centred rows of four (fewer when four don't fit the width), bottom row
+    // first; each row of four falls together, straight down onto its spots, so the pile builds up in level layers
+    var gap=12, per=4, rows=[], row=[], w=0;
+    items.forEach(function(it){
+      if(row.length&&(row.length===per||w+gap+it.w>W)){rows.push(row); row=[]; w=0}
+      w+=(row.length?gap:0)+it.w; row.push(it);
+    });
+    if(row.length) rows.push(row);
+    rows.forEach(function(r){r.tw=r.reduce(function(s,it){return s+it.w},0)+gap*(r.length-1)});
+    // make room if the stack is taller than the pile (narrow screens)
+    var need=rows.reduce(function(s,r){return s+Math.max.apply(null,r.map(function(it){return it.h}))},0)+40;
+    if(need>H){pile.style.height=need+'px'; buildWalls()}
+    var t=0;
+    rows.forEach(function(r,ri){
+      var x=(W-r.tw)/2;
+      r.forEach(function(it,i){
+        var cx=x+it.w/2; x+=it.w+gap;
+        setTimeout(function(){
+          it.b=makeBody(it,cx,-it.h-30,0);
+          M.Body.setVelocity(it.b,{x:0,y:3});
+          M.Composite.add(eng.world,it.b); it.el.classList.add('lc-on'); sync(); landed++; still=0; kick();
+        },t);
+      });
+      t+=450;
     });
   }
   function point(e){var r=pile.getBoundingClientRect(); return {x:e.clientX-r.left,y:e.clientY-r.top}}
