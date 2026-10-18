@@ -3041,6 +3041,9 @@ img,video{max-width:100%}
   // If sending fails, the visitor gets a one-tap email fallback with everything already filled in
   var root=document.getElementById('cm'), f=document.getElementById('ctform'); if(!root||!f) return;
   var TO='sanafarsana001@gmail.com', ENDPOINT='https://formsubmit.co/ajax/'+TO;
+  // every enquiry is also saved as a row in my Google Sheet through an Apps Script web app (google-sheet/Code.gs).
+  // Paste the deployment's /exec URL here; while it is empty, nothing is sent to the sheet
+  var SHEET_URL='';
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var subj=document.getElementById('cm-subj'), biz=document.getElementById('cm-biz'), status=document.getElementById('cm-status');
   var btn=f.querySelector('.cm-send'), btnT=f.querySelector('.cm-send-t'), done=document.getElementById('cm-done');
@@ -3077,6 +3080,9 @@ img,video{max-width:100%}
     if(f.elements._honey.value) return;
     var d=data();
     btn.classList.add('is-busy'); btn.disabled=true; btnT.textContent='Sending…';
+    // fire-and-forget: plain-text body avoids a CORS preflight; the email send below decides success or failure
+    if(SHEET_URL) fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify({name:d.name,email:d.email,business:d.business,phone:d.phone,services:d.services,message:d.message,page:location.href})}).catch(function(){});
     var payload={name:d.name,email:d.email,business:d.business,phone:d.phone||'Not given',services:d.services,message:d.message,
       _subject:'Free audit request: '+d.business+' ('+d.name+')',_template:'table',_captcha:'false',_honey:''};
     var req=fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)})
