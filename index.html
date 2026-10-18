@@ -392,8 +392,38 @@ html.pl-intro .scrolly .hint,html.pl-intro.scrolly .hint{animation:inhint .8s .9
 .ap-cv i{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--grad);color:#fff;transition:transform .5s var(--ease)}
 .ap-cv i svg{width:18px;height:18px}
 .ap-cv:hover{background:#fff;box-shadow:0 14px 40px -12px rgba(162,89,255,.7)}
-.ap-cv:hover i{transform:translateY(3px)}
+.ap-cv:hover i{transform:translate(2px,-2px)}
 .ap-cv:focus-visible{outline:2px solid #a259ff;outline-offset:3px}
+/* resume viewer: "Explore my resume" opens the PDF in a dialog with its own download button. Without JS, or where the
+   browser can't show PDFs inline, the PDF opens in a new tab or the dialog offers open/download links instead */
+.rv{width:min(940px,calc(100% - 32px));max-width:none;height:min(92vh,1180px);max-height:none;margin:auto;padding:0;border:0;border-radius:22px;background:#fff;color:#1d1d1f;box-shadow:0 40px 120px -30px rgba(0,0,0,.6);overflow:hidden;opacity:0;transform:translateY(24px) scale(.97);transition:opacity .35s var(--ease),transform .5s var(--ease)}
+.rv.rv-in{opacity:1;transform:none}
+.rv::backdrop{background:rgba(8,8,12,.62);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.rv-box{display:flex;flex-direction:column;height:100%}
+.rv-bar{display:flex;align-items:center;gap:10px;padding:12px 12px 12px 22px;border-bottom:1px solid #ececf0}
+.rv-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;font-family:Inter,system-ui,sans-serif}
+.rv-t b{font-family:var(--display);font-size:17px;font-weight:600;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rv-t span{font-size:12px;font-weight:500;color:#86868b}
+.rv-dl{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 18px 0 14px;border-radius:99px;background:#0b0b0c;color:#fff;font:600 14px/1 Inter,system-ui,sans-serif;text-decoration:none;transition:box-shadow .3s,transform .2s}
+.rv-dl svg{width:17px;height:17px}
+.rv-dl:hover{box-shadow:0 12px 30px -10px rgba(162,89,255,.8)}
+.rv-dl:active{transform:scale(.97)}
+.rv-x{display:grid;place-items:center;flex:none;width:42px;height:42px;padding:0;border:0;border-radius:50%;background:#f2f2f5;color:#1d1d1f;cursor:pointer;transition:background .2s}
+.rv-x:hover{background:#e6e6ea}
+.rv-x svg{width:18px;height:18px}
+.rv-dl:focus-visible,.rv-x:focus-visible,.rv-alt a:focus-visible{outline:2px solid #a259ff;outline-offset:2px}
+.rv-doc{position:relative;flex:1;min-height:0;background:#f5f5f7}
+.rv-doc iframe{display:block;width:100%;height:100%;border:0}
+.rv-alt{display:none;height:100%;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;text-align:center;font:500 15px/1.5 Inter,system-ui,sans-serif;color:#6e6e73}
+.rv-alt a{color:#1d1d1f;font-weight:600}
+.rv-noview .rv-doc iframe{display:none}.rv-noview .rv-alt{display:flex}
+@media (max-width:600px){
+  .rv{width:100%;height:100%;max-height:100%;border-radius:0}
+  .rv-bar{padding:10px 10px 10px 16px}
+  .rv-dl{padding:0 14px 0 12px}
+}
+@media (max-width:360px){.rv-dl span{display:none}.rv-dl{width:42px;padding:0;justify-content:center}}
+@media (prefers-reduced-motion: reduce){.rv{transition:none}}
 .ap-say em{font-style:normal}
 .ap-say em .w2,.ap-say em:not(:has(.w2)){background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 /* the about scene overlaps the end of the hero so there is no empty black screen between them.
@@ -2073,7 +2103,7 @@ img,video{max-width:100%}
       <div class="ap-copy">
         <h2 id="about-h" class="ap-name">Farsana, digital marketing consultant in Kerala.</h2>
         <p class="ap-say" id="apsay">I help businesses get <em>found</em> on Google, in <em>AI answers</em>, and in the feeds where their customers scroll. I bring in leads through paid ads and build websites that turn visitors into customers. And because I can read the code behind your tracking, I can tell you if the problem is the ad, the landing page or the tracking.</p>
-        <a class="ap-cv" href="assets/Farsana-N-Resume.pdf" download="Farsana-N-Resume.pdf"><span>Download my resume</span><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></i></a>
+        <a class="ap-cv" id="apcv" href="assets/Farsana-N-Resume.pdf" target="_blank" rel="noopener" aria-haspopup="dialog"><span>Explore my resume</span><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></i></a>
       </div>
     </div>
   </div>
@@ -3274,6 +3304,38 @@ img,video{max-width:100%}
   window.addEventListener('resize',function(){mode(); ask()});
   if(wide.addEventListener) wide.addEventListener('change',mode);
   mode();
+})();
+</script>
+<dialog class="rv" id="rv" aria-labelledby="rvt">
+  <div class="rv-box">
+    <div class="rv-bar">
+      <div class="rv-t"><b id="rvt">Farsana N &middot; Resume</b><span>Digital marketing consultant &middot; PDF</span></div>
+      <a class="rv-dl" href="assets/Farsana-N-Resume.pdf" download="Farsana-N-Resume.pdf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><span>Download</span></a>
+      <button class="rv-x" type="button" aria-label="Close resume"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+    <div class="rv-doc">
+      <iframe title="Farsana N resume"></iframe>
+      <div class="rv-alt"><p>Your browser can&rsquo;t preview the PDF here.</p><p><a href="assets/Farsana-N-Resume.pdf" target="_blank" rel="noopener">Open it in a new tab</a> or use Download above.</p></div>
+    </div>
+  </div>
+</dialog>
+<script>
+(function(){
+  // resume viewer: open the PDF in the dialog (loaded on first open), close on the X, Esc or a click outside
+  var btn=document.getElementById('apcv'), rv=document.getElementById('rv'); if(!btn||!rv||!rv.showModal) return;
+  var frame=rv.querySelector('iframe'), x=rv.querySelector('.rv-x'), src=btn.getAttribute('href');
+  if(navigator.pdfViewerEnabled===false) rv.classList.add('rv-noview');
+  btn.addEventListener('click',function(e){
+    e.preventDefault();
+    if(!frame.getAttribute('src')&&!rv.classList.contains('rv-noview')) frame.src=src+'#toolbar=0&navpanes=0&view=FitH';
+    document.documentElement.style.overflow='hidden';
+    rv.showModal(); requestAnimationFrame(function(){rv.classList.add('rv-in')});
+  });
+  function shut(){rv.classList.remove('rv-in'); setTimeout(function(){if(rv.open) rv.close()},window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:300)}
+  x.addEventListener('click',shut);
+  rv.addEventListener('click',function(e){if(e.target===rv) shut()});
+  rv.addEventListener('cancel',function(e){e.preventDefault(); shut()});
+  rv.addEventListener('close',function(){rv.classList.remove('rv-in'); document.documentElement.style.overflow=''; btn.focus({preventScroll:true})});
 })();
 </script>
 </body>
