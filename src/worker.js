@@ -12,6 +12,12 @@ export default {
       url.port = "";
       return Response.redirect(url.toString(), 301);
     }
+    // Google's verification file must return 200 at its exact .html URL,
+    // not the asset server's redirect to the extensionless path.
+    if (/^\/google[0-9a-f]+\.html$/.test(url.pathname)) {
+      url.pathname = url.pathname.slice(0, -5);
+      return env.ASSETS.fetch(new Request(url, request));
+    }
     return env.ASSETS.fetch(request);
   },
 };
