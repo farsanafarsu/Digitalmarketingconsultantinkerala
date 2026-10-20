@@ -1,0 +1,10 @@
+{
+  // Cloudflare Workers static-assets deploy for this site (no build step).
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "digitalmarketingconsultantinkerala",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": ".",
+    "not_found_handling": "404-page"
+  }
+}

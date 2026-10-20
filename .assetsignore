@@ -1,0 +1,13 @@
+# Working files kept in the repo but off the public site (mirrors _config.yml excludes).
+Farsana Meta Ads Case Studies.zip
+assets/colourpallet
+assets/content
+google-sheet
+_seo
+.vscode
+.git
+README.md
+_config.yml
+wrangler.jsonc
+.assetsignore
+.gitattributes
