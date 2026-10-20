@@ -1,0 +1,11 @@
+/* TEAM */
+Digital marketing consultant: Farsana N
+Contact: sanafarsana001 [at] gmail.com
+LinkedIn: https://www.linkedin.com/in/farsanan
+From: Thiruvananthapuram, Kerala, India
+
+/* SITE */
+Last update: 2026/10/20
+Language: English
+Standards: HTML5, CSS3
+Software: Hand-written HTML, CSS and JavaScript; hosted on Cloudflare Workers

@@ -245,3 +245,25 @@ Rankings **Not verified**: the search tool returns US results, not google.co.in.
 ### Changes
 - Homepage: title, og:title, WebPage name, description, H1 ("The best digital marketing consultant in Kerala gets your business found like this."), About paragraph adds "freelance digital marketing expert" / "digital marketer in Kerala", stronger proof in the "best" FAQ, new FAQ "Are you a freelance digital marketer in Kerala?" (HTML and FAQ schema).
 - Service titles prefixed "Best …" (Meta Ads, Google Ads, SEO, Social media, Influencer marketing consultant, AI solutions developer).
+
+---
+
+## 16. Fixes from the Medialab audit (20 Oct 2026, scored 86/100)
+
+| Audit item | Status | Change |
+|---|---|---|
+| FAIL HTML size 421.7 KB | Fixed | 97 KB. CSS → `assets/home.css`, 22 scripts → `assets/home.js` (deferred, each block isolated with try/catch), embedded portrait → `assets/farsana-digital-marketing-consultant-kerala.webp`, decorative `aria-hidden` mock-ups and the duplicate brand row are now injected by home.js |
+| FAIL inline CSS 183 KB | Fixed | 0 KB inline; external CSS cached 30 days, linked with `?v=` |
+| Security headers (HSTS, nosniff, X-Frame-Options, CSP) and charset | Fixed | Set in `src/worker.js`; CSP allows Google Fonts, cdnjs (Matter.js), the Apps Script / FormSubmit form endpoints and Cloudflare analytics |
+| llms.txt, humans.txt | Fixed | Added at the root |
+| Meta description 158 chars | Fixed | 146 chars |
+| twitter:image, favicon | Fixed | All pages; favicon.svg/.ico + apple-touch-icon |
+| Next-gen images (45 PNG) | Fixed | All 35 PNG files converted to lossless WebP; references updated; PNGs removed |
+| Iframe | Fixed | Resume viewer iframe is created only when the dialog opens |
+| Author / date | Fixed | Footer byline (`class="author"`, `rel="author"`) + `<time>`; WebPage schema has author, datePublished, dateModified |
+| Keyword in image alt | Fixed | Portrait alt text |
+| `<main>` missing | Fixed | Homepage content wrapped in `<main id="main">` |
+| Keyword density 0.1% | Improved | 9 natural uses (title, description, H1, 2 H2s, intro, FAQ, contact, footer, alt). The tool wants 0.5% (~19 uses on this page); not done because that level of repetition reads as keyword stuffing |
+| Keyword in URL | Won't fix | It is the homepage (`/`); a separate "best-…" page would compete with it |
+
+Gotcha found: a `url()` inside a CSS custom property set in an inline style resolves against the stylesheet that uses it, so brand logos broke once CSS moved to `assets/`. They now use root-absolute `/assets/...` paths.
