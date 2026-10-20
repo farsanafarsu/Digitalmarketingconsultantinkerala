@@ -11,3 +11,6 @@ _config.yml
 wrangler.jsonc
 .assetsignore
 .gitattributes
+src
+.wrangler
+.claude

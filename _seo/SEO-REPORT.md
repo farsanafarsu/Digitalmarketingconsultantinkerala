@@ -1,4 +1,4 @@
-# SEO report: farsanafarsu.github.io/Digitalmarketingconsultantinkerala
+# SEO report: farsanaa.in (formerly farsanafarsu.github.io/Digitalmarketingconsultantinkerala)
 
 Prepared 18 Oct 2026. This folder starts with `_`, so GitHub Pages does not publish it.
 Rollback point: Git tag `pre-seo-checkpoint`. All changes are on branch `seo-optimisation`, which has not been pushed.
@@ -214,3 +214,34 @@ Publish them under `/blog/<slug>/` only once you have 2–3 ready, and add `/blo
 | 4 | Read the Search Console Performance report; for pages with impressions but low CTR, rewrite titles; decide on a custom domain | You + me |
 
 Expect the first meaningful Search Console data after 2–4 weeks, and movement on competitive Kerala keywords over months, not weeks. No ranking can be guaranteed.
+
+---
+
+## 15. Update 20 Oct 2026: move to farsanaa.in and "best" keyword pass
+
+### Domain move
+- Every canonical, Open Graph URL, JSON-LD `@id`/`url`, the sitemap and robots.txt now use `https://farsanaa.in/`. The 404 page's links became root-relative (`/…`).
+- `src/worker.js` (Cloudflare Worker) 301-redirects `http://` and `www.farsanaa.in` (and the workers.dev URL) to `https://farsanaa.in`, so only one copy is indexable. Before this, all of them returned 200.
+- The old github.io copy now carries canonicals pointing to farsanaa.in. Best: turn off GitHub Pages (repo Settings → Pages → Unpublish) once farsanaa.in is indexed, or leave it; the canonicals consolidate it.
+- Search Console: add a **Domain** property for `farsanaa.in` (DNS TXT record in Cloudflare), submit `https://farsanaa.in/sitemap.xml`, and request indexing for the homepage and service pages.
+
+### Competitors seen for "best digital marketing consultant in Kerala" (raw HTML, 20 Oct 2026)
+Rankings **Not verified**: the search tool returns US results, not google.co.in.
+
+| Site | Title | H1s / H2s | Words | Exact phrase uses | Schema |
+|---|---|---|---|---|---|
+| rahoof.in | Best Digital Marketing Consultant in Kerala \| Rahoof | 1 / 1 | ~1,280 | 24 (heavy repetition) | Person, FAQPage, Article |
+| kvhudaif.com | Brand Consultant in Kerala \| Digital Marketing Consultant in Kerala | 1 / 15 | ~1,420 | 0 | Person, Article |
+| akhilsutheesh.com | Best Digital Marketer in Kerala \| Akhil Sutheesh | **0** / 2 | ~460 | 0 | Person, Video |
+| sijiraju.com | Best Digital Marketer in Thrissur, Kerala \| Freelancer | 1 / 15 | ~2,490 | 0 | Person, Article |
+| sidhthemarketer.com (Trivandrum) | Best digital marketing freelancer in Trivandrum | 1 (empty) / 5 | ~590 | 0 | Person, Organization, Blog |
+| sinupsabu.in (Trivandrum) | Best Digital Marketing Consultant & Trainer in Trivandrum | **7** / 17 | ~1,200 | 0 | Person, ProfilePage |
+| anjuanuraj.com | Digital Marketing Consultant in Kerala \| Google & Meta Ads Expert | 1 / 1 | ~1,175 | 0 | Person, FAQPage |
+| vishnupadmakumar.com (Kochi) | Freelance Digital Marketer in Kochi, Kerala | 1 / 8 | ~790 | 0 | Person |
+| athiras.com | Indonesian spam content | – | – | – | Domain appears hijacked/expired; ignore |
+
+**farsanaa.in homepage after this pass:** title "Best Digital Marketing Consultant in Kerala | Farsana", phrase in title, H1, description, an H2 and the FAQ (natural use, not 24×), ~4,150 words, 13 H2s, Person/WebSite/WebPage/Service/FAQPage graph. On-page it now matches or beats every competitor above. What competitors have that this site lacks: **age, backlinks, Google reviews and blog posts**. Those, not more on-page edits, decide the top spot now.
+
+### Changes
+- Homepage: title, og:title, WebPage name, description, H1 ("The best digital marketing consultant in Kerala gets your business found like this."), About paragraph adds "freelance digital marketing expert" / "digital marketer in Kerala", stronger proof in the "best" FAQ, new FAQ "Are you a freelance digital marketer in Kerala?" (HTML and FAQ schema).
+- Service titles prefixed "Best …" (Meta Ads, Google Ads, SEO, Social media, Influencer marketing consultant, AI solutions developer).
