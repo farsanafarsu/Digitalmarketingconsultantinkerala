@@ -47,6 +47,13 @@ export default {
     }
 
     const res = await env.ASSETS.fetch(assetRequest);
+    // The asset server adds the trailing slash (/about-farsana -> /about-farsana/)
+    // with a temporary 307; make it permanent so Google keeps only the slash URL.
+    const loc = res.headers.get("Location");
+    if ((res.status === 307 || res.status === 308) && loc) {
+      const to = new URL(loc, request.url);
+      if (to.hostname === url.hostname) return Response.redirect(to.toString(), 301);
+    }
     const out = new Response(res.body, res);
     for (const [k, v] of Object.entries(SECURITY)) out.headers.set(k, v);
 

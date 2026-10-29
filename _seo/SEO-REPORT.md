@@ -267,3 +267,26 @@ Rankings **Not verified**: the search tool returns US results, not google.co.in.
 | Keyword in URL | Won't fix | It is the homepage (`/`); a separate "best-…" page would compete with it |
 
 Gotcha found: a `url()` inside a CSS custom property set in an inline style resolves against the stylesheet that uses it, so brand logos broke once CSS moved to `assets/`. They now use root-absolute `/assets/...` paths.
+
+---
+
+## 17. Second pass (30 Oct 2026)
+
+Re-audit of the live site and the repo against the "master prompt" brief. Search Console data was not available, so keyword choices are still unverified against real queries.
+
+Found live: the old GitHub Pages copy still serves the whole site (duplicate), and Cloudflare's trailing-slash redirects were 307 (temporary). Both are fixed by the JS redirect in every `<head>` and the 301 rewrite in `src/worker.js` (301 verified locally).
+
+| Change | Files |
+|---|---|
+| H1 now "Digital marketing consultant in Kerala, helping your business get found and grow."; hero line names SEO, Google ads, Meta ads and performance marketing; CTAs "Discuss your project" (#contact) and "View my work" (/case-studies/) | index.html |
+| Exact phrase "best digital marketing consultant" cut from ~12 to 10 source uses: removed from portrait alt, contact H2 (now "Hire a digital marketing consultant in Kerala") and footer byline. Kept in title, description, "How to choose" H2 and FAQ. Note: this lowers the density the Medialab tool asked for (section 16); repetition was starting to read as stuffing | index.html |
+| Social media marketing added as homepage service 04 (row, desktop slide in the services panel, ItemList schema); counter now / 09 | index.html, assets/home.js |
+| "consultant in Kerala" variant added once to each intro; also stops the intro duplicating the homepage service text | meta-ads-, google-ads-, seo-specialist-kerala |
+| Case-study images: real width/height on all 37, `loading="lazy"` outside case 1 (≈1.3 MB was downloading up front) | case-studies/index.html |
+| Mock ad headline `<h4>` → `<p class="ga-hl">` (H1→H4 jump) | google-ads-specialist-kerala, assets/lp.css |
+| Width/height on 9 client logos | meta-ads-specialist-kerala |
+| `?v=20261030` on home.js and lp.css; sitemap lastmod and WebPage dateModified 2026-10-30 | all pages, sitemap.xml |
+
+Not done on purpose: separate "performance marketing" or "lead generation" pages (no dedicated proof yet, would be thin); `#all` on case studies is a JS view, not a broken anchor.
+
+After deploy: request indexing for `/` in Search Console, resubmit the sitemap, and turn off GitHub Pages for this repo once the JS redirect is live there.
