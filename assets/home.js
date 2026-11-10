@@ -552,123 +552,45 @@ try{
 }catch(e){console.error(e)}
 try{
 (function(){
-  // results: a pinned dark screen. A cloud of particles gathers into a rupee sign as the screen arrives, then re-forms into a
-  // phone, a chat bubble and a 10x10 grid as you scroll, while the matching total rolls in beside it. The cloud parts around
-  // the pointer. It only runs while on screen; without it (reduced motion, watches, short screens) the totals sit in a plain row
-  var root=document.getElementById('rx'); if(!root) return;
-  var cv=root.querySelector('.rx-cv'), ctx=cv.getContext&&cv.getContext('2d');
-  if(!ctx||window.matchMedia('(prefers-reduced-motion: reduce)').matches||window.innerWidth<=300||window.innerHeight<520||!('IntersectionObserver' in window)) return;
-  var track=root.querySelector('.rx-track'), screen=root.querySelector('.rx-screen'), hint=root.querySelector('.rx-hint');
-  var acts=Array.prototype.slice.call(root.querySelectorAll('.rx-act')), glows=Array.prototype.slice.call(root.querySelectorAll('.rx-glow i'));
-  // the step rail: fills as you go, and each step can be clicked
-  var nav=document.createElement('div'); nav.className='rx-nav';
-  ['Spent','Calls','Messages','Campaigns'].forEach(function(t,j){nav.insertAdjacentHTML('beforeend','<button type="button" aria-label="0'+(j+1)+' '+t+'"><i></i><b>0'+(j+1)+'</b><span>'+t+'</span></button>')});
-  root.querySelector('.rx-ui').appendChild(nav);
-  var btns=Array.prototype.slice.call(nav.children);
-  root.classList.add('rx-live');
-  function clamp(v){return v<0?0:v>1?1:v}
-  function E(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
-  var small=window.innerWidth<700, N=small?1300:2600, fine=window.matchMedia('(hover:hover) and (pointer:fine)').matches;
-  var X=new Float32Array(N),Y=new Float32Array(N),VX=new Float32Array(N),VY=new Float32Array(N),SX=new Float32Array(N),SY=new Float32Array(N);
-  var D=new Float32Array(N),AN=new Float32Array(N),R=new Float32Array(N),PH=new Float32Array(N),BK=new Uint8Array(N);
-  for(var i=0;i<N;i++){SX[i]=Math.random(); SY[i]=Math.random(); D[i]=Math.random()*.35; AN[i]=Math.random()*6.283; R[i]=.4+Math.random()*.6; PH[i]=Math.random()*6.283}
-  var COL=['#2997ff','#4f8dff','#7a75ff','#a259ff','#c35bd6','#e45cae','#ff5f8f'];
-  // each shape is drawn once off screen and N points are picked from its pixels, in a -0.5..0.5 box
-  function sample(draw){
-    var z=320, c=document.createElement('canvas'); c.width=c.height=z;
-    var g=c.getContext('2d'); g.fillStyle='#fff'; draw(g,z);
-    var d=g.getImageData(0,0,z,z).data, pts=[];
-    for(var y=0;y<z;y+=2) for(var x=0;x<z;x+=2) if(d[(y*z+x)*4+3]>128) pts.push(x/z-.5,y/z-.5);
-    var out=new Float32Array(N*2), n=pts.length/2;
-    for(var k=0;k<N;k++){var q=(Math.random()*n|0)*2; out[k*2]=pts[q]+(Math.random()-.5)/z*2; out[k*2+1]=pts[q+1]+(Math.random()-.5)/z*2}
-    return out;
+  // results ledger: each row draws its rule and its number rises in character by character as it arrives;
+  // on wider screens the row at the middle of the screen is lit, as in Services. Positions are measured once (and on resize).
+  var root=document.getElementById('rx'); if(!root||!('IntersectionObserver' in window)) return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var rows=Array.prototype.slice.call(root.querySelectorAll('.rz-row'));
+  root.classList.add('rz-js');
+
+  // split each number into characters that rise one after another; the gradient suffix comes up last
+  rows.forEach(function(r){
+    var w=r.querySelector('.rz-w'), n=0;
+    Array.prototype.slice.call(w.childNodes).forEach(function(node){
+      if(node.nodeName==='EM'){node.style.setProperty('--d',(.1+n*.05+.08)+'s'); return}
+      var txt=node.textContent, frag=document.createDocumentFragment();
+      for(var i=0;i<txt.length;i++){var c=document.createElement('span'); c.className='rz-ch'; c.textContent=txt.charAt(i); c.style.setProperty('--d',(.1+n++*.05)+'s'); frag.appendChild(c)}
+      w.replaceChild(frag,node);
+    });
+  });
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){if(e.isIntersecting){io.unobserve(e.target); e.target.classList.add('in')}});
+  },{threshold:.35});
+  rows.forEach(function(r){io.observe(r)});
+
+  // the lit row: whichever row's middle is nearest a line 55% down the screen
+  var mids=null, cur=-1, queued=false, near=false;
+  function measure(){mids=rows.map(function(r){var b=r.getBoundingClientRect(); return b.top+window.scrollY+b.height/2})}
+  function frame(){
+    queued=false; if(!mids) measure();
+    var line=__S.y+__S.h*.55, best=0, bd=1e9;
+    mids.forEach(function(m,k){var d=Math.abs(m-line); if(d<bd){bd=d; best=k}});
+    if(best!==cur){cur=best; rows.forEach(function(r,k){r.classList.toggle('on',k===best)})}
   }
-  // a filled icon, or an outlined one with dots inside (the chat bubble with its typing dots)
-  function icon(path,dots){return function(g,z){
-    g.save(); g.translate(z*.1,z*.1); g.scale(z*.8/24,z*.8/24);
-    if(dots){g.strokeStyle='#fff'; g.lineWidth=2.2; g.lineJoin='round'; g.stroke(new Path2D(path)); dots.forEach(function(c){g.beginPath(); g.arc(c[0],c[1],1.35,0,6.283); g.fill()})}
-    else g.fill(new Path2D(path));
-    g.restore();
-  }}
-  var T=null, W=0, H=0, dpr=1, S=0, cx=0, cy=0, top=0, TH=0, vis=false, raf=0, cur=0, act=-1, mx=-1e4, my=-1e4, lastF=[];
-  function shapes(){
-    T=[null,
-      sample(function(g,z){g.font='700 '+(z*.95)+'px "Inter Tight",Inter,Arial,sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText('₹',z/2,z*.54)}),
-      sample(icon('M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z')),
-      sample(icon('M21 11.5a8.4 8.4 0 0 1-12.3 7.4L3 21l2.1-5.7A8.4 8.4 0 1 1 21 11.5z',[[8.4,11.5],[12.4,11.5],[16.4,11.5]])),
-      sample(function(g,z){for(var a=0;a<10;a++) for(var b=0;b<10;b++){g.beginPath(); g.arc(z*(.14+a*.08),z*(.14+b*.08),z*.027,0,6.283); g.fill()}})];
-  }
-  function layout(){
-    W=screen.clientWidth; H=screen.clientHeight; dpr=Math.min(2,window.devicePixelRatio||1);
-    cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr);
-    if(W>900){S=Math.min(W*.4,H*.66); cx=W*.7; cy=H*.5} else {S=Math.min(W*.8,H*.42); cx=W/2; cy=H*.32}
-    root.style.setProperty('--gx',(cx/W*100).toFixed(1)+'%'); root.style.setProperty('--gy',(cy/H*100).toFixed(1)+'%');
-    var b=track.getBoundingClientRect(); top=b.top+window.scrollY; TH=b.height;
-  }
-  function count(el){
-    var to=+el.getAttribute('data-to'), t0=null;
-    if(el._r) cancelAnimationFrame(el._r);
-    function st(ts){
-      if(t0===null) t0=ts;
-      var k=Math.min(1,(ts-t0)/1200); el.textContent=Math.round(to*(1-Math.pow(1-k,3))).toLocaleString('en-IN');
-      if(k<1) el._r=requestAnimationFrame(st);
-    }
-    el._r=requestAnimationFrame(st);
-  }
-  function setAct(k){
-    if(k===act) return; act=k;
-    acts.forEach(function(a,j){a.classList.toggle('on',j===k); a.classList.toggle('past',j<k)});
-    glows.forEach(function(g,j){g.classList.toggle('on',j===k)});
-    btns.forEach(function(b,j){b.classList.toggle('on',j===k)});
-    var c=acts[k].querySelector('.rx-c'); if(c) count(c);
-  }
-  function frame(now){
-    raf=0; if(!vis||!T) return;
-    // where the scroll is: arriving (the cloud gathers), then four holds with a re-form between each
-    var rel=top-__S.y, tot=TH-__S.h, u=0, m;
-    if(rel>0) m=clamp(1-rel/(__S.h*.9));
-    else {u=clamp(-rel/tot)*4; var a=Math.min(3,Math.floor(u)), f=u-a; m=1+a+(a<3?E(clamp((f-.5)/.5)):0)}
-    cur+=(m-cur)*.08; if(Math.abs(m-cur)<.0005) cur=m;
-    setAct(rel>0?0:Math.max(0,Math.min(3,Math.round(cur-1))));
-    btns.forEach(function(b,j){var f=Math.round(clamp(u-j)*200)/200; if(lastF[j]!==f){lastF[j]=f; b.style.setProperty('--f',f)}});
-    hint.style.opacity=u<.12?1:0;
-    var i0=Math.min(3,Math.floor(cur)), fr=cur>=4?1:cur-i0, A=T[i0], B=T[i0+1], t=now*.001, RAD=small?70:110, RR=RAD*RAD;
-    for(var i=0;i<N;i++){
-      var tt=E(clamp((fr-D[i])/.65)), ax, ay;
-      if(i0===0){ax=SX[i]*W; ay=SY[i]*H} else {ax=cx+A[i*2]*S; ay=cy+A[i*2+1]*S}
-      var bx=cx+B[i*2]*S, by=cy+B[i*2+1]*S, burst=Math.sin(Math.PI*tt)*S*.24*R[i];
-      var tx=ax+(bx-ax)*tt+Math.cos(AN[i])*burst+Math.sin(t*1.3+PH[i])*1.4;
-      var ty=ay+(by-ay)*tt+Math.sin(AN[i])*burst+Math.cos(t*1.1+PH[i])*1.4;
-      var vx=VX[i]*.82+(tx-X[i])*.075, vy=VY[i]*.82+(ty-Y[i])*.075;
-      var dx=X[i]-mx, dy=Y[i]-my, d2=dx*dx+dy*dy;
-      if(d2<RR){var d=Math.sqrt(d2)||1, p=(1-d/RAD)*4.5; vx+=dx/d*p; vy+=dy/d*p}
-      VX[i]=vx; VY[i]=vy; X[i]+=vx; Y[i]+=vy;
-      var bk=((X[i]-cx+S*.55)/(S*1.1)*7)|0; BK[i]=bk<0?0:bk>6?6:bk;
-    }
-    ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H); ctx.globalCompositeOperation='lighter'; ctx.globalAlpha=.85;
-    var sz=small?1.7:2;
-    for(var b=0;b<7;b++){ctx.fillStyle=COL[b]; ctx.beginPath(); for(var j=0;j<N;j++) if(BK[j]===b) ctx.rect(X[j],Y[j],sz,sz); ctx.fill()}
-    raf=requestAnimationFrame(frame);
-  }
-  function kick(){if(!raf&&vis&&T) raf=requestAnimationFrame(frame)}
-  btns.forEach(function(b,j){b.addEventListener('click',function(){
-    window.scrollTo({top:top+(TH-__S.h)*(j+.25)/4,behavior:'smooth'});
-  })});
-  if(fine){
-    screen.addEventListener('pointermove',function(e){var r=screen.getBoundingClientRect(); mx=e.clientX-r.left; my=e.clientY-r.top});
-    screen.addEventListener('pointerleave',function(){mx=my=-1e4});
-  }
-  layout();
-  for(var k=0;k<N;k++){X[k]=SX[k]*W; Y[k]=SY[k]*H}
-  setAct(0);
-  // wait for the display font so the rupee sign is sampled in it
-  (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(function(){shapes(); kick()});
-  new IntersectionObserver(function(es){vis=es[0].isIntersecting; kick()},{rootMargin:'15% 0px'}).observe(track);
-  if(window.ResizeObserver) new ResizeObserver(function(){layout()}).observe(document.body);
-  window.addEventListener('resize',layout);
-  document.addEventListener('visibilitychange',function(){if(!document.hidden) kick()});
+  function ask(){if(near&&!queued){queued=true; requestAnimationFrame(frame)}}
+  new IntersectionObserver(function(es){near=es[0].isIntersecting; ask()},{rootMargin:'30% 0px'}).observe(root);
+  if(window.ResizeObserver) new ResizeObserver(function(){mids=null; ask()}).observe(document.body);
+  window.addEventListener('scroll',ask,{passive:true});
+  rows.forEach(function(r,k){r.addEventListener('pointerenter',function(){cur=k; rows.forEach(function(x,j){x.classList.toggle('on',j===k)})})});
+  rows[0].classList.add('on'); cur=0;
 })();
-}catch(e){console.error(e)}
+}catch(e){console.error(e); var rzx=document.getElementById('rx'); if(rzx) rzx.classList.remove('rz-js')}
 try{
 (function(){
   // meta ads campaigns: the giant word holds and shrinks back, a dark circle opens from below it to fill the screen,

@@ -938,72 +938,50 @@ html.pl-intro .scrolly .hint,html.pl-intro.scrolly .hint{animation:inhint .8s .9
    phone, a chat bubble and a 10x10 grid (1 dot = 100 campaigns) as you scroll, while each lifetime total rolls in beside it.
    The cloud parts around the pointer. Without JS, with reduced motion, on watches or short screens it is a plain row of four totals */
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.rx{margin:clamp(40px,6vh,64px) 0 0}
-.rx-screen{position:relative;isolation:isolate;overflow:hidden;border-radius:clamp(22px,3vw,40px);background:radial-gradient(70% 60% at 80% 40%,rgba(162,89,255,.16),transparent 70%),#060609;color:#f5f5f7;padding:clamp(26px,4vw,56px)}
-.rx-cv,.rx-glow,.rx-nav,.rx-hint{display:none}
-.rx-k{display:flex;align-items:center;gap:10px;margin:0;font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#a1a1a6}
-.rx-k i{flex:none;width:7px;height:7px;border-radius:50%;background:#30d158;animation:ct-ping 2.2s ease-out infinite}
-.rx-list{list-style:none;margin:clamp(28px,4vh,44px) 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(20px,3vw,40px)}
-.rx-act{min-width:0;border-top:1px solid rgba(255,255,255,.12);padding-top:18px}
-.rx-m{display:block;overflow:hidden;padding-bottom:.08em;margin-bottom:-.08em}
-.rx-m>span{display:block}
-.rx-no{font-size:12px;font-weight:600;letter-spacing:.14em;color:#6e6e73;font-variant-numeric:tabular-nums}
-.rx-l{margin-top:10px;font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#a1a1a6}
-.rx-n{margin-top:12px;font-family:var(--display);font-weight:700;font-size:clamp(2.2rem,3.6vw,3.4rem);line-height:1;letter-spacing:-.05em;white-space:nowrap;font-variant-numeric:tabular-nums}
-.rx-n em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-.rx-d{margin-top:12px;font-size:14px;line-height:1.5;color:#86868b}
-@media (max-width:900px){.rx-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:300px){.rx-list{grid-template-columns:minmax(0,1fr)}.rx-screen{padding:20px;border-radius:20px}.rx-n{font-size:2rem}}
-/* live: full-bleed pinned stage */
-.rx-live{width:100vw;margin-left:calc(50% - 50vw)}
-.rx-live .rx-track{height:380vh;height:380svh}
-.rx-live .rx-stage{position:sticky;top:0;height:100vh;height:100svh;padding:clamp(8px,1vw,14px)}
-.rx-live .rx-screen{height:100%;padding:0;background:#060609}
-.rx-live .rx-cv{display:block;position:absolute;inset:0;z-index:1;width:100%;height:100%;touch-action:pan-y}
-.rx-live .rx-glow{display:block;position:absolute;inset:0;z-index:0;pointer-events:none}
-.rx-glow i{position:absolute;left:var(--gx,70%);top:var(--gy,50%);width:min(95vw,1000px);aspect-ratio:1;translate:-50% -50%;border-radius:50%;opacity:0;transition:opacity 1.2s ease}
-.rx-glow i:nth-child(1){background:radial-gradient(closest-side,rgba(162,89,255,.32),transparent)}
-.rx-glow i:nth-child(2){background:radial-gradient(closest-side,rgba(41,151,255,.3),transparent)}
-.rx-glow i:nth-child(3){background:radial-gradient(closest-side,rgba(48,209,120,.24),transparent)}
-.rx-glow i:nth-child(4){background:radial-gradient(closest-side,rgba(255,95,143,.28),transparent)}
-.rx-glow i.on{opacity:1}
-.rx-live .rx-ui{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;padding:clamp(26px,4vw,64px);pointer-events:none}
-.rx-live .rx-ui button{pointer-events:auto}
-.rx-live .rx-list{position:relative;display:block;flex:1;margin:0;width:min(54%,720px)}
-.rx-live .rx-act{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);border:0;padding:0}
-.rx-live .rx-m>span{transform:translate3d(0,110%,0);transition:transform .9s cubic-bezier(.16,1,.3,1)}
-.rx-live .rx-act.past .rx-m>span{transform:translate3d(0,-130%,0);opacity:0;transition:transform .55s cubic-bezier(.16,1,.3,1),opacity .3s}
-.rx-live .rx-act.on .rx-m>span{transform:none}
-.rx-live .rx-act.on .rx-m:nth-child(2)>span{transition-delay:.05s}
-.rx-live .rx-act.on .rx-m:nth-child(3)>span{transition-delay:.1s}
-.rx-live .rx-act.on .rx-m:nth-child(4)>span{transition-delay:.17s}
-.rx-live .rx-no{font-size:13px}
-.rx-live .rx-l{margin-top:18px;font-size:14px}
-.rx-live .rx-n{margin-top:14px;font-size:clamp(4rem,7.6vw,9rem);line-height:.92;letter-spacing:-.065em}
-.rx-live .rx-d{margin-top:22px;max-width:30ch;font-size:clamp(1rem,1.2vw,1.18rem);color:#a1a1a6}
-.rx-live .rx-nav{display:flex;gap:clamp(10px,1.6vw,22px);width:min(46%,600px)}
-.rx-nav button{flex:1;min-width:0;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:10px 6px;padding:8px 0 0;border:0;background:none;color:#6e6e73;font:600 12px/1.2 Inter,system-ui,sans-serif;text-align:left;cursor:pointer;transition:color .3s}
-.rx-nav button i{grid-column:1/-1;display:block;height:2px;border-radius:2px;background:rgba(255,255,255,.12);overflow:hidden}
-.rx-nav button i::after{content:"";display:block;height:100%;background:var(--grad);transform-origin:left;transform:scaleX(var(--f,0))}
-.rx-nav button b{font-weight:600;color:#48484a;transition:color .3s}
-.rx-nav button span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.rx-nav button.on{color:#f5f5f7}.rx-nav button.on b{color:#a259ff}
-.rx-nav button:hover{color:#d2d2d7}
-.rx-nav button:focus-visible{outline:2px solid #a259ff;outline-offset:4px;border-radius:4px}
-.rx-live .rx-hint{display:flex;position:absolute;right:clamp(26px,4vw,64px);bottom:clamp(26px,4vw,64px);z-index:2;margin:0;align-items:center;gap:12px;font-size:11.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#6e6e73;transition:opacity .5s;pointer-events:none}
-.rx-hint i{width:1px;height:34px;background:linear-gradient(#a1a1a6,transparent);transform-origin:top;animation:rx-drop 1.8s ease-in-out infinite}
-@keyframes rx-drop{0%{transform:scaleY(0);opacity:1}55%{transform:scaleY(1);opacity:1}100%{transform:scaleY(1);opacity:0}}
+/* results: the lifetime totals as a ledger on the same light ground as the sections around it. Numbered rows with hairline
+   rules (like Services above), numbers in the condensed face of the META ADS title that follows, so the totals lead
+   straight into the campaigns. Rows rest as outlines; the one at the middle of the screen fills with ink, character by
+   character, and its leader line lights up. */
+.rz{--cond:"Anton","Inter Tight",Impact,sans-serif;margin:clamp(48px,8vh,96px) 0 0}
+.rz-k{display:flex;align-items:center;gap:10px;margin:0 0 clamp(14px,2vh,22px);font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#6e6e73}
+.rz-k i{flex:none;width:7px;height:7px;border-radius:50%;background:#30d158;animation:ct-ping 2.2s ease-out infinite}
+.rz-list{list-style:none;margin:0;padding:0;border-bottom:1px solid rgba(0,0,0,.12)}
+.rz-row{position:relative;display:grid;grid-template-columns:56px auto minmax(40px,1fr) minmax(220px,300px);align-items:end;column-gap:clamp(14px,2vw,28px);padding:clamp(20px,3vh,34px) 0 clamp(16px,2.4vh,26px)}
+.rz-row::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:rgba(0,0,0,.12);transform-origin:left}
+.rz-i{align-self:start;padding-top:.9em;font:600 13px/1 var(--mono,Inter,sans-serif);letter-spacing:.14em;color:#6e6e73;font-variant-numeric:tabular-nums;transition:color .45s}
+.rz-n{margin:0;overflow:hidden;padding:0 .04em .14em 0;margin-bottom:-.1em;font-family:var(--cond);font-weight:400;font-size:clamp(3.6rem,8.6vw,8.4rem);line-height:.86;letter-spacing:.005em;color:#141414;white-space:nowrap}
+.rz-n em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.rz-ch,.rz-n em{display:inline-block;padding-bottom:.14em;margin-bottom:-.14em}
+/* the leader joins the number to its label, ledger style */
+.rz-lead{position:relative;align-self:end;height:1px;margin-bottom:1.15em;background:repeating-linear-gradient(90deg,rgba(0,0,0,.2) 0 3px,transparent 3px 8px)}
+.rz-lead::after{content:"";position:absolute;inset:-.5px 0;background:var(--grad);transform-origin:left;transform:scaleX(0);transition:transform .9s cubic-bezier(.2,.8,.2,1) .15s}
+.rz-m{margin:0;display:flex;flex-direction:column;gap:6px;padding-bottom:.4em;transition:opacity .45s}
+.rz-m b{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#1d1d1f}
+.rz-m span{font-size:15px;line-height:1.5;color:#6e6e73}
+/* motion: only once the script is live, so without it every row is simply shown, filled */
+.rz-js .rz-row::before{transform:scaleX(0);transition:transform 1.1s cubic-bezier(.2,.8,.2,1)}
+.rz-js .rz-row.in::before{transform:none}
+.rz-js .rz-ch,.rz-js .rz-n em{color:transparent;-webkit-text-stroke:1.4px rgba(29,29,31,.28);-webkit-background-clip:text;background-clip:text;background-size:200% 100%;background-position:100% 0;transform:translateY(108%);transition:transform 1s cubic-bezier(.16,1,.3,1) var(--d,0s),background-position .7s cubic-bezier(.4,0,.2,1) calc(var(--d,0s) * .6),-webkit-text-stroke-color .5s}
+.rz-js .rz-ch{background-image:linear-gradient(90deg,#141414 50%,transparent 50%)}
+.rz-js .rz-n em{background-image:linear-gradient(90deg,#2997ff,#a259ff 25%,#ff5f8f 50%,transparent 50%)}
+.rz-js .rz-row.in .rz-ch,.rz-js .rz-row.in .rz-n em{transform:none}
+.rz-js .rz-row.on .rz-ch,.rz-js .rz-row.on .rz-n em{background-position:0 0;-webkit-text-stroke-color:transparent}
+.rz-js .rz-m{opacity:0;transform:translateY(14px);transition:opacity .7s .35s,transform .8s cubic-bezier(.2,.8,.2,1) .35s}
+.rz-js .rz-row.in .rz-m{opacity:.45;transform:none}
+.rz-js .rz-row.in.on .rz-m{opacity:1}
+.rz-js .rz-row.on .rz-i{color:#a259ff}
+.rz-js .rz-row.on .rz-lead::after{transform:none}
+.rz-row:hover{cursor:default}
 @media (max-width:900px){
-  .rx-live .rx-ui{padding:22px 20px 20px}
-  .rx-live .rx-list{flex:none;width:100%;height:clamp(220px,34svh,290px);margin-top:auto}
-  .rx-live .rx-act{top:auto;bottom:0;transform:none}
-  .rx-live .rx-l{margin-top:12px;font-size:12px}
-  .rx-live .rx-n{margin-top:10px;font-size:clamp(3.2rem,15.5vw,5.6rem)}
-  .rx-live .rx-d{margin-top:12px;font-size:.95rem}
-  .rx-live .rx-nav{width:calc(100% - 64px);margin-top:18px}
-  .rx-nav button span{display:none}
-  .rx-live .rx-hint{display:none}
+  .rz-row{grid-template-columns:minmax(0,1fr);row-gap:12px;padding-top:20px}
+  .rz-i{padding:0;font-size:12px}
+  .rz-n{font-size:clamp(3.4rem,19vw,7rem)}
+  .rz-lead{display:none}
+  .rz-m{padding:0}
+  .rz-js .rz-row.in .rz-m{opacity:1}
 }
+@media (max-width:300px){.rz-n{font-size:2.6rem}.rz-m span{font-size:14px}}
+@media (prefers-reduced-motion:reduce){.rz-k i{animation:none}}
 .rs-note{margin:18px 0 0;font-size:13px;color:#6e6e73}
 .rs-grid{margin-top:clamp(40px,6vh,64px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,1.6vw,22px)}
 .rs-card{position:relative;display:flex;flex-direction:column;min-width:0;padding:clamp(22px,2.2vw,32px);border-radius:28px;background:#0b0b0c;color:#f5f5f7;text-decoration:none;overflow:hidden;isolation:isolate;transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s}
