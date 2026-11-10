@@ -11,12 +11,16 @@ try{
   var cols=apps.map(function(a){return a.style.getPropertyValue('--c').trim()});
   var root=document.documentElement, reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var MSG=['Connecting Google…','Syncing Instagram…','Reading Meta Ads…','Checking WhatsApp enquiries…','Counting YouTube views…','Scanning LinkedIn…'];
-  var MIN=reduce?300:2200, t0=performance.now(), loaded=document.readyState==='complete', p=0, state=0, c0=0, last=t0, nextNote=t0+500, mi=0, hit=0;
+  // the full intro plays on the first visit; coming back to the homepage in the same visit gets a short one
+  var seen=false; try{seen=sessionStorage.getItem('pl-seen')==='1'; sessionStorage.setItem('pl-seen','1')}catch(e){}
+  var MIN=reduce?300:seen?700:2200, t0=performance.now(), loaded=document.readyState==='complete', p=0, state=0, c0=0, last=t0, nextNote=t0+500, mi=0, hit=0;
   var counts=apps.map(function(){return 0}), parts=[], S=0, A=0, dpr=1, pos=[], cc={x:0,y:0};
   root.classList.add('pl-lock'); pl.style.animation='none';
   window.addEventListener('load',function(){loaded=true});
   setTimeout(function(){loaded=true},6000);
-  function size(){dpr=Math.min(2,window.devicePixelRatio||1); cv.width=innerWidth*dpr; cv.height=innerHeight*dpr; S=orb.offsetWidth; A=apps[0].offsetWidth}
+  // the orbit only scales about its own centre, so its box is read here (and on resize) rather than every frame, which forced a layout of the whole page while it loaded
+  var r={left:0,top:0,width:0,height:0};
+  function size(){dpr=Math.min(2,window.devicePixelRatio||1); cv.width=innerWidth*dpr; cv.height=innerHeight*dpr; S=orb.offsetWidth; A=apps[0].offsetWidth; r=orb.getBoundingClientRect()}
   size(); window.addEventListener('resize',size);
   function ease(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
   function curve(k,t){
@@ -28,7 +32,9 @@ try{
   function note(){
     var k=Math.floor(Math.random()*apps.length), b=badges[k];
     counts[k]+=Math.random()<.3?2:1; b.textContent=counts[k]>99?'99+':counts[k];
-    b.classList.add('on'); b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop');
+    b.classList.add('on');
+    // replay the pop without reading offsetWidth (that read forced a page layout on every notification)
+    if(b.animate) b.animate([{transform:'scale(.4)'},{transform:'none'}],{duration:500,easing:'cubic-bezier(.3,1.7,.5,1)'});
     spawn(k,1+(Math.random()<.4?1:0));
   }
   function swap(text){msg.classList.add('sw'); setTimeout(function(){msg.textContent=text; msg.classList.remove('sw')},220)}
@@ -48,7 +54,7 @@ try{
     }
     // the orbit, pulled into the core once everything has loaded
     var col=state>=1?ease(Math.min(1,(now-c0)/900)):0;
-    var r=orb.getBoundingClientRect(); cc.x=r.left+r.width/2; cc.y=r.top+r.height/2;
+    cc.x=r.left+r.width/2; cc.y=r.top+r.height/2;
     apps.forEach(function(a,k){
       // both rings turn at the same speed so the six apps stay 60° apart however long a slow phone takes to load
       var inner=k%2===0, rad=(inner?.3:.46)*S*(1-col), sp=reduce?0:.0002;
@@ -110,7 +116,7 @@ try{
     requestAnimationFrame(step);
   }
 })();
-}catch(e){console.error(e)}
+}catch(e){console.error(e); document.documentElement.classList.remove('pl-lock'); var plx=document.getElementById('pl'); if(plx) plx.remove()}
 try{
 (function(){
   var sec=document.getElementById('services'); if(!sec) return;
@@ -334,7 +340,7 @@ try{
   window.addEventListener('resize',ask);
   frame();
 })();
-}catch(e){console.error(e)}
+}catch(e){console.error(e); document.documentElement.classList.remove('scrolly')}
 try{
 (function(){
   // the statement lights up word by word as it is read; the portrait settles in beside it; cards and numbers rise in
@@ -556,7 +562,7 @@ try{
   var acts=Array.prototype.slice.call(root.querySelectorAll('.rx-act')), glows=Array.prototype.slice.call(root.querySelectorAll('.rx-glow i'));
   // the step rail: fills as you go, and each step can be clicked
   var nav=document.createElement('div'); nav.className='rx-nav';
-  ['Spent','Calls','Messages','Campaigns'].forEach(function(t,j){nav.insertAdjacentHTML('beforeend','<button type="button" aria-label="Show '+t.toLowerCase()+'"><i></i><b>0'+(j+1)+'</b><span>'+t+'</span></button>')});
+  ['Spent','Calls','Messages','Campaigns'].forEach(function(t,j){nav.insertAdjacentHTML('beforeend','<button type="button" aria-label="0'+(j+1)+' '+t+'"><i></i><b>0'+(j+1)+'</b><span>'+t+'</span></button>')});
   root.querySelector('.rx-ui').appendChild(nav);
   var btns=Array.prototype.slice.call(nav.children);
   root.classList.add('rx-live');

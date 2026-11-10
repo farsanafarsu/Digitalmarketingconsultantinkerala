@@ -6,8 +6,8 @@ const HOST = "farsanaa.in";
 const CSP = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://static.cloudflareinsights.com",
-  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-  "font-src 'self' https://fonts.gstatic.com",
+  "style-src 'self' 'unsafe-inline'",
+  "font-src 'self'",
   "img-src 'self' data: blob:",
   "connect-src 'self' https://script.google.com https://script.googleusercontent.com https://formsubmit.co https://cloudflareinsights.com",
   "frame-src 'self'",
@@ -63,7 +63,10 @@ export default {
     }
     // Files under /assets/ change rarely; CSS and JS are linked with ?v= so a
     // new version is fetched as soon as the HTML changes.
-    if (res.status === 200 && url.pathname.startsWith("/assets/")) {
+    // Font files never change under the same name, so browsers can keep them for a year.
+    if (res.status === 200 && url.pathname.startsWith("/assets/fonts/")) {
+      out.headers.set("Cache-Control", "public, max-age=31536000, immutable");
+    } else if (res.status === 200 && url.pathname.startsWith("/assets/")) {
       out.headers.set("Cache-Control", "public, max-age=2592000");
     }
     return out;
