@@ -1165,3 +1165,24 @@ try{
   window.addEventListener('resize',paint); paint();
 })();
 }catch(e){console.error(e)}
+try{
+(function(){
+  // footer: Trivandrum clock and the wordmark rising into view.
+  var t=document.getElementById('fotime');
+  if(t){var f=function(){try{t.textContent=new Date().toLocaleTimeString('en-IN',{timeZone:'Asia/Kolkata',hour:'2-digit',minute:'2-digit'})+' IST'}catch(e){}}; f(); setInterval(f,30000)}
+  // the name lights up in Meta's gradient under the pointer; a tap washes the whole word, then it fades back
+  var fw=document.querySelector('.fo-w');
+  if(fw){
+    var tm, move=function(e){var b=fw.getBoundingClientRect(); fw.style.setProperty('--mx',(e.clientX-b.left)+'px'); fw.style.setProperty('--my',(e.clientY-b.top)+'px')};
+    fw.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse'){move(e); fw.classList.add('on')}});
+    fw.addEventListener('pointermove',function(e){if(e.pointerType==='mouse') move(e)});
+    fw.addEventListener('pointerleave',function(e){if(e.pointerType==='mouse') fw.classList.remove('on')});
+    fw.addEventListener('pointerdown',function(e){if(e.pointerType==='mouse') return; move(e); fw.classList.remove('on'); fw.classList.add('wash'); clearTimeout(tm); tm=setTimeout(function(){fw.classList.remove('wash')},1600)});
+  }
+  var w=document.querySelector('.fo-word'), fo=document.querySelector('.fo');
+  if(!w||!fo||!('IntersectionObserver' in window)||window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  fo.classList.add('fo-js');
+  var io=new IntersectionObserver(function(es){if(es[0].isIntersecting){w.classList.add('in'); io.disconnect()}},{threshold:.15});
+  io.observe(w);
+})();
+}catch(e){console.error(e); var fx=document.querySelector('.fo'); if(fx) fx.classList.remove('fo-js')}
