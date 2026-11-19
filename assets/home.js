@@ -552,45 +552,27 @@ try{
 }catch(e){console.error(e)}
 try{
 (function(){
-  // results ledger: each row draws its rule and its number rises in character by character as it arrives;
-  // on wider screens the row at the middle of the screen is lit, as in Services. Positions are measured once (and on resize).
+  // lifetime totals: stacked cards. Each row rises in; the row underneath eases back as the next one slides over it.
   var root=document.getElementById('rx'); if(!root||!('IntersectionObserver' in window)) return;
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var rows=Array.prototype.slice.call(root.querySelectorAll('.rz-row'));
-  root.classList.add('rz-js');
-
-  // split each number into characters that rise one after another; the gradient suffix comes up last
-  rows.forEach(function(r){
-    var w=r.querySelector('.rz-w'), n=0;
-    Array.prototype.slice.call(w.childNodes).forEach(function(node){
-      if(node.nodeName==='EM'){node.style.setProperty('--d',(.1+n*.05+.08)+'s'); return}
-      var txt=node.textContent, frag=document.createDocumentFragment();
-      for(var i=0;i<txt.length;i++){var c=document.createElement('span'); c.className='rz-ch'; c.textContent=txt.charAt(i); c.style.setProperty('--d',(.1+n++*.05)+'s'); frag.appendChild(c)}
-      w.replaceChild(frag,node);
-    });
-  });
-  var io=new IntersectionObserver(function(es){
-    es.forEach(function(e){if(e.isIntersecting){io.unobserve(e.target); e.target.classList.add('in')}});
-  },{threshold:.35});
-  rows.forEach(function(r){io.observe(r)});
-
-  // the lit row: whichever row's middle is nearest a line 55% down the screen
-  var mids=null, cur=-1, queued=false, near=false;
-  function measure(){mids=rows.map(function(r){var b=r.getBoundingClientRect(); return b.top+window.scrollY+b.height/2})}
-  function frame(){
-    queued=false; if(!mids) measure();
-    var line=__S.y+__S.h*.55, best=0, bd=1e9;
-    mids.forEach(function(m,k){var d=Math.abs(m-line); if(d<bd){bd=d; best=k}});
-    if(best!==cur){cur=best; rows.forEach(function(r,k){r.classList.toggle('on',k===best)})}
-  }
-  function ask(){if(near&&!queued){queued=true; requestAnimationFrame(frame)}}
-  new IntersectionObserver(function(es){near=es[0].isIntersecting; ask()},{rootMargin:'30% 0px'}).observe(root);
-  if(window.ResizeObserver) new ResizeObserver(function(){mids=null; ask()}).observe(document.body);
-  window.addEventListener('scroll',ask,{passive:true});
-  rows.forEach(function(r,k){r.addEventListener('pointerenter',function(){cur=k; rows.forEach(function(x,j){x.classList.toggle('on',j===k)})})});
-  rows[0].classList.add('on'); cur=0;
+  var rows=[].slice.call(root.querySelectorAll('.rq-row')), end=root.querySelector('.rq-end');
+  [].slice.call(root.querySelectorAll('.rq-c')).forEach(function(c,i){c.style.setProperty('--i',i); c.querySelector('.rq-card').style.setProperty('--d',(i%2)*.12+'s')});
+  root.classList.add('rq-js');
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in'); io.unobserve(e.target)}})},{threshold:.2});
+  [].slice.call(root.querySelectorAll('.rq-c')).concat(end?[end]:[]).forEach(function(el){io.observe(el)});
+  var hd=document.getElementById('hd'); if(hd) root.style.setProperty('--hd-h',hd.offsetHeight+'px');
+  var ticking=false;
+  function upd(){ticking=false; if(window.innerWidth<=760){rows.forEach(function(r){r.style.transform=''});return}
+    for(var i=0;i<rows.length-1;i++){
+      var a=rows[i].getBoundingClientRect(), b=rows[i+1].getBoundingClientRect();
+      var p=Math.max(0,Math.min(1,(a.bottom-b.top)/a.height));
+      rows[i].style.transform='scale('+(1-p*.05).toFixed(4)+')';
+      rows[i].style.filter='brightness('+(1-p*.35).toFixed(3)+')';
+    }}
+  window.addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(upd)}},{passive:true});
+  window.addEventListener('resize',upd); upd();
 })();
-}catch(e){console.error(e); var rzx=document.getElementById('rx'); if(rzx) rzx.classList.remove('rz-js')}
+}catch(e){console.error(e); var rzx=document.getElementById('rx'); if(rzx) rzx.classList.remove('rq-js')}
 try{
 (function(){
   // meta ads campaigns: the giant word holds and shrinks back, a dark circle opens from below it to fill the screen,
