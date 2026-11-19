@@ -1944,3 +1944,7 @@ img,video{max-width:100%}
 @media (max-width:900px){.fo-grid{grid-template-columns:1fr 1fr}.fo-brand{grid-column:1/-1}}
 @media (max-width:520px){.fo-grid{grid-template-columns:1fr;gap:34px}.fo-acts{flex-direction:column;align-items:flex-start}.fo-bot{flex-direction:column;align-items:flex-start}}
 @media (prefers-reduced-motion:reduce){.fo-k i::after,.fo-w-glow{animation:none}.fo-js .fo-w{transform:none;opacity:1}}
+
+/* locations: service links inside the paragraph */
+.lc-p a{color:inherit;text-decoration:underline;text-decoration-color:rgba(0,0,0,.3);text-underline-offset:3px;transition:text-decoration-color .3s}
+.lc-p a:hover{text-decoration-color:currentColor}
