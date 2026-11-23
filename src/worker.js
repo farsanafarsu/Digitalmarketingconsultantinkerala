@@ -3,14 +3,15 @@
 // caching headers.
 const HOST = "farsanaa.in";
 
+// The Google hosts are for Tag Manager, Google Analytics and their preview mode.
 const CSP = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://static.cloudflareinsights.com",
-  "style-src 'self' 'unsafe-inline'",
-  "font-src 'self'",
-  "img-src 'self' data: blob:",
-  "connect-src 'self' https://script.google.com https://script.googleusercontent.com https://formsubmit.co https://cloudflareinsights.com",
-  "frame-src 'self'",
+  "script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://static.cloudflareinsights.com https://*.googletagmanager.com",
+  "style-src 'self' 'unsafe-inline' https://*.googletagmanager.com https://fonts.googleapis.com",
+  "font-src 'self' https://fonts.gstatic.com",
+  "img-src 'self' data: blob: https://*.googletagmanager.com https://*.google-analytics.com https://*.g.doubleclick.net https://www.google.com https://www.google.co.in https://*.gstatic.com",
+  "connect-src 'self' https://script.google.com https://script.googleusercontent.com https://formsubmit.co https://cloudflareinsights.com https://*.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com https://*.g.doubleclick.net https://www.google.com https://www.google.co.in",
+  "frame-src 'self' https://*.googletagmanager.com",
   "frame-ancestors 'self'",
   "form-action 'self' https://formsubmit.co",
   "base-uri 'self'",
