@@ -127,7 +127,8 @@ html.hd-lock .tt,html.pl-lock .tt{opacity:0;visibility:hidden}
 .flood{background:radial-gradient(70% 55% at 22% 108%,rgba(31,107,255,.34),transparent 70%),radial-gradient(40% 35% at 96% -6%,rgba(31,107,255,.16),transparent 70%),var(--flood);color:var(--white);padding:clamp(40px,7vw,96px) var(--gut);display:flex;flex-direction:column;justify-content:center;gap:clamp(18px,3.2svh,40px)}
 h1{margin:0;font-family:var(--display);font-weight:800;font-size:clamp(2.1rem,min(6.2vw,10.5svh),6.6rem);line-height:1.04;letter-spacing:-.055em;max-width:16.5em}
 h1 .your{color:var(--blue)}
-.w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.2em;margin-bottom:-.2em}
+h1 br+.your{display:block}
+.w{display:inline-block;overflow:hidden;clip-path:inset(0);vertical-align:top;padding-bottom:.2em;margin-bottom:-.2em}
 .wi{display:inline-block;will-change:transform}
 .row{display:flex;align-items:flex-end;justify-content:space-between;gap:20px 28px;flex-wrap:wrap}
 .sub{margin:0;max-width:38em;min-width:0;font-size:clamp(.85rem,.5vw + .68rem,1.1rem);line-height:1.7;letter-spacing:.04em;color:var(--soft)}

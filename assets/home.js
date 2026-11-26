@@ -166,6 +166,7 @@ try{
   // wrap headline words
   var h1=$('h1'), frag=document.createDocumentFragment();
   Array.prototype.forEach.call(h1.childNodes,function(n){
+    if(n.nodeName==='BR'){frag.appendChild(document.createElement('br'));return}
     var cls=n.nodeType===1?n.className:'';
     n.textContent.split(/\s+/).filter(Boolean).forEach(function(t){
       var w=document.createElement('span'); w.className='w';
@@ -299,7 +300,7 @@ try{
     // 5. headline, then the rest
     words.forEach(function(w,i){
       var t=ease(seg(p,.8+i*.007,.85+i*.007));
-      w.style.transform='translateY('+((1-t)*115)+'%) rotate('+((1-t)*5)+'deg)';
+      w.style.transform='translateY('+((1-t)*115)+'%) rotate('+((1-t)*5)+'deg)'; w.style.visibility=t>0?'':'hidden';
     });
     fadeUp(sub,ease(seg(p,.93,.96)));
     fadeUp(cta,ease(seg(p,.94,.97)));
