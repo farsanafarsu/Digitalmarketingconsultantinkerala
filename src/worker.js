@@ -39,6 +39,14 @@ export default {
       return Response.redirect(url.toString(), 301);
     }
 
+    // Three service pages moved from "-specialist-" to "-expert-" addresses on 26 Nov 2026.
+    // Old links and Google's old entries are sent to the new page permanently.
+    const moved = url.pathname.match(/^\/(seo|meta-ads|google-ads)-specialist-kerala(\/.*)?$/);
+    if (moved) {
+      url.pathname = "/" + moved[1] + "-expert-kerala" + (moved[2] && moved[2] !== "/index.html" ? moved[2] : "/");
+      return Response.redirect(url.toString(), 301);
+    }
+
     // Google's verification file must return 200 at its exact .html URL,
     // not the asset server's redirect to the extensionless path.
     let assetRequest = request;

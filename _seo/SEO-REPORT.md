@@ -72,9 +72,9 @@ Existing URLs were kept, not renamed. Renaming `-specialist-` to `-expert-` woul
 |---|---|---|---|---|---|
 | `/` | digital marketing consultant in Kerala | …in Trivandrum, digital marketing expert Kerala, freelance digital marketer | Digital Marketing Consultant in Kerala \| Trivandrum \| Farsana | The digital marketing consultant in Kerala who gets your business found like this. | Person, WebSite, WebPage, ItemList of Services, FAQPage |
 | `/about-farsana/` (new) | Farsana digital marketing consultant Trivandrum | digital marketing expert in Trivandrum | About Farsana N \| Digital Marketing Consultant in Trivandrum | Farsana N, digital marketing consultant in Trivandrum | ProfilePage, Person, BreadcrumbList |
-| `/meta-ads-specialist-kerala/` | Meta Ads expert in Kerala | Facebook/Instagram ads expert, lead generation, click-to-WhatsApp | Meta Ads Expert in Kerala \| Facebook & Instagram Ads \| Farsana | Meta ads specialist in Kerala | Service, FAQPage, BreadcrumbList |
-| `/google-ads-specialist-kerala/` | Google Ads expert in Kerala | …in Trivandrum, PPC, search ads | Google Ads Expert in Kerala \| Search & Call Ads \| Farsana | Google ads specialist in Kerala | Service, FAQPage, BreadcrumbList |
-| `/seo-specialist-kerala/` | SEO expert in Kerala | SEO expert Trivandrum, technical/local SEO, SEO audit, AEO, GEO | SEO Expert in Kerala \| Local & Technical SEO \| Farsana | SEO specialist in Kerala | Service, FAQPage, BreadcrumbList |
+| `/meta-ads-expert-kerala/` | Meta Ads expert in Kerala | Facebook/Instagram ads expert, lead generation, click-to-WhatsApp | Meta Ads Expert in Kerala \| Facebook & Instagram Ads \| Farsana | Meta ads specialist in Kerala | Service, FAQPage, BreadcrumbList |
+| `/google-ads-expert-kerala/` | Google Ads expert in Kerala | …in Trivandrum, PPC, search ads | Google Ads Expert in Kerala \| Search & Call Ads \| Farsana | Google ads specialist in Kerala | Service, FAQPage, BreadcrumbList |
+| `/seo-expert-kerala/` | SEO expert in Kerala | SEO expert Trivandrum, technical/local SEO, SEO audit, AEO, GEO | SEO Expert in Kerala \| Local & Technical SEO \| Farsana | SEO specialist in Kerala | Service, FAQPage, BreadcrumbList |
 | `/social-media-marketing-kerala/` (new) | social media marketing expert Kerala | social media manager Trivandrum | Social Media Marketing Expert in Kerala \| Farsana | Social media marketing in Kerala | Service, FAQPage, BreadcrumbList |
 | `/influencer-marketing-kerala/` | influencer marketing in Kerala | consultant, Trivandrum, Malayalam creators | Influencer Marketing in Kerala \| Malayalam Creators \| Farsana | Influencer marketing in Kerala | Service, FAQPage, BreadcrumbList |
 | `/ai-solutions-developer-kerala/` | AI solutions developer Kerala | AI chatbots, automation | AI Solutions Developer in Kerala \| Chatbots \| Farsana | AI solutions developer in Kerala | Service, FAQPage, BreadcrumbList |
@@ -115,9 +115,9 @@ No design, colours, fonts or existing sections were removed.
 |---|---|---|
 | / | Digital Marketing Consultant in Kerala \| Trivandrum \| Farsana | Trivandrum-based digital marketing consultant for Kerala businesses: Meta Ads, Google Ads, SEO and influencer marketing, with real Ads Manager case studies. |
 | /about-farsana/ | About Farsana N \| Digital Marketing Consultant in Trivandrum | Farsana N, a Trivandrum-based digital marketing consultant with 4+ years in Meta Ads, Google Ads, SEO, social media and influencer marketing. |
-| /meta-ads-specialist-kerala/ | Meta Ads Expert in Kerala \| Facebook & Instagram Ads \| Farsana | Meta ads specialist in Kerala. Facebook and Instagram campaigns built for enquiries, calls and WhatsApp messages, with a weekly report on what each lead cost. |
-| /google-ads-specialist-kerala/ | Google Ads Expert in Kerala \| Search & Call Ads \| Farsana | Google ads specialist in Kerala. Search, Performance Max and call campaigns, with negative keywords and conversion tracking set up before a rupee is spent. |
-| /seo-specialist-kerala/ | SEO Expert in Kerala \| Local & Technical SEO \| Farsana | SEO expert in Kerala, based in Trivandrum. Technical and on-page SEO, local SEO and Google Business Profile, plus AEO and GEO, with monthly reporting. |
+| /meta-ads-expert-kerala/ | Meta Ads Expert in Kerala \| Facebook & Instagram Ads \| Farsana | Meta ads specialist in Kerala. Facebook and Instagram campaigns built for enquiries, calls and WhatsApp messages, with a weekly report on what each lead cost. |
+| /google-ads-expert-kerala/ | Google Ads Expert in Kerala \| Search & Call Ads \| Farsana | Google ads specialist in Kerala. Search, Performance Max and call campaigns, with negative keywords and conversion tracking set up before a rupee is spent. |
+| /seo-expert-kerala/ | SEO Expert in Kerala \| Local & Technical SEO \| Farsana | SEO expert in Kerala, based in Trivandrum. Technical and on-page SEO, local SEO and Google Business Profile, plus AEO and GEO, with monthly reporting. |
 | /social-media-marketing-kerala/ | Social Media Marketing Expert in Kerala \| Farsana | Social media marketing in Kerala by a Trivandrum-based consultant: content plans, Reels, Malayalam and English posts and monthly reports. |
 | /influencer-marketing-kerala/ | Influencer Marketing in Kerala \| Malayalam Creators \| Farsana | Influencer marketing in Kerala. A dashboard of 10,000+ influencers across every niche, reach checked before you pay, and every creator tracked to enquiries. |
 | /ai-solutions-developer-kerala/ | AI Solutions Developer in Kerala \| Chatbots \| Farsana | AI solutions developer in Kerala: AI chatbots for your website and WhatsApp, lead follow-up automation and custom machine learning models in Python. |
@@ -281,10 +281,10 @@ Found live: the old GitHub Pages copy still serves the whole site (duplicate), a
 | H1 now "Digital marketing consultant in Kerala, helping your business get found and grow."; hero line names SEO, Google ads, Meta ads and performance marketing; CTAs "Discuss your project" (#contact) and "View my work" (/case-studies/) | index.html |
 | Exact phrase "best digital marketing consultant" cut from ~12 to 10 source uses: removed from portrait alt, contact H2 (now "Hire a digital marketing consultant in Kerala") and footer byline. Kept in title, description, "How to choose" H2 and FAQ. Note: this lowers the density the Medialab tool asked for (section 16); repetition was starting to read as stuffing | index.html |
 | Social media marketing added as homepage service 04 (row, desktop slide in the services panel, ItemList schema); counter now / 09 | index.html, assets/home.js |
-| "consultant in Kerala" variant added once to each intro; also stops the intro duplicating the homepage service text | meta-ads-, google-ads-, seo-specialist-kerala |
+| "consultant in Kerala" variant added once to each intro; also stops the intro duplicating the homepage service text | meta-ads-, google-ads-, seo-expert-kerala |
 | Case-study images: real width/height on all 37, `loading="lazy"` outside case 1 (≈1.3 MB was downloading up front) | case-studies/index.html |
-| Mock ad headline `<h4>` → `<p class="ga-hl">` (H1→H4 jump) | google-ads-specialist-kerala, assets/lp.css |
-| Width/height on 9 client logos | meta-ads-specialist-kerala |
+| Mock ad headline `<h4>` → `<p class="ga-hl">` (H1→H4 jump) | google-ads-expert-kerala, assets/lp.css |
+| Width/height on 9 client logos | meta-ads-expert-kerala |
 | `?v=20261030` on home.js and lp.css; sitemap lastmod and WebPage dateModified 2026-10-30 | all pages, sitemap.xml |
 
 Not done on purpose: separate "performance marketing" or "lead generation" pages (no dedicated proof yet, would be thin); `#all` on case studies is a JS view, not a broken anchor.
