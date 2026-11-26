@@ -24,7 +24,8 @@
   each('.sx-lost',function(card,k){
     var q=card.querySelector('.sx-q'); if(!q) return;
     var svg=q.querySelector('svg'), txt=q.textContent.trim(); q.textContent=''; if(svg) q.appendChild(svg);
-    var sp=d.createElement('span'); q.appendChild(sp); q.setAttribute('aria-label',txt);
+    var full=d.createElement('span'); full.textContent=txt; full.style.cssText='position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap'; q.appendChild(full);
+    var sp=d.createElement('span'); sp.setAttribute('aria-hidden','true'); q.appendChild(sp);
     once(card,function(){
       var i=0; setTimeout(function step(){sp.textContent=txt.slice(0,++i); if(i<txt.length) setTimeout(step,28+Math.random()*45); else {q.classList.add('done'); card.classList.add('typed')}}, 450+k*180);
     },.35);
